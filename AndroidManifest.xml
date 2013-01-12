@@ -22,6 +22,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="com.dds.requisitor.FetchClassesActivity"
+            android:label="@string/title_activity_fetch_classes" 
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" 
+            >
+        </activity>
     </application>
 
 </manifest>
