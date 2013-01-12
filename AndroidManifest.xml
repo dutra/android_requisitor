@@ -4,6 +4,8 @@
     android:versionCode="1"
     android:versionName="1.0" >
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <uses-sdk
         android:minSdkVersion="8"
         android:targetSdkVersion="14" />
@@ -24,9 +26,8 @@
         </activity>
         <activity
             android:name="com.dds.requisitor.FetchClassesActivity"
-            android:label="@string/title_activity_fetch_classes" 
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" 
-            >
+            android:label="@string/title_activity_fetch_classes"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
         </activity>
     </application>
 
