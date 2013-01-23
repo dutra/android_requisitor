@@ -2,20 +2,13 @@ package com.dds.requisitor;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.Reader;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
+import java.util.ArrayList;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -25,9 +18,11 @@ import android.util.Log;
 import android.view.Menu;
 
 public class FetchClassesActivity extends Activity {
-
+ 
+	ClassesParser cp = new ClassesParser();
+	DatabaseHandler db = new DatabaseHandler(FetchClassesActivity.this);
 	String LOG_TAG = "FetchClassesActivity";
-	Integer GET_LENGTH = 128000;
+	ArrayList<Class> _classes = new ArrayList<Class>();
 	
 	private String downloadJSON(String s){
 	    URL url;
@@ -61,59 +56,16 @@ public class FetchClassesActivity extends Activity {
 	    return jsonstring.toString().trim();
 	}
 
-		
-	public static String getHttpResponse(URI uri) throws IOException {
-		//Log.d(APP_TAG, "Going to make a get request");
-		StringBuilder response = new StringBuilder();
-		InputStream is = null;
-		try {
-			HttpGet get = new HttpGet();
-			get.setURI(uri);
-			DefaultHttpClient httpClient = new DefaultHttpClient();
-			HttpResponse httpResponse = httpClient.execute(get);
-			if (httpResponse.getStatusLine().getStatusCode() == 200) {
-				
-
-				HttpEntity messageEntity = httpResponse.getEntity();
-				is = messageEntity.getContent();
-				BufferedReader br = new BufferedReader(new InputStreamReader(is));
-				String line;
-				while ((line = br.readLine()) != null) {
-					response.append(line);
-				}
-				Log.d("demo", "HTTP Get succeeded");
-
-				
-			}
-		} catch (Exception e) {
-			Log.e("demo", e.getMessage());
-		} finally {
-			if (is!=null)
-				is.close();
-		}
-		
-		Log.d("demo", "Done with HTTP getting");
-		return response.toString();
-	}
-	
-	// Reads an InputStream and converts it to a String.
-	public String readIt(InputStream stream, int len) throws IOException, UnsupportedEncodingException {
-	    Reader reader = null;
-	    reader = new InputStreamReader(stream, "UTF-8");        
-	    char[] buffer = new char[len];
-	    reader.read(buffer);
-	    return new String(buffer);
-	}
-	
 	private final class ProgressBarAsyncTask extends AsyncTask<Void, Integer, Boolean> { //<Params, Progress, Result>
 		private ProgressDialog pd;
 		private final String MESSAGE[] = { //Available Messages
-				"Initializing connection...",
-				"Connecting to mit.edu...",
-				"Downloading m8a",
-				"Parsing",
-				"Error download",
-				"Done!"
+				"Initializing connection...", //0
+				"Connecting to mit.edu...", //1
+				"Downloading m8a...", //2
+				"Parsing...", //3
+				"Saving to DataBase..", //4
+				"Error downloading!", //5
+				"Done!"//6
 		};
 		private String http;
 
@@ -171,7 +123,6 @@ public class FetchClassesActivity extends Activity {
 		 */
 		@Override
 		protected Boolean doInBackground(Void... params) {
-			ClassesParser cp = new ClassesParser();
 			try {
 				URI uri = new URI("http://coursews.mit.edu/coursews/?courses=8");
 				publishProgress(2);
@@ -179,18 +130,32 @@ public class FetchClassesActivity extends Activity {
 				
 				//http = new String(downloadUrl("http://student.mit.edu/catalog/m8a.html"));
 				//http = getHttpResponse(uri);
-				if((http = downloadJSON("http://coursews.mit.edu/coursews/?term=2013SP&courses=8"))== null) {
-					publishProgress(4);
+				if((http = downloadJSON("http://coursews.mit.edu/coursews/?courses=8"))== null) {
+					publishProgress(5);
 					Thread.sleep(200);
 					return false;
 				}
 				//Log.d("HTTP", http);
-				publishProgress(3);
+				publishProgress(3); //parsing
+				Log.d("CP", "parsingClasses");
 				cp.parseClasses(http);
+				Log.d("CP", "gettingClasses");
+				_classes = cp.getClasses();
+				for(Class i : _classes) {
+					Log.d("WTF", i.getTitle());
+				}
+				Thread.sleep(200);
 				
+				publishProgress(4); //saving to db
+				Log.d("DB", "Saving to db");
+				db.addClasses(_classes);
 				Thread.sleep(200);
-				publishProgress(5);
+				
+				publishProgress(6);
 				Thread.sleep(200);
+				
+				
+				
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 				return false;

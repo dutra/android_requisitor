@@ -4,6 +4,17 @@ import java.util.ArrayList;
 
 public class Class {
 
+	public static class session {
+		String where;
+		String when;
+		
+		public session(String s) {
+			where = s.split(" ", 2)[1];
+			when = s.split(" ", 2)[0];
+		}
+		
+	}
+
 	public static class units {
 		private int _lec;
 		private int _lab;
@@ -38,33 +49,43 @@ public class Class {
 	private String _title;
 	private units _units;
 	private String _description;
-	private String _lecwhere;
-	private String _lecwhen;
-	private String _labwhere;
-	private String _labwhen;
+	private session _session;
 	private int _fall;
 	private int _spring;
-	private String _instructor;
+
 	private ArrayList<Integer> _prereq = new ArrayList<Integer>();
 	private ArrayList<Integer> _cored = new ArrayList<Integer>();
 
 
-	public Class(int id,  String majorN, String classN, String title, int unitsN, String description, String lecwhere, String lecwhen, String labwhere, String labwhen, int fall, int spring,  String instructor) {
+	public Class(int id,  String majorN, String classN, String title, int unitsN, String description, int fall, int spring) {
 		_id = id;
 		_majorN = majorN;
 		_classN = classN;
 		_title = title;
 		_units = new units(unitsN);
 		_description = description;
-		_lecwhere = lecwhere;
-		_lecwhen = lecwhen;
-		_labwhere = labwhere;
-		_labwhen = labwhen;
 		_fall = fall;
 		_spring = spring;
 
+
+	}
+	public Class() {
+	
 	}
 
+	public void setClass(int id,  String majorN, String classN, String title, int unitsN, String description, int fall, int spring) {
+		_id = id;
+		_majorN = majorN;
+		_classN = classN;
+		_title = title;
+		_units = new units(unitsN);
+		_description = description;
+		_fall = fall;
+		_spring = spring;
+
+
+	}
+	
 	public int getID() {
 		return _id;
 	}
@@ -83,26 +104,13 @@ public class Class {
 	public String getDescription() {
 		return _description;
 	}
-	public String getLecWhere() {
-		return _lecwhere;
-	}
-	public String getLecWhen() {
-		return _lecwhen;
-	}
-	public String getLabWhere() {
-		return _labwhere;
-	}
-	public String getLabWhen() {
-		return _labwhen;
-	}
+
 	public int getFall() {
 		return _fall;
 	}
 	public int getSpring() {
 		return _spring;
 	}
-	public String getInstructor() {
-		return _instructor;
-	}
+
 
 }

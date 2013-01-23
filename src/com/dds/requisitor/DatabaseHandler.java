@@ -21,13 +21,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	private static final String KEY_TITLE = "title";
 	private static final String KEY_UNITS = "units";
 	private static final String KEY_DESCRIPTION = "description";
-	private static final String KEY_LECWHERE = "lecwhere";
-	private static final String KEY_LECWHEN = "lecwhen";
-	private static final String KEY_LABWHERE = "labwhere";
-	private static final String KEY_LABWHEN = "labwhen";
 	private static final String KEY_FALL = "fall";
 	private static final String KEY_SPRING = "spring";
-	private static final String KEY_INSTRUCTOR = "instructor";
+
 
 
 	public DatabaseHandler(Context context) {
@@ -37,7 +33,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	// Creating Tables
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		String CREATE_CONTACTS_TABLE = "CREATE TABLE "+TABLE_CLASSES+" ("+KEY_ID+" INTEGER PRIMARY KEY, "+KEY_MAJORN+" TEXT, "+KEY_CLASSN+" TEXT, "+KEY_TITLE+" TEXT, "+KEY_UNITS+" INT, "+KEY_DESCRIPTION+" TEXT, "+KEY_LECWHERE+" TEXT, "+KEY_LECWHEN+" TEXT, "+KEY_LABWHERE+" TEXT, "+KEY_LABWHEN+" TEXT, "+KEY_FALL+" INT, "+KEY_SPRING+" INT, "+KEY_INSTRUCTOR+" TEXT)";
+		String CREATE_CONTACTS_TABLE = "CREATE TABLE "+TABLE_CLASSES+" ("+KEY_ID+" INTEGER PRIMARY KEY, "+KEY_MAJORN+" TEXT, "+KEY_CLASSN+" TEXT, "+KEY_TITLE
+				+" TEXT, "+KEY_UNITS+" INT, "+KEY_DESCRIPTION+" TEXT, "+KEY_FALL+" INT, "+KEY_SPRING+" INT)";
 		db.execSQL(CREATE_CONTACTS_TABLE);
 	}
 
@@ -57,35 +54,47 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 		ContentValues values = new ContentValues();
 		values.put(KEY_ID, c.getID());
-		values.put(KEY_MAJORN, c.getMajorN()); // Contact Phone Number
+		values.put(KEY_MAJORN, c.getMajorN());
 		values.put(KEY_CLASSN, c.getClassN());
 		values.put(KEY_TITLE, c.getTitle());
 		values.put(KEY_UNITS, c.getUnits());
 		values.put(KEY_DESCRIPTION, c.getDescription());
-		values.put(KEY_LECWHERE, c.getLecWhere());
-		values.put(KEY_LECWHEN, c.getLecWhen());
-		values.put(KEY_LABWHERE, c.getLabWhere());
-		values.put(KEY_LABWHEN, c.getLabWhen());
 		values.put(KEY_FALL, c.getFall());
 		values.put(KEY_SPRING, c.getSpring());
-		values.put(KEY_INSTRUCTOR, c.getInstructor());
+		
+/*		values.put(KEY_ID, 1234567890);
+		values.put(KEY_MAJORN, "123");
+		values.put(KEY_CLASSN, "123");
+		values.put(KEY_TITLE, "123");
+		values.put(KEY_UNITS, 123);
+		values.put(KEY_DESCRIPTION, "123");
+		values.put(KEY_FALL, 1);
+		values.put(KEY_SPRING, 0);
+*/
 		// Inserting Row
 		db.insert(TABLE_CLASSES, null, values);
 		db.close(); // Closing database connection
 	}
 
+	public void addClasses(ArrayList<Class> classes) {
+		for(Class c : classes)
+			addClass(c);
+		
+	}
+		
+	
 	public Class getClass(int id) {  // Getting single class by id
 		SQLiteDatabase db = this.getReadableDatabase();
 
 		Cursor cursor = db.query(TABLE_CLASSES, new String[] { KEY_ID,
-				KEY_MAJORN, KEY_CLASSN, KEY_TITLE, KEY_UNITS, KEY_DESCRIPTION, KEY_LECWHERE, KEY_LECWHEN, KEY_LABWHERE, KEY_LABWHEN, KEY_FALL, KEY_SPRING, KEY_INSTRUCTOR },
+				KEY_MAJORN, KEY_CLASSN, KEY_TITLE, KEY_UNITS, KEY_DESCRIPTION, KEY_FALL, KEY_SPRING},
 				KEY_ID + "=?",	new String[] { String.valueOf(id) }, null, null, null, null);
 		if (cursor != null)
 			cursor.moveToFirst();
 
 		Class c = new Class(Integer.parseInt(cursor.getString(0)), cursor.getString(1), cursor.getString(2), cursor.getString(3), Integer.parseInt(cursor.getString(4)),
-				cursor.getString(5), cursor.getString(6), cursor.getString(7), cursor.getString(8), cursor.getString(9), Integer.parseInt(cursor.getString(10)),
-				Integer.parseInt(cursor.getString(11)), cursor.getString(12));
+				cursor.getString(5), Integer.parseInt(cursor.getString(6)),
+				Integer.parseInt(cursor.getString(7)));
 		return c;		// return class
 	}
 

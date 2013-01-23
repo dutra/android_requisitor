@@ -29,6 +29,10 @@
             android:label="@string/title_activity_fetch_classes"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" >
         </activity>
+        <activity
+            android:name="com.dds.requisitor.ListClassesActivity"
+            android:label="@string/title_activity_list_classes" >
+        </activity>
     </application>
 
 </manifest>
