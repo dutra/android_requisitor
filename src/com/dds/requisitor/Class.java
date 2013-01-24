@@ -52,6 +52,7 @@ public class Class {
 	private session _session;
 	private int _fall;
 	private int _spring;
+	private String _takenIn;
 
 	private ArrayList<Integer> _prereq = new ArrayList<Integer>();
 	private ArrayList<Integer> _cored = new ArrayList<Integer>();
@@ -69,6 +70,30 @@ public class Class {
 
 
 	}
+	
+	public Class(int id,  String majorN, String classN, String title, int unitsN, String description, int fall, int spring, String takenIn) {
+		_id = id;
+		_majorN = majorN;
+		_classN = classN;
+		_title = title;
+		_units = new units(unitsN);
+		_description = description;
+		_fall = fall;
+		_spring = spring;
+		_takenIn = takenIn;
+
+
+	}
+	
+	public Class(int id,  String majorN, String classN, String takenIn) {
+		_id = id;
+		_majorN = majorN;
+		_classN = classN;
+		_takenIn = takenIn;
+
+
+	}
+	
 	public Class() {
 	
 	}
@@ -82,6 +107,20 @@ public class Class {
 		_description = description;
 		_fall = fall;
 		_spring = spring;
+
+
+	}
+	
+	public void setClass(int id,  String majorN, String classN, String title, int unitsN, String description, int fall, int spring, String takenIn) {
+		_id = id;
+		_majorN = majorN;
+		_classN = classN;
+		_title = title;
+		_units = new units(unitsN);
+		_description = description;
+		_fall = fall;
+		_spring = spring;
+		_takenIn = takenIn;
 
 
 	}
@@ -110,6 +149,12 @@ public class Class {
 	}
 	public int getSpring() {
 		return _spring;
+	}
+	public String getTakenIn() {
+		return _takenIn;
+	}
+	public void setTakenIn(String _takenIn) {
+		this._takenIn = _takenIn;
 	}
 
 
