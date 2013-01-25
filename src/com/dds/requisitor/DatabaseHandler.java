@@ -106,6 +106,34 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		return classes;
 	}
 	
+	public ArrayList<Class> getClassesByInitial(String search){
+		String[] splitSearch = search.split("\\.");
+		String majorN = splitSearch[0];
+		String classN = splitSearch[1];
+		
+		SQLiteDatabase db = this.getReadableDatabase();
+		ArrayList<Class> classes = new ArrayList<Class>();
+
+		Cursor cursor = db.query(TABLE_CLASSES, new String[] { KEY_ID,
+				KEY_MAJORN, KEY_CLASSN, KEY_TITLE, KEY_UNITS, KEY_DESCRIPTION, KEY_FALL, KEY_SPRING},
+				KEY_MAJORN + " =? AND " + KEY_CLASSN + " LIKE ?",	new String[] { majorN, classN }, null, null, null, null);
+		if (cursor != null) {
+			cursor.moveToFirst();
+
+			Class c = new Class(Integer.parseInt(cursor.getString(0)),
+					cursor.getString(1), cursor.getString(2),
+					cursor.getString(3), Integer.parseInt(cursor.getString(4)),
+					cursor.getString(5), Integer.parseInt(cursor.getString(6)),
+					Integer.parseInt(cursor.getString(7)), cursor.getString(8));
+			classes.add(c);
+			if (!cursor.moveToFirst() == true) {
+				return classes;
+			}
+			;
+		}
+		return null;
+	}
+	
     public int getCount() { // Getting classes Count
         String countQuery = "SELECT  * FROM " + TABLE_CLASSES;
         SQLiteDatabase db = this.getReadableDatabase();
