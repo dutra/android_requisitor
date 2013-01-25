@@ -111,9 +111,7 @@ public class UserDatabaseHandler extends SQLiteOpenHelper {
 
 			Class c = new Class(Integer.parseInt(cursor.getString(0)),
 					cursor.getString(1), cursor.getString(2),
-					cursor.getString(3), Integer.parseInt(cursor.getString(4)),
-					cursor.getString(5), Integer.parseInt(cursor.getString(6)),
-					Integer.parseInt(cursor.getString(7)), cursor.getString(8));
+					cursor.getString(3));
 			classes.add(c);
 			if (!cursor.moveToFirst() == true) {
 				return classes;
