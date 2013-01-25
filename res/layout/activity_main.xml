@@ -5,13 +5,19 @@
     tools:context=".MainActivity" >
 
     <Button
+        android:id="@+id/btListClasses"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:onClick="onClickList"
+        android:text="List Classes" />
+
+    <Button
         android:id="@+id/btFetch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="Fetch" 
         android:onClick="onClickFetch"
-        />
-    
+        android:text="Fetch" />
 
 </LinearLayout>

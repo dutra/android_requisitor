@@ -7,6 +7,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 public class UserDatabaseHandler extends SQLiteOpenHelper {
 
@@ -106,21 +107,19 @@ public class UserDatabaseHandler extends SQLiteOpenHelper {
 		Cursor cursor = db.query(TABLE_USERCLASSES, new String[] { KEY_ID,
 				KEY_MAJORN, KEY_CLASSN, KEY_TAKENIN }, KEY_TAKENIN + "=?",
 				new String[] { semester }, null, null, null, null);
-		if (cursor != null) {
-			cursor.moveToFirst();
-
+		
+		if(cursor.moveToFirst()==true){
+			do {
 			Class c = new Class(Integer.parseInt(cursor.getString(0)),
 					cursor.getString(1), cursor.getString(2),
-					cursor.getString(3), Integer.parseInt(cursor.getString(4)),
-					cursor.getString(5), Integer.parseInt(cursor.getString(6)),
-					Integer.parseInt(cursor.getString(7)), cursor.getString(8));
+					cursor.getString(3));
 			classes.add(c);
-			if (!cursor.moveToFirst() == true) {
-				return classes;
-			}
-			;
+			Log.d("ID", "aaaa");
+			} while(cursor.moveToNext() == true); 
+			return classes;
+			
 		}
-		return null;
+		return new ArrayList<Class>();
 	}
 
 	public ArrayList<Class> getClassesBySemesters(ArrayList<String> semesters) { // Getting
@@ -128,7 +127,9 @@ public class UserDatabaseHandler extends SQLiteOpenHelper {
 		// classes
 		ArrayList<Class> classes = new ArrayList<Class>();
 		for (String s : semesters) {
-			classes.addAll(getClassesBySemester(s));
+			
+			classes = getClassesBySemester(s);
+			Log.d("NULL", "RETURNING NULL");
 		}
 		return classes;
 	}

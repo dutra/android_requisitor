@@ -110,8 +110,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         String countQuery = "SELECT  * FROM " + TABLE_CLASSES;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(countQuery, null);
+        int i = cursor.getCount();
         cursor.close();
-        return cursor.getCount(); // return count
+        db.close();
+        return i; // return count
+        
     }
     public void eraseAll() {
     	SQLiteDatabase db = this.getWritableDatabase();

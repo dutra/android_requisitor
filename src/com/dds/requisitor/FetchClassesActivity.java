@@ -64,7 +64,7 @@ public class FetchClassesActivity extends Activity {
 				"Downloading m8a...", //2
 				"Parsing...", //3
 				"Saving to DataBase..", //4
-				"Error downloading!", //5
+				"Error downloading. Are you connected to the internet?", //5
 				"Done!"//6
 		};
 		private String http;
@@ -124,15 +124,13 @@ public class FetchClassesActivity extends Activity {
 		@Override
 		protected Boolean doInBackground(Void... params) {
 			try {
-				URI uri = new URI("http://coursews.mit.edu/coursews/?courses=8");
+
 				publishProgress(2);
 				Thread.sleep(200);
 				
-				//http = new String(downloadUrl("http://student.mit.edu/catalog/m8a.html"));
-				//http = getHttpResponse(uri);
 				if((http = downloadJSON("http://coursews.mit.edu/coursews/?courses=8"))== null) {
 					publishProgress(5);
-					Thread.sleep(200);
+					Thread.sleep(2000);
 					return false;
 				}
 				//Log.d("HTTP", http);
@@ -159,11 +157,7 @@ public class FetchClassesActivity extends Activity {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 				return false;
-			} catch (URISyntaxException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-			
+			} 			
 			return true;
 		}
 
