@@ -85,10 +85,8 @@ public class Class {
 
 	}
 	
-	public Class(int id,  String majorN, String classN, String takenIn) {
+	public Class(int id, String takenIn) {
 		_id = id;
-		_majorN = majorN;
-		_classN = classN;
 		_takenIn = takenIn;
 
 
@@ -153,8 +151,8 @@ public class Class {
 	public String getTakenIn() {
 		return _takenIn;
 	}
-	public void setTakenIn(String _takenIn) {
-		this._takenIn = _takenIn;
+	public void setTakenIn(String takenIn) {
+		this._takenIn = takenIn;
 	}
 
 

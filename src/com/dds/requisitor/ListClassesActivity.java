@@ -2,53 +2,25 @@ package com.dds.requisitor;
 
 import java.util.ArrayList;
 
+import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.ListActivity;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.media.ExifInterface;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.TextView;
+import android.widget.ExpandableListView;
 
-public class ListClassesActivity extends ListActivity {
+public class ListClassesActivity extends Activity {
 	DatabaseHandler db = new DatabaseHandler(ListClassesActivity.this);
 	UserDatabaseHandler dbU = new UserDatabaseHandler(ListClassesActivity.this);
-	private class ListClassesAdapter extends ArrayAdapter<Class> {
-		private final Context context;
-		private final ArrayList<Class> classes;
-		
-		
-		public ListClassesAdapter(Context context, ArrayList<Class> c) {
-
-			super(context, R.layout.list_classes_adapter_row_layout, c);
-			this.context = context;
-			this.classes = c;
-		}
-
-		@Override
-		public View getView(int position, View convertView, ViewGroup parent) {
-			LayoutInflater inflater = (LayoutInflater) context
-					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			View rowView = inflater.inflate(R.layout.list_classes_adapter_row_layout, parent, false);
-			TextView textView = (TextView) rowView.findViewById(R.id.course);
-		    textView.setText(classes.get(position).getTitle());
-		    
-			return rowView;
-		}
-	} 
-
+	private ExpandableListView mExpandableList;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		ArrayList<String> terms = new ArrayList<String>();
-		ArrayList<Class> c = new ArrayList<Class>();
+		ArrayList<Class> classes = new ArrayList<Class>();
 		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_list_classes);
 
 		Bundle extras = getIntent().getExtras();
 		if (extras != null) {
@@ -58,11 +30,11 @@ public class ListClassesActivity extends ListActivity {
 			finish();
 		}
 		//Toast.makeText(ListClassesActivity.this, terms.toString(), Toast.LENGTH_LONG).show();
-		Log.d("TERMS", terms.toString()+c.size());
+		//Log.d("TERMS", terms.toString()+classes.size());
 		
-		c = dbU.getClassesBySemesters(terms);
+		classes = dbU.getClassesBySemesters(terms);
 		
-		if(c.size()==0) {
+		if(classes.size()==0) {
 
 			AlertDialog.Builder builder = new AlertDialog.Builder(ListClassesActivity.this);
 			builder.setTitle("Error").setMessage("Could not find any classes that matched the selected semesters");
@@ -77,10 +49,48 @@ public class ListClassesActivity extends ListActivity {
 			dialog.show();
 			
 		}
-		setContentView(R.layout.activity_list_classes);
-		setListAdapter(new ListClassesAdapter(this, c));
-
-	}
+		
+	    mExpandableList = (ExpandableListView)findViewById(R.id.expandable_list);
+	    
+        ArrayList<ListClassesParent> arrayParents = new ArrayList<ListClassesParent>();
+        ArrayList<String> arrayChildren;
+        for(String t : terms) {
+        	String term = new String();
+        	arrayChildren = new ArrayList<String>();
+        	if(t.equals("2012SP")) {term = "Spring 2012";}
+        	if(t.equals("2012FA")) {term = "Fall 2012";}
+        	if(t.equals("2013SP")) {term = "Spring 2013";}
+        	
+        	ListClassesParent parent = new ListClassesParent();
+        	parent.setTitle(term);
+        	for(Class c : classes) {
+        		Log.d("c", ""+c.getID());
+        		if(c.getTakenIn().equals(t))
+        				arrayChildren.add(c.getTitle());
+        	
+        	}
+        	parent.setArrayChildren(arrayChildren);
+        	arrayParents.add(parent);
+        }
+        
+        
+/*        //here we set the parents and the children
+        for (int i = 0; i < 10; i++){
+            //for each "i" create a new Parent object to set the title and the children
+            ListClassesParent parent = new ListClassesParent();
+            parent.setTitle("Parent " + i);
+            arrayChildren.add("Child " + i);
+            parent.setArrayChildren(arrayChildren);
+ 
+            //in this array we add the Parent object. We will use the arrayParents at the setAdapter
+            arrayParents.add(parent);
+        }
+ */
+        //sets the adapter that provides data to the list.
+       mExpandableList.setAdapter(new ListClassesAdapter(ListClassesActivity.this,arrayParents));
+ 
+    }
+	
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {

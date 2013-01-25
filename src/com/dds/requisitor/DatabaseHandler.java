@@ -89,13 +89,18 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		Cursor cursor = db.query(TABLE_CLASSES, new String[] { KEY_ID,
 				KEY_MAJORN, KEY_CLASSN, KEY_TITLE, KEY_UNITS, KEY_DESCRIPTION, KEY_FALL, KEY_SPRING},
 				KEY_ID + "=?",	new String[] { String.valueOf(id) }, null, null, null, null);
-		if (cursor != null)
-			cursor.moveToFirst();
+		if (cursor.moveToFirst()) {
+			
 
 		Class c = new Class(Integer.parseInt(cursor.getString(0)), cursor.getString(1), cursor.getString(2), cursor.getString(3), Integer.parseInt(cursor.getString(4)),
 				cursor.getString(5), Integer.parseInt(cursor.getString(6)),
 				Integer.parseInt(cursor.getString(7)));
+		db.close();
 		return c;		// return class
+		}
+		db.close();
+		return new Class();
+		
 	}
 
 	public ArrayList<Class> getClasses(ArrayList<Integer> ids) { // Getting multiple classes
