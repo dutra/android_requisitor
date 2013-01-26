@@ -80,18 +80,20 @@ public class SearchClassActivity extends Activity {
 
 		spCourse = (Spinner) findViewById(R.id.spCourse);
 		spCourse.setFocusable(true);
+		
 		ArrayAdapter<String> dataAdapterCourse = new ArrayAdapter<String>(this,
 				android.R.layout.simple_spinner_item, up.getcourseNall());
 		dataAdapterCourse.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
 		spCourse.setAdapter(dataAdapterCourse);
 		spCourse.setOnItemSelectedListener(new OnItemSelectedListener() {
-
+			
 			@Override
 			public void onItemSelected(AdapterView<?> arg0, View view,
 					int position, long id) {
 				updateList(up.getcourseNall().get(position).toString()+".");
 				etCourse.setText(up.getcourseNall().get(position).toString()+".");
+				spCourse.requestFocus();
 
 			}
 
@@ -162,6 +164,7 @@ public class SearchClassActivity extends Activity {
 				dialog.show();
 			}
 		});
+		spCourse.requestFocus();
 	}
 
 

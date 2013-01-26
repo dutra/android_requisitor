@@ -34,7 +34,7 @@ public class FetchClassesActivity extends Activity {
 
 			Log.i("System out", "url:" + url);
 			connection = (HttpURLConnection) url.openConnection();
-			connection.setConnectTimeout(1000 * 5); // Timeout is in seconds
+			connection.setConnectTimeout(1000 * 1); // Timeout is in seconds
 			InputStreamReader is = new InputStreamReader(connection
 					.getInputStream());
 			BufferedReader buff = new BufferedReader(is);
@@ -97,8 +97,14 @@ public class FetchClassesActivity extends Activity {
 		protected void onPostExecute(Boolean result) {
 			Log.d(LOG_TAG, "Post-Execute: " + result);
 			super.onPostExecute(result);
-			pd.dismiss();
-			finish();
+			try {
+		        pd.dismiss();
+		        pd = null;
+		        finish();
+		    } catch (Exception e) {
+		        // nothing
+		    }
+			
 		}				
 
 		/**
