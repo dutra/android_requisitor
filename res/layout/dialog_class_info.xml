@@ -20,7 +20,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <Spinner
-            android:id="@+id/spTakeIn"
+            android:id="@+id/sp_TakenIn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" 
             />

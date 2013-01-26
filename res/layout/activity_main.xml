@@ -26,5 +26,12 @@
         android:layout_gravity="center_horizontal"
         android:onClick="onClickSearch"
         android:text="Search" />
+        <Button
+        android:id="@+id/btSearch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:onClick="onClickEraseUP"
+        android:text="Erase UP" />
 
 </LinearLayout>
