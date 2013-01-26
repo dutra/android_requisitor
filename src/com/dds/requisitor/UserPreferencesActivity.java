@@ -59,6 +59,7 @@ public class UserPreferencesActivity extends Activity {
 		up.setGrade(spYear.getSelectedItem().toString());
 		
 		up.save();
+		finish();
 	}
 
 	@Override
