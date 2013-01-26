@@ -37,6 +37,14 @@
             android:name="com.dds.requisitor.UserPreferencesActivity"
             android:label="@string/title_activity_user_preferences" >
         </activity>
+        <activity
+            android:name="com.dds.requisitor.FindClassActivity"
+            android:label="@string/title_activity_find_class" >
+        </activity>
+        <activity
+            android:name="com.dds.requisitor.SearchClassActivity"
+            android:label="@string/title_activity_search_class" >
+        </activity>
     </application>
 
 </manifest>

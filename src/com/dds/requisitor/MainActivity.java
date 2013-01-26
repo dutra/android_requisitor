@@ -145,4 +145,9 @@ public class MainActivity extends Activity {
 
 	}
 
+	public void onClickSearch(View v) {
+		Intent i = new Intent(v.getContext(), SearchClassActivity.class);
+		startActivity(i);
+	}
+	
 }

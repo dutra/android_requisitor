@@ -7,6 +7,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
 
@@ -61,8 +62,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		values.put(KEY_DESCRIPTION, c.getDescription());
 		values.put(KEY_FALL, c.getFall());
 		values.put(KEY_SPRING, c.getSpring());
-		
-/*		values.put(KEY_ID, 1234567890);
+
+		/*		values.put(KEY_ID, 1234567890);
 		values.put(KEY_MAJORN, "123");
 		values.put(KEY_CLASSN, "123");
 		values.put(KEY_TITLE, "123");
@@ -70,7 +71,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		values.put(KEY_DESCRIPTION, "123");
 		values.put(KEY_FALL, 1);
 		values.put(KEY_SPRING, 0);
-*/
+		 */
 		// Inserting Row
 		db.insert(TABLE_CLASSES, null, values);
 		db.close(); // Closing database connection
@@ -79,10 +80,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	public void addClasses(ArrayList<Class> classes) {
 		for(Class c : classes)
 			addClass(c);
-		
+
 	}
-		
-	
+
+
 	public Class getClass(int id) {  // Getting single class by id
 		SQLiteDatabase db = this.getReadableDatabase();
 
@@ -90,17 +91,17 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				KEY_MAJORN, KEY_CLASSN, KEY_TITLE, KEY_UNITS, KEY_DESCRIPTION, KEY_FALL, KEY_SPRING},
 				KEY_ID + "=?",	new String[] { String.valueOf(id) }, null, null, null, null);
 		if (cursor.moveToFirst()) {
-			
 
-		Class c = new Class(Integer.parseInt(cursor.getString(0)), cursor.getString(1), cursor.getString(2), cursor.getString(3), Integer.parseInt(cursor.getString(4)),
-				cursor.getString(5), Integer.parseInt(cursor.getString(6)),
-				Integer.parseInt(cursor.getString(7)));
-		db.close();
-		return c;		// return class
+
+			Class c = new Class(Integer.parseInt(cursor.getString(0)), cursor.getString(1), cursor.getString(2), cursor.getString(3), Integer.parseInt(cursor.getString(4)),
+					cursor.getString(5), Integer.parseInt(cursor.getString(6)),
+					Integer.parseInt(cursor.getString(7)));
+			db.close();
+			return c;		// return class
 		}
 		db.close();
 		return new Class();
-		
+
 	}
 
 	public ArrayList<Class> getClasses(ArrayList<Integer> ids) { // Getting multiple classes
@@ -110,50 +111,62 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		}
 		return classes;
 	}
-	
+
 	public ArrayList<Class> getClassesByInitial(String search){
 		String[] splitSearch = search.split("\\.");
-		String majorN = splitSearch[0];
-		String classN = splitSearch[1];
-		
 		SQLiteDatabase db = this.getReadableDatabase();
 		ArrayList<Class> classes = new ArrayList<Class>();
-
-		Cursor cursor = db.query(TABLE_CLASSES, new String[] { KEY_ID,
+		Cursor cursor = null;
+		String majorN = new String();
+		String classN = new String();
+		
+		if(splitSearch.length==1) {
+			majorN = splitSearch[0];
+			cursor = db.query(TABLE_CLASSES, new String[] { KEY_ID,
 				KEY_MAJORN, KEY_CLASSN, KEY_TITLE, KEY_UNITS, KEY_DESCRIPTION, KEY_FALL, KEY_SPRING},
-				KEY_MAJORN + " =? AND " + KEY_CLASSN + " LIKE ?",	new String[] { majorN, classN }, null, null, null, null);
-		if (cursor != null) {
-			cursor.moveToFirst();
+					KEY_MAJORN + " =?",	new String[] { majorN }, null, null, null, null);
 
-			Class c = new Class(Integer.parseInt(cursor.getString(0)),
-					cursor.getString(1), cursor.getString(2),
-					cursor.getString(3), Integer.parseInt(cursor.getString(4)),
-					cursor.getString(5), Integer.parseInt(cursor.getString(6)),
-					Integer.parseInt(cursor.getString(7)), cursor.getString(8));
-			classes.add(c);
-			if (!cursor.moveToFirst() == true) {
-				return classes;
-			}
-			;
 		}
-		return null;
+		if(splitSearch.length==2) {
+			majorN = splitSearch[0];
+			classN = splitSearch[1];
+			Log.d("LIKE", majorN+" "+classN);
+			cursor = db.query(TABLE_CLASSES, new String[] { KEY_ID,
+					KEY_MAJORN, KEY_CLASSN, KEY_TITLE, KEY_UNITS, KEY_DESCRIPTION, KEY_FALL, KEY_SPRING},
+					KEY_MAJORN + " =? AND " + KEY_CLASSN + " LIKE ?",	new String[] { majorN, classN.toString()+"%" }, null, null, null, null);
+		}
+
+
+		if(cursor.moveToFirst()==true){
+			do {
+				Class c = new Class(Integer.parseInt(cursor.getString(0)), cursor.getString(1), cursor.getString(2), cursor.getString(3), Integer.parseInt(cursor.getString(4)),
+						cursor.getString(5), Integer.parseInt(cursor.getString(6)),
+						Integer.parseInt(cursor.getString(7)));
+				classes.add(c);
+
+			} while(cursor.moveToNext() == true); 
+
+			return classes;
+
+		}
+		return classes;
 	}
-	
-    public int getCount() { // Getting classes Count
-        String countQuery = "SELECT  * FROM " + TABLE_CLASSES;
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(countQuery, null);
-        int i = cursor.getCount();
-        cursor.close();
-        db.close();
-        return i; // return count
-        
-    }
-    public void eraseAll() {
-    	SQLiteDatabase db = this.getWritableDatabase();
-    	db.delete(TABLE_CLASSES, null, null);
-    	onCreate(db);
-    	db.close();
-    }
-    
+
+	public int getCount() { // Getting classes Count
+		String countQuery = "SELECT  * FROM " + TABLE_CLASSES;
+		SQLiteDatabase db = this.getReadableDatabase();
+		Cursor cursor = db.rawQuery(countQuery, null);
+		int i = cursor.getCount();
+		cursor.close();
+		db.close();
+		return i; // return count
+
+	}
+	public void eraseAll() {
+		SQLiteDatabase db = this.getWritableDatabase();
+		db.delete(TABLE_CLASSES, null, null);
+		onCreate(db);
+		db.close();
+	}
+
 }

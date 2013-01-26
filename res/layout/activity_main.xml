@@ -19,5 +19,12 @@
         android:layout_gravity="center_horizontal"
         android:onClick="onClickFetch"
         android:text="Fetch" />
+        <Button
+        android:id="@+id/btSearch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:onClick="onClickSearch"
+        android:text="Search" />
 
 </LinearLayout>

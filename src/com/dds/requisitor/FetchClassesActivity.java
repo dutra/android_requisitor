@@ -128,7 +128,7 @@ public class FetchClassesActivity extends Activity {
 				publishProgress(2);
 				Thread.sleep(200);
 				
-				if((http = downloadJSON("http://coursews.mit.edu/coursews/?courses=8"))== null) {
+				if((http = downloadJSON("http://coursews.mit.edu/coursews/?term=2013SP&courses=8"))== null) {
 					publishProgress(5);
 					Thread.sleep(2000);
 					return false;

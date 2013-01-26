@@ -38,6 +38,8 @@ public class ClassesParser {
 				if(!aj.getJSONObject(i).has("shortLabel")) continue;
 				
 				_id = aj.getJSONObject(i).getString("id").hashCode();
+				_majorN = aj.getJSONObject(i).getString("id").split("\\.",2)[0];
+				_classN = aj.getJSONObject(i).getString("id").split("\\.",2)[1];
 				_title = aj.getJSONObject(i).getString("shortLabel");
 				_units = new Class.units(aj.getJSONObject(i).getString("units"));
 				_description = aj.getJSONObject(i).getString("description");

@@ -7,5 +7,7 @@
     <string name="title_activity_fetch_classes">FetchClassesActivity</string>
     <string name="title_activity_list_classes">ListClassesActivity</string>
     <string name="title_activity_user_preferences">UserPreferencesActivity</string>
+    <string name="title_activity_find_class">FindClassActivity</string>
+    <string name="title_activity_search_class">SearchClassActivity</string>
 
 </resources>
