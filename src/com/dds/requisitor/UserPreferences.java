@@ -28,10 +28,16 @@ public class UserPreferences {
 		courseNall = new ArrayList<String>();
 		courseSall = new ArrayList<String>();
 		courseURLall = new ArrayList<String>();
-		courseNall.add("8");
 		courseNall.add("6");
-		courseSall.add("Physics");
 		courseSall.add("Electrical Engineering and Computer Science");
+		courseNall.add("8");
+		courseSall.add("Physics");
+		courseNall.add("7");
+		courseSall.add("Biology");
+		courseNall.add("14");
+		courseSall.add("Economics");
+		courseNall.add("18");
+		courseSall.add("Math");
 		context = c;
 		
 	}
@@ -97,6 +103,10 @@ public class UserPreferences {
 	public ArrayList<String> getcourseSall() {
 		return courseSall;
 	}
+	public ArrayList<String> getcourseURLall() {
+		return courseURLall;
+	}
+	
 	public String getName() {
 		return name;
 	}

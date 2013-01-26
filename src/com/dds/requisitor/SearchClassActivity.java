@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -63,42 +64,39 @@ public class SearchClassActivity extends Activity {
 		setContentView(R.layout.activity_search_class);
 
 		list = (ListView) findViewById(R.id.list);
+		
 		list.setAdapter(myadapter);
 
+		etCourse = (EditText)findViewById(R.id.etCourse);
+		
 		spCourse = (Spinner) findViewById(R.id.spCourse);
 		ArrayAdapter<String> dataAdapterCourse = new ArrayAdapter<String>(this,
 				android.R.layout.simple_spinner_item, up.getcourseNall());
 		dataAdapterCourse.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		
 		spCourse.setAdapter(dataAdapterCourse);
+		spCourse.setOnItemSelectedListener(new OnItemSelectedListener() {
 
-		etCourse = (EditText)findViewById(R.id.etCourse);
+			@Override
+			public void onItemSelected(AdapterView<?> arg0, View view,
+					int position, long id) {
+				updateList(up.getcourseNall().get(position).toString()+".");
+				etCourse.setText(up.getcourseNall().get(position).toString()+".");
+				
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		});
+		
+		
 		etCourse.addTextChangedListener(new TextWatcher(){
 			public void afterTextChanged(Editable e) {
-				String courseN;
-				String classN;
-				ArrayList<String> strings = new ArrayList<String>();
-				if(e.toString().split("\\.",2).length>0) {
-					courseN = e.toString().split("\\.", 2)[0];
-					if(up.getcourseNall().indexOf(courseN)!=-1) {
-						spCourse.setSelection(up.getcourseNall().indexOf(courseN));
-					}
-
-					if(e.toString().split("\\.").length==2) {
-						Log.d("LENGTH", "2");
-						classN = e.toString().split("\\.")[1];
-					}
-					classes = db.getClassesByInitial(e.toString());
-
-					for(Class c : classes) {
-						strings.add(c.getMajorN()+"."+c.getClassN()+" "+c.getTitle());
-					}
-					Log.d("STRINGS", strings.toString()+strings.size());
-					if(strings.size()!=0) {
-						courses.clear();
-						courses.addAll(strings);
-						myadapter.notifyDataSetChanged();
-					}
-				}
+			//	updateList(e.toString());
 			}
 			public void beforeTextChanged(CharSequence s, int start, int count, int after){}
 			public void onTextChanged(CharSequence s, int start, int before, int count){}
@@ -118,6 +116,33 @@ public class SearchClassActivity extends Activity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.activity_search_class, menu);
 		return true;
+	}
+	private void updateList(String e) {
+		String courseN;
+		String classN;
+		ArrayList<String> strings = new ArrayList<String>();
+		if(e.toString().split("\\.",2).length>0) {
+			courseN = e.toString().split("\\.", 2)[0];
+			if(up.getcourseNall().indexOf(courseN)!=-1) {
+				spCourse.setSelection(up.getcourseNall().indexOf(courseN));
+			}
+
+			if(e.toString().split("\\.").length==2) {
+				Log.d("LENGTH", "2");
+				classN = e.toString().split("\\.")[1];
+			}
+			classes = db.getClassesByInitial(e.toString());
+
+			for(Class c : classes) {
+				strings.add(c.getMajorN()+"."+c.getClassN()+" "+c.getTitle());
+			}
+			Log.d("STRINGS", strings.toString()+strings.size());
+			if(strings.size()!=0) {
+				courses.clear();
+				courses.addAll(strings);
+				myadapter.notifyDataSetChanged();
+			}
+		}
 	}
 
 }

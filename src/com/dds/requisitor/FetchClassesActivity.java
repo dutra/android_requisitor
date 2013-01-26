@@ -18,55 +18,49 @@ import android.util.Log;
 import android.view.Menu;
 
 public class FetchClassesActivity extends Activity {
- 
+	UserPreferences up = new UserPreferences(FetchClassesActivity.this);
 	ClassesParser cp = new ClassesParser();
 	DatabaseHandler db = new DatabaseHandler(FetchClassesActivity.this);
 	String LOG_TAG = "FetchClassesActivity";
 	ArrayList<Class> _classes = new ArrayList<Class>();
-	
-	private String downloadJSON(String s){
-	    URL url;
-	    StringBuffer jsonstring = null;
-	    HttpURLConnection connection;       
-	    try {
-	        url = new URL(s);
 
-	    Log.i("System out", "url:" + url);
-	    connection = (HttpURLConnection) url.openConnection();
-	    connection.setConnectTimeout(1000 * 5); // Timeout is in seconds
-	    InputStreamReader is = new InputStreamReader(connection
-	            .getInputStream());
-	    BufferedReader buff = new BufferedReader(is);
-	    jsonstring = new StringBuffer();
-	    String line = "";
-	    do {
-	        line = buff.readLine();
-	        if (line != null)
-	            jsonstring.append(line);
-	    } while (line != null);
-	    } catch (MalformedURLException e) {
-	        // TODO Auto-generated catch block
-	        e.printStackTrace();
-	    } catch (IOException e) {
-	        // TODO Auto-generated catch block
-	    	e.printStackTrace();
-	    	return null;
-	        
-	    }
-	    return jsonstring.toString().trim();
+	private String downloadJSON(String s){
+		URL url;
+		StringBuffer jsonstring = null;
+		HttpURLConnection connection;       
+		try {
+			url = new URL(s);
+
+			Log.i("System out", "url:" + url);
+			connection = (HttpURLConnection) url.openConnection();
+			connection.setConnectTimeout(1000 * 5); // Timeout is in seconds
+			InputStreamReader is = new InputStreamReader(connection
+					.getInputStream());
+			BufferedReader buff = new BufferedReader(is);
+			jsonstring = new StringBuffer();
+			String line = "";
+			do {
+				line = buff.readLine();
+				if (line != null)
+					jsonstring.append(line);
+			} while (line != null);
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+
+		}
+		return jsonstring.toString().trim();
 	}
 
 	private final class ProgressBarAsyncTask extends AsyncTask<Void, Integer, Boolean> { //<Params, Progress, Result>
 		private ProgressDialog pd;
-		private final String MESSAGE[] = { //Available Messages
-				"Initializing connection...", //0
-				"Connecting to mit.edu...", //1
-				"Downloading m8a...", //2
-				"Parsing...", //3
-				"Saving to DataBase..", //4
-				"Error downloading. Are you connected to the internet?", //5
-				"Done!"//6
-		};
+		private ArrayList<String> MESSAGES = new ArrayList<String>(); 
+
+
 		private String http;
 
 		/**
@@ -77,7 +71,16 @@ public class FetchClassesActivity extends Activity {
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
-			pd = ProgressDialog.show(FetchClassesActivity.this, "Please wait", MESSAGE[0], true);
+			MESSAGES.add("Initializing connection..."); //0
+			MESSAGES.add("Connecting to mit.edu..."); //1
+			MESSAGES.add("Download classes from course "); //2
+			MESSAGES.add("Parsing..."); //3
+			MESSAGES.add("Saving to DataBase..."); //4
+			MESSAGES.add("Error downloading. Are you connected to the internet?"); //5
+			MESSAGES.add("Done!");//6
+
+
+			pd = ProgressDialog.show(FetchClassesActivity.this, "Please wait", MESSAGES.get(0), true);
 			pd.setCancelable(true);
 
 		}
@@ -109,8 +112,12 @@ public class FetchClassesActivity extends Activity {
 		protected void onProgressUpdate(Integer... progress) {
 			Log.d(LOG_TAG, "Progress Update: " + progress[0].toString());
 			super.onProgressUpdate(progress[0]);
-
-			pd.setMessage(MESSAGE[progress[0]]);
+			if(progress.length>1) {
+				pd.setMessage(MESSAGES.get(progress[0])+up.getcourseNall().get(progress[1])+"...");
+			}
+			else {
+				pd.setMessage(MESSAGES.get(progress[0]));
+			}
 
 		}
 
@@ -125,35 +132,32 @@ public class FetchClassesActivity extends Activity {
 		protected Boolean doInBackground(Void... params) {
 			try {
 
-				publishProgress(2);
-				Thread.sleep(200);
-				
-				if((http = downloadJSON("http://coursews.mit.edu/coursews/?term=2013SP&courses=8"))== null) {
-					publishProgress(5);
-					Thread.sleep(2000);
-					return false;
+
+				for(int i=0; i<up.getcourseNall().size(); i++) {
+					publishProgress(2,i);
+					//Thread.sleep(100);
+					if((http = downloadJSON("http://coursews.mit.edu/coursews/?term=2013SP&courses="+up.getcourseNall().get(i)))== null) {
+						publishProgress(5);
+						Thread.sleep(2000);
+						return false;
+					}
+					publishProgress(3); //parsing
+					Log.d("CP", "parsingClasses");
+					cp.parseClasses(http);
+					Log.d("CP", "gettingClasses");
+					_classes.addAll(cp.getClasses());
+					//Thread.sleep(100);
 				}
-				//Log.d("HTTP", http);
-				publishProgress(3); //parsing
-				Log.d("CP", "parsingClasses");
-				cp.parseClasses(http);
-				Log.d("CP", "gettingClasses");
-				_classes = cp.getClasses();
-				for(Class i : _classes) {
-					Log.d("WTF", i.getTitle());
-				}
-				Thread.sleep(200);
-				
 				publishProgress(4); //saving to db
 				Log.d("DB", "Saving to db");
 				db.addClasses(_classes);
-				Thread.sleep(200);
-				
+				//Thread.sleep(200);
+
 				publishProgress(6);
-				Thread.sleep(200);
-				
-				
-				
+				Thread.sleep(300);
+
+
+
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 				return false;
@@ -180,7 +184,7 @@ public class FetchClassesActivity extends Activity {
 		getMenuInflater().inflate(R.menu.activity_fetch_classes, menu);
 		return true;
 	}
-	
-	
+
+
 
 }
