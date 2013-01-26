@@ -4,12 +4,12 @@ import java.util.ArrayList;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -80,13 +80,7 @@ public class MainActivity extends Activity {
 
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.activity_main, menu);
-		return true;
-	}
-
+	
 	public void onClickFetch(View v) {
 		Intent i = new Intent(v.getContext(), FetchClassesActivity.class);
 		startActivity(i);
@@ -153,5 +147,24 @@ public class MainActivity extends Activity {
 	public void onClickEraseUP(View v) {
 		up.eraseAll();
 	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.activity_main, menu);
+		return true;
+	}
+	public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+        /*case R.id.about:
+        startActivity(new Intent(this, About.class));
+        return true;
+        case R.id.help:
+        startActivity(new Intent(this, Help.class));
+        return true;*/
+        default:
+        return super.onOptionsItemSelected(item);
+        }
+    }
 	
 }

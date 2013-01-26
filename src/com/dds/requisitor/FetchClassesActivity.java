@@ -23,7 +23,7 @@ public class FetchClassesActivity extends Activity {
 	ClassesParser cp = new ClassesParser();
 	DatabaseHandler db = new DatabaseHandler(FetchClassesActivity.this);
 	String LOG_TAG = "FetchClassesActivity";
-	ArrayList<Class> _classes = new ArrayList<Class>();
+	//ArrayList<Class> _classes = new ArrayList<Class>();
 
 	private String downloadJSON(String s){
 		URL url;
@@ -147,12 +147,11 @@ public class FetchClassesActivity extends Activity {
 					Log.d("CP", "parsingClasses");
 					cp.parseClasses(http);
 					Log.d("CP", "gettingClasses");
-					_classes.addAll(cp.getClasses());
 					//Thread.sleep(100);
 				}
 				publishProgress(4); //saving to db
 				Log.d("DB", "Saving to db");
-				db.addClasses(_classes);
+				db.addClasses(cp.getClasses());
 				//Thread.sleep(200);
 
 				publishProgress(6);
