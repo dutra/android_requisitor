@@ -13,7 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-public class MainActivity extends Activity {
+public class MainActivity extends BaseMenuActivity {
 	UserPreferences up = new UserPreferences(MainActivity.this);
 	ArrayList<String> mSelectedItems;
 	ArrayList<String> smList;
@@ -52,7 +52,7 @@ public class MainActivity extends Activity {
 		if(up.load()==1) {
 			
 			AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-			builder.setMessage("You haven't set your informations yet. Would you like to do that now?")
+			builder.setMessage("You haven't set your information yet. Would you like to do that now?")
 			.setTitle("User Preferences Initialization");
 
 			builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
@@ -85,6 +85,8 @@ public class MainActivity extends Activity {
 		Intent i = new Intent(v.getContext(), FetchClassesActivity.class);
 		startActivity(i);
 	}
+
+	
 	public void onClickList(View v) {
 		mSelectedItems = new ArrayList<String>();
 		ArrayList<String> semesterList = new ArrayList<String>();
@@ -148,23 +150,5 @@ public class MainActivity extends Activity {
 		up.eraseAll();
 	}
 	
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.activity_main, menu);
-		return true;
-	}
-	public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-        /*case R.id.about:
-        startActivity(new Intent(this, About.class));
-        return true;
-        case R.id.help:
-        startActivity(new Intent(this, Help.class));
-        return true;*/
-        default:
-        return super.onOptionsItemSelected(item);
-        }
-    }
 	
 }

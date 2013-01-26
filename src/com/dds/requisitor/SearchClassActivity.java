@@ -24,7 +24,7 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-public class SearchClassActivity extends Activity {
+public class SearchClassActivity extends BaseMenuActivity {
 	UserPreferences up = new UserPreferences(SearchClassActivity.this);
 	EditText etCourse;
 	Spinner spCourse;
@@ -51,48 +51,53 @@ public class SearchClassActivity extends Activity {
 			LayoutInflater inflater = (LayoutInflater) context
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-			View rowView = inflater.inflate(R.layout.list_search_class, parent, false);
+			View rowView = inflater.inflate(R.layout.list_search_class, parent,
+					false);
 			TextView textView = (TextView) rowView.findViewById(R.id.course);
 			textView.setText(values.get(position));
 
 			return rowView;
 		}
+
 		@Override
 		public void notifyDataSetChanged() {
 			super.notifyDataSetChanged();
 		}
 	}
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		
+
 		myadapter = new SearchClassArrayAdapter(this, courses);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_search_class);
-		
+
 		termsL = up.getTermsL();
 		termsS = up.getTermsS();
-		
+
 		list = (ListView) findViewById(R.id.list);
 
 		list.setAdapter(myadapter);
 
-		etCourse = (EditText)findViewById(R.id.etCourse);
+		etCourse = (EditText) findViewById(R.id.etCourse);
 
 		spCourse = (Spinner) findViewById(R.id.spCourse);
 		spCourse.setFocusable(true);
-		
+
 		ArrayAdapter<String> dataAdapterCourse = new ArrayAdapter<String>(this,
 				android.R.layout.simple_spinner_item, up.getcourseNall());
-		dataAdapterCourse.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		dataAdapterCourse
+				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
 		spCourse.setAdapter(dataAdapterCourse);
 		spCourse.setOnItemSelectedListener(new OnItemSelectedListener() {
-			
+
 			@Override
 			public void onItemSelected(AdapterView<?> arg0, View view,
 					int position, long id) {
-				updateList(up.getcourseNall().get(position).toString()+".");
-				etCourse.setText(up.getcourseNall().get(position).toString()+".");
+				updateList(up.getcourseNall().get(position).toString() + ".");
+				etCourse.setText(up.getcourseNall().get(position).toString()
+						+ ".");
 				spCourse.requestFocus();
 
 			}
@@ -105,45 +110,56 @@ public class SearchClassActivity extends Activity {
 
 		});
 
-
-		etCourse.addTextChangedListener(new TextWatcher(){
+		etCourse.addTextChangedListener(new TextWatcher() {
 			public void afterTextChanged(Editable e) {
-				//	updateList(e.toString());
+				// updateList(e.toString());
 			}
-			public void beforeTextChanged(CharSequence s, int start, int count, int after){}
-			public void onTextChanged(CharSequence s, int start, int before, int count){}
-		}); 
-	
+
+			public void beforeTextChanged(CharSequence s, int start, int count,
+					int after) {
+			}
+
+			public void onTextChanged(CharSequence s, int start, int before,
+					int count) {
+			}
+		});
+
 		list.setOnItemClickListener(new OnItemClickListener() {
 			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position,	long id) {
-				
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+
 				classes.get(position).getTitle();
 				// custom dialog
 				final Dialog dialog = new Dialog(SearchClassActivity.this);
 				dialog.setContentView(R.layout.dialog_class_info);
-				dialog.setTitle(classes.get(position).getMajorN()+"."+classes.get(position).getClassN());
+				dialog.setTitle(classes.get(position).getMajorN() + "."
+						+ classes.get(position).getClassN());
 
 				TextView tvUnits = (TextView) dialog.findViewById(R.id.tvUnits);
 				tvUnits.setText(classes.get(position).getUnitsString());
-				TextView tvDescription = (TextView) dialog.findViewById(R.id.tvDescription);
+				TextView tvDescription = (TextView) dialog
+						.findViewById(R.id.tvDescription);
 				tvDescription.setText(classes.get(position).getDescription());
-				
-				
-				Spinner spTakenIn = (Spinner) dialog.findViewById(R.id.sp_TakenIn);
-				
-				ArrayAdapter<String> dataAdapterTakenIn = new ArrayAdapter<String>(view.getContext(),
+
+				Spinner spTakenIn = (Spinner) dialog
+						.findViewById(R.id.sp_TakenIn);
+
+				ArrayAdapter<String> dataAdapterTakenIn = new ArrayAdapter<String>(
+						view.getContext(),
 						android.R.layout.simple_spinner_item, termsL);
-				
-				dataAdapterTakenIn.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-				
+
+				dataAdapterTakenIn
+						.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
 				spTakenIn.setAdapter(dataAdapterTakenIn);
-				
+
 				Log.d("BUG", termsL.toString());
-				if(up.getTermsS().indexOf(classes.get(position).getTakenIn())>-1) {
-						spTakenIn.setSelection(up.getTermsS().indexOf(classes.get(position).getTakenIn()));
+				if (up.getTermsS().indexOf(classes.get(position).getTakenIn()) > -1) {
+					spTakenIn.setSelection(up.getTermsS().indexOf(
+							classes.get(position).getTakenIn()));
 				}
-				
+
 				Button btAdd = (Button) dialog.findViewById(R.id.btAdd);
 				// if button is clicked, close the custom dialog
 				btAdd.setOnClickListener(new OnClickListener() {
@@ -167,41 +183,35 @@ public class SearchClassActivity extends Activity {
 		spCourse.requestFocus();
 	}
 
+	/*
+	 * @Override public boolean onCreateOptionsMenu(Menu menu) { // Inflate the
+	 * menu; this adds items to the action bar if it is present.
+	 * getMenuInflater().inflate(R.menu.activity_search_class, menu); return
+	 * true; }
+	 */
 
-
-
-
-
-
-
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.activity_search_class, menu);
-		return true;
-	}
 	private void updateList(String e) {
 		String courseN;
 		String classN;
 		ArrayList<String> strings = new ArrayList<String>();
-		if(e.toString().split("\\.",2).length>0) {
+		if (e.toString().split("\\.", 2).length > 0) {
 			courseN = e.toString().split("\\.", 2)[0];
-			if(up.getcourseNall().indexOf(courseN)!=-1) {
+			if (up.getcourseNall().indexOf(courseN) != -1) {
 				spCourse.setSelection(up.getcourseNall().indexOf(courseN));
 			}
 
-			if(e.toString().split("\\.").length==2) {
+			if (e.toString().split("\\.").length == 2) {
 				Log.d("LENGTH", "2");
 				classN = e.toString().split("\\.")[1];
 			}
 			classes = db.getClassesByInitial(e.toString());
 
-			for(Class c : classes) {
-				strings.add(c.getMajorN()+"."+c.getClassN()+" "+c.getTitle());
+			for (Class c : classes) {
+				strings.add(c.getMajorN() + "." + c.getClassN() + " "
+						+ c.getTitle());
 			}
-			Log.d("STRINGS", strings.toString()+strings.size());
-			if(strings.size()!=0) {
+			Log.d("STRINGS", strings.toString() + strings.size());
+			if (strings.size() != 0) {
 				courses.clear();
 				courses.addAll(strings);
 				myadapter.notifyDataSetChanged();

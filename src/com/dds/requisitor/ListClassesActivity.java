@@ -10,7 +10,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.widget.ExpandableListView;
 
-public class ListClassesActivity extends Activity {
+public class ListClassesActivity extends BaseMenuActivity {
 	DatabaseHandler db = new DatabaseHandler(ListClassesActivity.this);
 	UserDatabaseHandler dbU = new UserDatabaseHandler(ListClassesActivity.this);
 	private ExpandableListView mExpandableList;
@@ -92,11 +92,11 @@ public class ListClassesActivity extends Activity {
     }
 	
 
-	@Override
+/*	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.activity_list_classes, menu);
 		return true;
-	}
+	}*/
 
 }
