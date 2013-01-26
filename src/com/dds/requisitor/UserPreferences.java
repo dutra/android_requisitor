@@ -19,12 +19,22 @@ public class UserPreferences {
 	private static ArrayList<String> courseNall;
 	private static ArrayList<String> courseSall;
 	private static ArrayList<String> courseURLall;
-	private static String currentTerm;
+	private static String currentTermS;
+	private static String currentTermL;
 	private static Context context;
 
 	UserPreferences(Context c) {
-		
-		currentTerm = "Spring 2012";
+		Calendar calendar = Calendar.getInstance();
+		int month = calendar.get(Calendar.MONTH);
+		int year = calendar.get(Calendar.YEAR);
+		if(month>=6) {
+			currentTermS = year+"FA";
+			currentTermL = "Fall "+year;
+		} else {
+			currentTermS = year+"SP";
+			currentTermL = "SP "+year;
+		}
+
 		courseNall = new ArrayList<String>();
 		courseSall = new ArrayList<String>();
 		courseURLall = new ArrayList<String>();
@@ -39,7 +49,7 @@ public class UserPreferences {
 		courseNall.add("18");
 		courseSall.add("Math");
 		context = c;
-		
+
 	}
 
 	private void initializeTerms() {
@@ -73,8 +83,8 @@ public class UserPreferences {
 	private ArrayList<String> initializeTermsL(int initialyear) {
 		ArrayList<String> termsL = new ArrayList<String>();
 		for(int i=0; i<4; i++) {
-			termsL.add("Fall"+Integer.toString(initialyear+i));
-			termsL.add("Spring"+Integer.toString(initialyear+i));
+			termsL.add("Fall "+Integer.toString(initialyear+i));
+			termsL.add("Spring "+Integer.toString(initialyear+i));
 		}
 		return termsL;
 	}
@@ -106,7 +116,7 @@ public class UserPreferences {
 	public ArrayList<String> getcourseURLall() {
 		return courseURLall;
 	}
-	
+
 	public String getName() {
 		return name;
 	}
@@ -115,52 +125,75 @@ public class UserPreferences {
 	}
 	public void save() {
 		SharedPreferences userDetails = context.getSharedPreferences("userdetails", context.MODE_PRIVATE);
-		
+
 		Editor edit = userDetails.edit();
 		edit.clear();
 		edit.putString("COURSEN", courseN);
 		edit.putString("COURSES", courseS);
 		edit.putString("GRADE", grade);
-		
-		
+		initializeTerms();
 		edit.putString("COURSENALL", SerializeArray(courseNall));
-		
 		edit.putString("COURSESALL", SerializeArray(courseSall));
+		edit.putString("TERMSS", SerializeArray(termsS));
+		edit.putString("TERMSL", SerializeArray(termsL));
+
 		initializeTerms();
 		edit.commit();
 	}
 	public int load() {
-		
+
 		SharedPreferences userDetails = context.getSharedPreferences("userdetails", context.MODE_PRIVATE);
-				
+
 		courseN = userDetails.getString("COURSEN", null);
 		if(courseN==null) return 1;
 		courseS = userDetails.getString("COURSES", null);
 		grade = userDetails.getString("GRADE", null);
-		
+
 		courseNall = ParseArray(userDetails.getString("COURSENALL", null));
 		courseSall = ParseArray(userDetails.getString("COURSESALL", null));
-					
-	return 0;	
+
+		termsS = ParseArray(userDetails.getString("TERMSS", null));
+		termsL = ParseArray(userDetails.getString("TERMSL", null));
+
+		return 0;	
 	}
-	
+
 	public static String SerializeArray(ArrayList<String> array) {
 		String strArr = "";
-        for (int i=0; i<array.size(); i++) {
-            strArr += array.get(i) + ",";
-        }
-        strArr = strArr.substring(0, strArr.length() -1); // get rid of last comma
-        return strArr;
-    }
+		for (int i=0; i<array.size(); i++) {
+			strArr += array.get(i) + ",";
+		}
+		strArr = strArr.substring(0, strArr.length() -1); // get rid of last comma
+		return strArr;
+	}
 
-    public static ArrayList<String> ParseArray(String str) {
+	public static ArrayList<String> ParseArray(String str) {
 
-        String[] strArr = str.split(",");
-        ArrayList<String> array = new ArrayList<String>();
-        for (int i=0; i<strArr.length; i++) {
-            array.add(strArr[i]);
-        }
-        return array; 
-    }
+		String[] strArr = str.split(",");
+		ArrayList<String> array = new ArrayList<String>();
+		for (int i=0; i<strArr.length; i++) {
+			array.add(strArr[i]);
+		}
+		return array; 
+	}
+	public ArrayList<String> getTermsS() {
+		return termsS;
+	}
+	public ArrayList<String> getTermsL() {
+		Log.d("TERMSL", termsL.toString());
+		return termsL;
+	}
+	public String getCurrentTermS() {
+		return currentTermS;
+	}
+	public String getCurrentTermL() {
+		return currentTermL;
+	}
+	public void eraseAll() {
+		SharedPreferences userDetails = context.getSharedPreferences("userdetails", context.MODE_PRIVATE);
+		Editor edit = userDetails.edit();
+		edit.clear();
+		edit.commit();
 
+	}
 }

@@ -20,7 +20,6 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -31,6 +30,8 @@ public class SearchClassActivity extends Activity {
 	Spinner spCourse;
 	ArrayList<String> courses = new ArrayList<String>();
 	ArrayList<Class> classes = new ArrayList<Class>();
+	ArrayList<String> termsL = new ArrayList<String>();
+	ArrayList<String> termsS = new ArrayList<String>();
 	ListView list;
 	DatabaseHandler db = new DatabaseHandler(SearchClassActivity.this);
 	SearchClassArrayAdapter myadapter;
@@ -63,10 +64,14 @@ public class SearchClassActivity extends Activity {
 	}
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		
 		myadapter = new SearchClassArrayAdapter(this, courses);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_search_class);
-
+		
+		termsL = up.getTermsL();
+		termsS = up.getTermsS();
+		
 		list = (ListView) findViewById(R.id.list);
 
 		list.setAdapter(myadapter);
@@ -74,6 +79,7 @@ public class SearchClassActivity extends Activity {
 		etCourse = (EditText)findViewById(R.id.etCourse);
 
 		spCourse = (Spinner) findViewById(R.id.spCourse);
+		spCourse.setFocusable(true);
 		ArrayAdapter<String> dataAdapterCourse = new ArrayAdapter<String>(this,
 				android.R.layout.simple_spinner_item, up.getcourseNall());
 		dataAdapterCourse.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -105,9 +111,11 @@ public class SearchClassActivity extends Activity {
 			public void beforeTextChanged(CharSequence s, int start, int count, int after){}
 			public void onTextChanged(CharSequence s, int start, int before, int count){}
 		}); 
+	
 		list.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position,	long id) {
+				
 				classes.get(position).getTitle();
 				// custom dialog
 				final Dialog dialog = new Dialog(SearchClassActivity.this);
@@ -119,12 +127,20 @@ public class SearchClassActivity extends Activity {
 				TextView tvDescription = (TextView) dialog.findViewById(R.id.tvDescription);
 				tvDescription.setText(classes.get(position).getDescription());
 				
-				Spinner spTakenIn = (Spinner) findViewById(R.id.spTakeIn);
-				//ArayAdapter<String> dataAdapterCourse = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, up.get);
-				//dataAdapterCourse.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-				//spCourse.setAdapter(dataAdapterCourse);
-				//spCourse.setOnItemSelectedListener(new OnItemSelectedListener() {
+				
+				Spinner spTakenIn = (Spinner) dialog.findViewById(R.id.sp_TakenIn);
+				
+				ArrayAdapter<String> dataAdapterTakenIn = new ArrayAdapter<String>(view.getContext(),
+						android.R.layout.simple_spinner_item, termsL);
+				
+				dataAdapterTakenIn.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+				
+				spTakenIn.setAdapter(dataAdapterTakenIn);
+				
+				Log.d("BUG", termsL.toString());
+				if(up.getTermsS().indexOf(classes.get(position).getTakenIn())>-1) {
+						spTakenIn.setSelection(up.getTermsS().indexOf(classes.get(position).getTakenIn()));
+				}
 				
 				Button btAdd = (Button) dialog.findViewById(R.id.btAdd);
 				// if button is clicked, close the custom dialog
