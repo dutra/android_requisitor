@@ -2,8 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical"
-    android:layout_margin="20dp" >
+    android:layout_margin="20dp"
+    android:orientation="vertical" >
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -20,18 +20,34 @@
             android:id="@+id/tvUnits"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Term: " />
+
         <Spinner
             android:id="@+id/sp_TakenIn"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" 
-            
-            />
+            android:layout_height="wrap_content" />
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/tvDescription"
+    <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:orientation="horizontal" >
+
+        <ScrollView
+            android:layout_width="fill_parent"
+            android:layout_height="150dp" >
+
+            <TextView
+                android:id="@+id/tvDescription"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content" />
+        </ScrollView>
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -43,14 +59,12 @@
             android:id="@+id/btCancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="20dp"
             android:text=" Cancel " />
 
         <Button
             android:id="@+id/btAdd"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="20dp"
             android:text=" Add Class " />
     </LinearLayout>
 

@@ -44,7 +44,7 @@ public class UserPreferencesActivity extends BaseMenuActivity {
 		spYear.setAdapter(dataAdapterYear);
 
 		etName = (EditText) findViewById(R.id.etName);
-		if (load == 1) {
+		if (load == 0) {
 			etName.setText(up.getName());
 			spCourse.setSelection(up.getcourseNall().indexOf(up.getCourseN()));
 			spCourse.setSelection(years.indexOf(up.getGrade()));

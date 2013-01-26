@@ -131,6 +131,7 @@ public class UserPreferences {
 		edit.putString("COURSEN", courseN);
 		edit.putString("COURSES", courseS);
 		edit.putString("GRADE", grade);
+		edit.putString("NAME", name);
 		initializeTerms();
 		edit.putString("COURSENALL", SerializeArray(courseNall));
 		edit.putString("COURSESALL", SerializeArray(courseSall));
@@ -148,6 +149,7 @@ public class UserPreferences {
 		if(courseN==null) return 1;
 		courseS = userDetails.getString("COURSES", null);
 		grade = userDetails.getString("GRADE", null);
+		name = userDetails.getString("NAME", null);
 
 		courseNall = ParseArray(userDetails.getString("COURSENALL", null));
 		courseSall = ParseArray(userDetails.getString("COURSESALL", null));

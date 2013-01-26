@@ -26,8 +26,10 @@ import android.widget.TextView;
 
 public class SearchClassActivity extends BaseMenuActivity {
 	UserPreferences up = new UserPreferences(SearchClassActivity.this);
+	UserDatabaseHandler udb = new UserDatabaseHandler(SearchClassActivity.this);
 	EditText etCourse;
 	Spinner spCourse;
+	Spinner spTakenIn;
 	ArrayList<String> courses = new ArrayList<String>();
 	ArrayList<Class> classes = new ArrayList<Class>();
 	ArrayList<String> termsL = new ArrayList<String>();
@@ -35,6 +37,7 @@ public class SearchClassActivity extends BaseMenuActivity {
 	ListView list;
 	DatabaseHandler db = new DatabaseHandler(SearchClassActivity.this);
 	SearchClassArrayAdapter myadapter;
+	Class selectedClass = new Class();
 
 	private class SearchClassArrayAdapter extends ArrayAdapter<String> {
 		private final Context context;
@@ -87,7 +90,7 @@ public class SearchClassActivity extends BaseMenuActivity {
 		ArrayAdapter<String> dataAdapterCourse = new ArrayAdapter<String>(this,
 				android.R.layout.simple_spinner_item, up.getcourseNall());
 		dataAdapterCourse
-				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
 		spCourse.setAdapter(dataAdapterCourse);
 		spCourse.setOnItemSelectedListener(new OnItemSelectedListener() {
@@ -128,8 +131,8 @@ public class SearchClassActivity extends BaseMenuActivity {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-
-				classes.get(position).getTitle();
+				
+				selectedClass = classes.get(position);
 				// custom dialog
 				final Dialog dialog = new Dialog(SearchClassActivity.this);
 				dialog.setContentView(R.layout.dialog_class_info);
@@ -142,7 +145,7 @@ public class SearchClassActivity extends BaseMenuActivity {
 						.findViewById(R.id.tvDescription);
 				tvDescription.setText(classes.get(position).getDescription());
 
-				Spinner spTakenIn = (Spinner) dialog
+				spTakenIn = (Spinner) dialog
 						.findViewById(R.id.sp_TakenIn);
 
 				ArrayAdapter<String> dataAdapterTakenIn = new ArrayAdapter<String>(
@@ -150,7 +153,7 @@ public class SearchClassActivity extends BaseMenuActivity {
 						android.R.layout.simple_spinner_item, termsL);
 
 				dataAdapterTakenIn
-						.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
 				spTakenIn.setAdapter(dataAdapterTakenIn);
 
@@ -161,7 +164,6 @@ public class SearchClassActivity extends BaseMenuActivity {
 				}
 
 				Button btAdd = (Button) dialog.findViewById(R.id.btAdd);
-				// if button is clicked, close the custom dialog
 				btAdd.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {
@@ -173,6 +175,8 @@ public class SearchClassActivity extends BaseMenuActivity {
 				btCancel.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {
+						selectedClass.setTakenIn(up.getTermsS().get(spTakenIn.getSelectedItemPosition()));
+						udb.addClass(selectedClass);
 						dialog.dismiss();
 					}
 				});
