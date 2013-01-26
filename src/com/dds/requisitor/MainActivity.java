@@ -18,6 +18,7 @@ public class MainActivity extends Activity {
 	ArrayList<String> smList;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		UserPreferences up = new UserPreferences(MainActivity.this);
 		DatabaseHandler db = new DatabaseHandler(getApplicationContext());
 		int i;
 		i=db.getCount();
@@ -46,7 +47,31 @@ public class MainActivity extends Activity {
 
 		}
 
+		
+		if(up.load()==1) {
+			
+			AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+			builder.setMessage("You haven't set your informations yet. Would you like to do that now?")
+			.setTitle("User Preferences Initialization");
 
+			builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int id) {
+					Intent i = new Intent(MainActivity.this, UserPreferencesActivity.class);
+					startActivity(i);
+				}
+			});
+			builder.setNegativeButton("Not now", new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int id) {
+					dialog.dismiss();
+					Toast.makeText(MainActivity.this, "You can manage your preferences at any time by acessing the menu", Toast.LENGTH_LONG).show();
+				}
+			});
+
+			AlertDialog dialog = builder.create();
+			dialog.show();
+			
+		}
+		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
