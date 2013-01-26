@@ -16,6 +16,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.widget.Toast;
 
 public class FetchClassesActivity extends Activity {
 	UserPreferences up = new UserPreferences(FetchClassesActivity.this);
@@ -75,7 +76,7 @@ public class FetchClassesActivity extends Activity {
 			MESSAGES.add("Connecting to mit.edu..."); //1
 			MESSAGES.add("Download classes from course "); //2
 			MESSAGES.add("Parsing..."); //3
-			MESSAGES.add("Saving to DataBase..."); //4
+			MESSAGES.add("Saving to Database... (This may take a couple of minutes)"); //4
 			MESSAGES.add("Error downloading. Are you connected to the internet?"); //5
 			MESSAGES.add("Done!");//6
 
@@ -131,14 +132,15 @@ public class FetchClassesActivity extends Activity {
 		@Override
 		protected Boolean doInBackground(Void... params) {
 			try {
-
+				db.eraseAll();
+				
 
 				for(int i=0; i<up.getcourseNall().size(); i++) {
 					publishProgress(2,i);
 					//Thread.sleep(100);
 					if((http = downloadJSON("http://coursews.mit.edu/coursews/?term=2013SP&courses="+up.getcourseNall().get(i)))== null) {
 						publishProgress(5);
-						Thread.sleep(2000);
+						Thread.sleep(3000);
 						return false;
 					}
 					publishProgress(3); //parsing

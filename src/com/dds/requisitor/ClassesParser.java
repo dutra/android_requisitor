@@ -20,7 +20,7 @@ public class ClassesParser {
 	private String _majorN;
 	private String _classN;
 	private String _title;
-	private Class.units _units;
+	private String _units;
 	private String _description;
 	private int _fall=0;
 	private int _spring=0;
@@ -41,7 +41,7 @@ public class ClassesParser {
 				_majorN = aj.getJSONObject(i).getString("id").split("\\.",2)[0];
 				_classN = aj.getJSONObject(i).getString("id").split("\\.",2)[1];
 				_title = aj.getJSONObject(i).getString("shortLabel");
-				_units = new Class.units(aj.getJSONObject(i).getString("units"));
+				_units = aj.getJSONObject(i).getString("units");
 				_description = aj.getJSONObject(i).getString("description");
 				//_fallInstructor = aj.getJSONObject(i).getString(name)
 				
@@ -58,7 +58,7 @@ public class ClassesParser {
 				}
 			
 				Class _c = new Class();
-				_c.setClass(_id, _majorN, _classN, _title, _units.getN(), _description, _fall, _spring); 
+				_c.setClass(_id, _majorN, _classN, _title, _units, _description, _fall, _spring); 
 				_classes.add(_c);
 				Log.d("PARSER", _title+" ID: "+_id+" "+_fall+_spring+" Units: "+_units);
 				

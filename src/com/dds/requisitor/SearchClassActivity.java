@@ -3,6 +3,7 @@ package com.dds.requisitor;
 import java.util.ArrayList;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
@@ -11,12 +12,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -64,16 +68,16 @@ public class SearchClassActivity extends Activity {
 		setContentView(R.layout.activity_search_class);
 
 		list = (ListView) findViewById(R.id.list);
-		
+
 		list.setAdapter(myadapter);
 
 		etCourse = (EditText)findViewById(R.id.etCourse);
-		
+
 		spCourse = (Spinner) findViewById(R.id.spCourse);
 		ArrayAdapter<String> dataAdapterCourse = new ArrayAdapter<String>(this,
 				android.R.layout.simple_spinner_item, up.getcourseNall());
 		dataAdapterCourse.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		
+
 		spCourse.setAdapter(dataAdapterCourse);
 		spCourse.setOnItemSelectedListener(new OnItemSelectedListener() {
 
@@ -82,21 +86,21 @@ public class SearchClassActivity extends Activity {
 					int position, long id) {
 				updateList(up.getcourseNall().get(position).toString()+".");
 				etCourse.setText(up.getcourseNall().get(position).toString()+".");
-				
+
 			}
 
 			@Override
 			public void onNothingSelected(AdapterView<?> arg0) {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 		});
-		
-		
+
+
 		etCourse.addTextChangedListener(new TextWatcher(){
 			public void afterTextChanged(Editable e) {
-			//	updateList(e.toString());
+				//	updateList(e.toString());
 			}
 			public void beforeTextChanged(CharSequence s, int start, int count, int after){}
 			public void onTextChanged(CharSequence s, int start, int before, int count){}
@@ -104,12 +108,47 @@ public class SearchClassActivity extends Activity {
 		list.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position,	long id) {
-				Log.d("CLICKED", courses.get(position));
+				classes.get(position).getTitle();
+				// custom dialog
+				final Dialog dialog = new Dialog(SearchClassActivity.this);
+				dialog.setContentView(R.layout.dialog_class_info);
+				dialog.setTitle(classes.get(position).getMajorN()+"."+classes.get(position).getClassN());
+
+				TextView tvUnits = (TextView) dialog.findViewById(R.id.tvUnits);
+				tvUnits.setText(classes.get(position).getUnitsString());
+				TextView tvDescription = (TextView) dialog.findViewById(R.id.tvDescription);
+				tvDescription.setText(classes.get(position).getDescription());
+				
+				
+				Button btAdd = (Button) dialog.findViewById(R.id.btAdd);
+				// if button is clicked, close the custom dialog
+				btAdd.setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						dialog.dismiss();
+					}
+				});
+				Button btCancel = (Button) dialog.findViewById(R.id.btCancel);
+				// if button is clicked, close the custom dialog
+				btCancel.setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						dialog.dismiss();
+					}
+				});
+
+				dialog.show();
 			}
-
 		});
-
 	}
+
+
+
+
+
+
+
+
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {

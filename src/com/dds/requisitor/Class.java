@@ -15,7 +15,7 @@ public class Class {
 		
 	}
 
-	public static class units {
+	public class units {
 		private int _lec;
 		private int _lab;
 		private int _hw;
@@ -58,6 +58,31 @@ public class Class {
 	private ArrayList<Integer> _cored = new ArrayList<Integer>();
 
 
+	public Class(int id,  String majorN, String classN, String title, String unitsN, String description, int fall, int spring) {
+		_id = id;
+		_majorN = majorN;
+		_classN = classN;
+		_title = title;
+		_units = new units(unitsN);
+		_description = description;
+		_fall = fall;
+		_spring = spring;
+
+
+	}
+	
+	public Class(int id,  String majorN, String classN, String title, String unitsN, String description, int fall, int spring, String takenIn) {
+		_id = id;
+		_majorN = majorN;
+		_classN = classN;
+		_title = title;
+		_units = new units(unitsN);
+		_description = description;
+		_fall = fall;
+		_spring = spring;
+		_takenIn = takenIn;
+
+	}
 	public Class(int id,  String majorN, String classN, String title, int unitsN, String description, int fall, int spring) {
 		_id = id;
 		_majorN = majorN;
@@ -82,7 +107,6 @@ public class Class {
 		_spring = spring;
 		_takenIn = takenIn;
 
-
 	}
 	
 	public Class(int id, String takenIn) {
@@ -96,6 +120,16 @@ public class Class {
 	
 	}
 
+	public void setClass(int id,  String majorN, String classN, String title, String unitsN, String description, int fall, int spring) {
+		_id = id;
+		_majorN = majorN;
+		_classN = classN;
+		_title = title;
+		_units = new units(unitsN);
+		_description = description;
+		_fall = fall;
+		_spring = spring;
+	}
 	public void setClass(int id,  String majorN, String classN, String title, int unitsN, String description, int fall, int spring) {
 		_id = id;
 		_majorN = majorN;
@@ -105,11 +139,9 @@ public class Class {
 		_description = description;
 		_fall = fall;
 		_spring = spring;
-
-
 	}
 	
-	public void setClass(int id,  String majorN, String classN, String title, int unitsN, String description, int fall, int spring, String takenIn) {
+	public void setClass(int id,  String majorN, String classN, String title, String unitsN, String description, int fall, int spring, String takenIn) {
 		_id = id;
 		_majorN = majorN;
 		_classN = classN;
@@ -137,6 +169,9 @@ public class Class {
 	}
 	public int getUnits() {
 		return _units.getN();
+	}
+	public String getUnitsString() {
+		return _units.toString();
 	}
 	public String getDescription() {
 		return _description;

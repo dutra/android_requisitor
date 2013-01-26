@@ -165,7 +165,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	public void eraseAll() {
 		SQLiteDatabase db = this.getWritableDatabase();
 		db.delete(TABLE_CLASSES, null, null);
-		onCreate(db);
+		//onCreate(db);
 		db.close();
 	}
 
