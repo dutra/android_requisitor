@@ -10,27 +10,25 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 public class UserDatabaseHandler extends SQLiteOpenHelper {
-
+	private Context context;
 	private static final int DATABASE_VERSION = 1;
 	private static final String DATABASE_NAME = "userClasses.db";
 	private static final String TABLE_USERCLASSES = "userClasses";
-
+	
 	// Classes Table Columns names
 	private static final String KEY_ID = "id";
-	private static final String KEY_MAJORN = "majorn";
-	private static final String KEY_CLASSN = "classn";
-	private static final String KEY_TAKENIN = "takenIn";
+		private static final String KEY_TAKENIN = "takenIn";
 
 	public UserDatabaseHandler(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
+		this.context = context;
 	}
 
 	// Creating Tables
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		String CREATE_CONTACTS_TABLE = "CREATE TABLE " + TABLE_USERCLASSES
-				+ " (" + KEY_ID + " INTEGER PRIMARY KEY, " + KEY_MAJORN
-				+ " TEXT, " + KEY_CLASSN + " TEXT, " + KEY_TAKENIN + " TEXT)";
+				+ " (" + KEY_ID + " INTEGER PRIMARY KEY, " + KEY_TAKENIN + " TEXT)";
 		db.execSQL(CREATE_CONTACTS_TABLE);
 	}
 
@@ -52,8 +50,6 @@ public class UserDatabaseHandler extends SQLiteOpenHelper {
 
 		ContentValues values = new ContentValues();
 		values.put(KEY_ID, c.getID());
-		values.put(KEY_MAJORN, c.getMajorN());
-		values.put(KEY_CLASSN, c.getClassN());
 		values.put(KEY_TAKENIN, c.getTakenIn());
 
 		/*
@@ -76,15 +72,12 @@ public class UserDatabaseHandler extends SQLiteOpenHelper {
 	public Class getClass(int id) { // Getting single class by id
 		SQLiteDatabase db = this.getReadableDatabase();
 
-		Cursor cursor = db.query(TABLE_USERCLASSES, new String[] { KEY_ID,
-				KEY_MAJORN, KEY_CLASSN, KEY_TAKENIN }, KEY_ID + "=?",
+		Cursor cursor = db.query(TABLE_USERCLASSES, new String[] { KEY_ID, KEY_TAKENIN }, KEY_ID + "=?",
 				new String[] { String.valueOf(id) }, null, null, null, null);
 		if (cursor != null) {
 			cursor.moveToFirst();
 
-			Class c = new Class(Integer.parseInt(cursor.getString(0)),
-					cursor.getString(1), cursor.getString(2),
-					cursor.getString(3));
+			Class c = new Class(Integer.parseInt(cursor.getString(0)), cursor.getString(1));
 			return c;
 		} // return class
 		return null;
@@ -97,7 +90,7 @@ public class UserDatabaseHandler extends SQLiteOpenHelper {
 		for (int i : ids) {
 			classes.add(getClass(i));
 		}
-		return classes;
+		return postProcess(classes);
 	}
 
 	public ArrayList<Class> getClassesBySemester(String semester) {
@@ -105,18 +98,17 @@ public class UserDatabaseHandler extends SQLiteOpenHelper {
 		ArrayList<Class> classes = new ArrayList<Class>();
 
 		Cursor cursor = db.query(TABLE_USERCLASSES, new String[] { KEY_ID,
-				KEY_MAJORN, KEY_CLASSN, KEY_TAKENIN }, KEY_TAKENIN + "=?",
+				KEY_TAKENIN }, KEY_TAKENIN + "=?",
 				new String[] { semester }, null, null, null, null);
-		
 		if(cursor.moveToFirst()==true){
 			do {
-			Class c = new Class(Integer.parseInt(cursor.getString(0)),
-					cursor.getString(1), cursor.getString(2),
-					cursor.getString(3));
+			Class c = new Class(Integer.parseInt(cursor.getString(0)), cursor.getString(1));
 			classes.add(c);
-			Log.d("ID", "aaaa");
+			//Log.d("CC", "ccc"+postProcess(c).size());
+			
 			} while(cursor.moveToNext() == true); 
-			return classes;
+			
+			return postProcess(classes);
 			
 		}
 		return new ArrayList<Class>();
@@ -128,9 +120,11 @@ public class UserDatabaseHandler extends SQLiteOpenHelper {
 		ArrayList<Class> classes = new ArrayList<Class>();
 		for (String s : semesters) {
 			
-			classes = getClassesBySemester(s);
-			Log.d("NULL", "RETURNING NULL");
+			classes.addAll(getClassesBySemester(s));
+			
 		}
+		
+		
 		return classes;
 	}
 
@@ -147,6 +141,24 @@ public class UserDatabaseHandler extends SQLiteOpenHelper {
 		db.delete(TABLE_USERCLASSES, null, null);
 		onCreate(db);
 		db.close();
+	}
+	public Class postProcess(Class c) {
+		Class f = new Class();
+		
+		DatabaseHandler db = new DatabaseHandler(context);
+		
+		f = db.getClass(c.getID());
+		//Log.d("POSTPROCESS", "AAAA");
+		f.setTakenIn(c.getTakenIn());
+		
+		return f;
+	}
+	public ArrayList<Class> postProcess(ArrayList<Class> classes) {
+		ArrayList<Class> f = new ArrayList<Class>();
+		for(Class c : classes) {
+			f.add(postProcess(c));
+		}
+		return f;
 	}
 
 	public void erase(String semester) {
