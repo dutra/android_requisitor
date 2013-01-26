@@ -14,11 +14,12 @@ import android.view.View;
 import android.widget.Toast;
 
 public class MainActivity extends Activity {
+	UserPreferences up = new UserPreferences(MainActivity.this);
 	ArrayList<String> mSelectedItems;
 	ArrayList<String> smList;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		UserPreferences up = new UserPreferences(MainActivity.this);
+		
 		DatabaseHandler db = new DatabaseHandler(getApplicationContext());
 		int i;
 		i=db.getCount();
@@ -148,6 +149,9 @@ public class MainActivity extends Activity {
 	public void onClickSearch(View v) {
 		Intent i = new Intent(v.getContext(), SearchClassActivity.class);
 		startActivity(i);
+	}
+	public void onClickEraseUP(View v) {
+		up.eraseAll();
 	}
 	
 }

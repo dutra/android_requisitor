@@ -78,9 +78,13 @@ public class UserDatabaseHandler extends SQLiteOpenHelper {
 			cursor.moveToFirst();
 
 			Class c = new Class(Integer.parseInt(cursor.getString(0)), cursor.getString(1));
+			db.close();
 			return c;
+			
 		} // return class
+		db.close();
 		return null;
+		
 	}
 
 	public ArrayList<Class> getClasses(ArrayList<Integer> ids) { // Getting

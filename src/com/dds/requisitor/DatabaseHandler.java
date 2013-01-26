@@ -145,10 +145,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				classes.add(c);
 
 			} while(cursor.moveToNext() == true); 
-
+			db.close();
 			return classes;
 
 		}
+		db.close();
 		return classes;
 	}
 
