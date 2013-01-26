@@ -126,7 +126,7 @@ public class UserPreferences {
 		edit.putString("COURSENALL", SerializeArray(courseNall));
 		
 		edit.putString("COURSESALL", SerializeArray(courseSall));
-		
+		initializeTerms();
 		edit.commit();
 	}
 	public int load() {

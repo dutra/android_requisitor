@@ -2,6 +2,8 @@ package com.dds.requisitor;
 
 import java.util.ArrayList;
 
+import android.util.Log;
+
 public class Class {
 
 	public static class session {
@@ -32,6 +34,7 @@ public class Class {
 		}
 		@Override public String toString() {
 			return _lec+"-"+_lab+"-"+_hw;
+			
 		}
 		public int getN() {
 			return  (_lec<<8)+(_lab<<4)+(_hw);

@@ -3,9 +3,9 @@ package com.dds.requisitor;
 import java.util.ArrayList;
 
 import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -46,16 +46,18 @@ public class UserPreferencesActivity extends Activity {
 			etName.setText(up.getName());
 			spCourse.setSelection(up.getcourseNall().indexOf(up.getCourseN()));
 			spCourse.setSelection(years.indexOf(up.getGrade()));
+			spYear.setSelection(years.indexOf(up.getGrade()));
 		}
 		
 		
 		
 		
 	}
-	public void OnClickSave(Context c) {
+	public void OnClickSave(View v) {
 		up.setName(etName.getText().toString());
 		up.setCourseN(up.getcourseNall().get(spCourse.getSelectedItemPosition()));
 		up.setGrade(spYear.getSelectedItem().toString());
+		
 		up.save();
 	}
 

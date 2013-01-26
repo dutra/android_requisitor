@@ -119,6 +119,12 @@ public class SearchClassActivity extends Activity {
 				TextView tvDescription = (TextView) dialog.findViewById(R.id.tvDescription);
 				tvDescription.setText(classes.get(position).getDescription());
 				
+				Spinner spTakenIn = (Spinner) findViewById(R.id.spTakeIn);
+				//ArayAdapter<String> dataAdapterCourse = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, up.get);
+				//dataAdapterCourse.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+				//spCourse.setAdapter(dataAdapterCourse);
+				//spCourse.setOnItemSelectedListener(new OnItemSelectedListener() {
 				
 				Button btAdd = (Button) dialog.findViewById(R.id.btAdd);
 				// if button is clicked, close the custom dialog
