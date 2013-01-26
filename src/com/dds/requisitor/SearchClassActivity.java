@@ -98,7 +98,7 @@ public class SearchClassActivity extends BaseMenuActivity {
 				updateList(up.getcourseNall().get(position).toString() + ".");
 				etCourse.setText(up.getcourseNall().get(position).toString()
 						+ ".");
-				spCourse.requestFocus();
+				//spCourse.requestFocus();
 
 			}
 
@@ -112,7 +112,7 @@ public class SearchClassActivity extends BaseMenuActivity {
 
 		etCourse.addTextChangedListener(new TextWatcher() {
 			public void afterTextChanged(Editable e) {
-				// updateList(e.toString());
+				updateList(e.toString());
 			}
 
 			public void beforeTextChanged(CharSequence s, int start, int count,
@@ -180,7 +180,7 @@ public class SearchClassActivity extends BaseMenuActivity {
 				dialog.show();
 			}
 		});
-		spCourse.requestFocus();
+		//spCourse.requestFocus();
 	}
 
 	/*
