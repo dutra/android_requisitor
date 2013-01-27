@@ -5,6 +5,7 @@
      >
 
     <TextView
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/label"
         android:layout_width="100dp"
         android:layout_height="wrap_content"

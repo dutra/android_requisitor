@@ -22,12 +22,16 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.AdapterView.OnItemClickListener;
 
 public class ExploreClassesActivity extends BaseMenuActivity {
 	LinearLayoutTerms llTerms;
 	UserPreferences up = new UserPreferences(ExploreClassesActivity.this);
+	UserDatabaseHandler dbU = new UserDatabaseHandler(ExploreClassesActivity.this);
 	int semesterPos;
 	int replacePos = -1;
+	int lastSelectedSemester=-1;
+	int lastSelectedPos=-1;
 	DatabaseHandler db = new DatabaseHandler(ExploreClassesActivity.this);
 
 	@Override
@@ -48,7 +52,7 @@ public class ExploreClassesActivity extends BaseMenuActivity {
 	@Override
 	public void onCreateContextMenu(ContextMenu menu,View v,ContextMenuInfo info)
 	{
-	/*	ListView lv;
+		/*	ListView lv;
 		if(v.getId()>llTerms.getTermsTitle().size()) {
 			lv = (ListView) v.findViewById(R.id.list);
 		}
@@ -56,7 +60,7 @@ public class ExploreClassesActivity extends BaseMenuActivity {
 		menu.setHeaderTitle(llTerms.getTermsTitle().get(lv.getId()));*/
 		//if(v.getId()==R.id.llMain) {
 		MenuInflater inflater = getMenuInflater();
-	    inflater.inflate(R.menu.activity_explore_classes_context_menu, menu);
+		inflater.inflate(R.menu.activity_explore_classes_context_menu, menu);
 	}
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
@@ -65,40 +69,40 @@ public class ExploreClassesActivity extends BaseMenuActivity {
 		ListView l = null;
 		Intent i = new Intent();
 		try {
-			
+
 			info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
 			l = (ListView) info.targetView.getParent();
-			
+
 		} catch (ClassCastException e) {
 			Log.e("", "bad menuInfo", e);
 			return false;
 		}
 		switch (item.getItemId()) {
-		 
-		 case R.id.add : 
-			 semesterPos = l.getId();
-			 i = new Intent(ExploreClassesActivity.this, SearchClassActivity.class);
-				i.putExtra("FIND", 1);
-				startActivityForResult(i,1);
-			 return true;
-		 
-		 case R.id.replace :
-			 semesterPos = l.getId();
-			 replacePos = (int) info.position;
-			 i = new Intent(ExploreClassesActivity.this, SearchClassActivity.class);
-				i.putExtra("FIND", 1);
-				startActivityForResult(i,1);
-			 return true;
-			 
-		 case R.id.delete : 
-			 llTerms.rmClass(l.getId(), (int) info.position);
-			 return true;
-		           
-		 }
-		
-//		long id = l.getAdapter().getItemId(info.position);
+
+		case R.id.add : 
+			semesterPos = l.getId();
+			i = new Intent(ExploreClassesActivity.this, SearchClassActivity.class);
+			i.putExtra("FIND", 1);
+			startActivityForResult(i,1);
+			return true;
+
+		case R.id.replace :
+			semesterPos = l.getId();
+			replacePos = (int) info.position;
+			i = new Intent(ExploreClassesActivity.this, SearchClassActivity.class);
+			i.putExtra("FIND", 1);
+			startActivityForResult(i,1);
+			return true;
+
+		case R.id.delete : 
+			llTerms.rmClass(l.getId(), (int) info.position);
+			return true;
+
+		}
+
+		//		long id = l.getAdapter().getItemId(info.position);
 		//Log.d("", "id = " + id);
-	//	Toast.makeText(this, "id = " +l.getId()+info.id, Toast.LENGTH_SHORT).show();
+		//	Toast.makeText(this, "id = " +l.getId()+info.id, Toast.LENGTH_SHORT).show();
 		return super.onContextItemSelected(item);
 	}
 
@@ -112,28 +116,28 @@ public class ExploreClassesActivity extends BaseMenuActivity {
 
 		if (requestCode == 1) {
 
-		     if(resultCode == RESULT_OK){
+			if(resultCode == RESULT_OK){
 
-		      int id = data.getIntExtra("ID",0);
-		      if (replacePos>-1) {
-		    	  llTerms.setClass(db.getClass(id), semesterPos, replacePos);
-		    	  replacePos=-1;
-		      }
-		      else {
-		      llTerms.addClass(db.getClass(id), semesterPos);
-		      }
-		      Log.d("ID returned", ""+id);
-		      
-		}
+				int id = data.getIntExtra("ID",0);
+				if (replacePos>-1) {
+					llTerms.setClass(db.getClass(id), semesterPos, replacePos);
+					replacePos=-1;
+				}
+				else {
+					llTerms.addClass(db.getClass(id), semesterPos);
+				}
+				Log.d("ID returned", ""+id);
+
+			}
 		}
 	}
-	
+
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
+
 	private class ExploreClassesArrayAdapter extends ArrayAdapter<String> {
 		private final Context context;
 		private final ArrayList<String> values;
-		
+
 		public ExploreClassesArrayAdapter(Context context, ArrayList<String> values) {
 			super(context, R.layout.list_explore_classes, values);
 			this.context = context;
@@ -169,6 +173,7 @@ public class ExploreClassesActivity extends BaseMenuActivity {
 		private ArrayList<ArrayList<String>> sCourses;
 		private ArrayList<ArrayList<Class>> sClasses;
 		private ArrayList<String> sTerms;
+		private ArrayList<Class> takenClasses;
 
 		public LinearLayoutTerms(LinearLayout llMain, Context context) {
 			this.llMain = llMain;
@@ -180,19 +185,31 @@ public class ExploreClassesActivity extends BaseMenuActivity {
 			this.sCourses = new ArrayList<ArrayList<String>>();
 			this.sClasses = new ArrayList<ArrayList<Class>>();
 			this.sTerms = new ArrayList<String>(); 
+			this.takenClasses = new ArrayList<Class>();
+			takenClasses.addAll(dbU.getClassesBySemesters(up.getTermsS()));
 		}
 
 		public void inflate() {
-			for(int i = 0; i<10; i++) {
+
+			for(int i = 0; i<up.getTermsS().size(); i++) {
+				String termS = up.getTermsS().get(i);
+				String termL = up.getTermsL().get(i);
 
 				sCourses.add(new ArrayList<String>());
 				sClasses.add(new ArrayList<Class>());
-				for(int j=0;j<5;j++) {
+
+				for (Class c : takenClasses) {
+					if(c.getTakenIn().equals(termS)) {
+						sClasses.get(i).add(c);
+						sCourses.get(i).add(c.getMajorN()+"."+c.getClassN()+" "+c.getTitle());
+					}
+				}
+				for(int j=0;j<6-sCourses.get(i).size();j++) {
 					sClasses.get(i).add(new Class());
 					sCourses.get(i).add("");
 				}
-				
-				sTerms.add("SPRING");
+
+				sTerms.add(termL);
 
 				vChilds.add(View.inflate(context, R.layout.linear_explore_classes, null));
 				lists.add((ListView)vChilds.get(i).findViewById(R.id.list));
@@ -202,18 +219,31 @@ public class ExploreClassesActivity extends BaseMenuActivity {
 				ecAdapters.add(new ExploreClassesArrayAdapter(vChilds.get(i).getContext(), sCourses.get(i)));
 				Log.d("CONTEXT", lists.get(i).toString());
 				lists.get(i).setAdapter(ecAdapters.get(i));
+
 				Log.d("CONTEXT", "HERE?");
 				llMain.addView(vChilds.get(i));
-				
-				
-				LinearLayout llclickable = (LinearLayout) vChilds.get(i).findViewById(id.llclickable);
-				//registerForContextMenu(llclickable);
-				//LinearLayout tmp = (LinearLayout) vChilds.get(i);
-				
-//				registerForContextMenu(llMain);
-				//registerForContextMenu(tmp);
+
 				registerForContextMenu(lists.get(i));
+
+
+				lists.get(i).setOnItemClickListener(new OnItemClickListener() {
+					@Override
+					public void onItemClick(AdapterView<?> parent, View view,
+							int position, long id) {
+						//int semesterSelectedPos = i;
+						//if(lastSelected!=-1) {
+						//TextView tvLastSelected = (TextView) view.findViewById(R.id.label);
+						TextView tvSelected = (TextView) view.findViewById(R.id.label);
+						tvSelected.setText(""+position+" "+id);
+						//tvSelected.setBackgroundColor(getResources().getColor(android.R.color.background_light));
+						//}
+						Log.d("view", view.toString());
+					}
+				});
 			}
+		}
+		public void highlightAll(ArrayList<Class> cc) {
+
 		}
 		public void setTermTitle(int i, String s) {
 			try {
@@ -240,7 +270,7 @@ public class ExploreClassesActivity extends BaseMenuActivity {
 			for(Class c : classes) {
 				sCourses.get(i).add(c.getTitle());	
 			}
-			
+
 			ecAdapters.get(i).notifyDataSetChanged();
 		}
 		public void addClass(Class c, int i) {
@@ -257,5 +287,5 @@ public class ExploreClassesActivity extends BaseMenuActivity {
 			return sTerms;
 		}
 	}
-	
+
 }
