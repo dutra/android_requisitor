@@ -83,7 +83,7 @@ public class ClassesParser {
 				_c.setPrereqid(_prereq);
 				Log.d("SIZE",""+_c.getPrereqid().size());
 				_classes.add(_c);
-				//Log.d("PARSER", _title + " ID: " + _id + " " + _fall + _spring + " Units: " + _units + _prereq);
+			//Log.d("PARSER", _title + " ID: " + _id + " " + _fall + _spring + " Units: " + _units + _prereq);
 
 			}
 		} catch (JSONException e) {

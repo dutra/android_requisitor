@@ -2,17 +2,14 @@ package com.dds.requisitor;
 
 import java.util.ArrayList;
 
-import android.app.Activity;
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.os.AsyncTask;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -27,6 +24,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 public class SearchClassActivity extends BaseMenuActivity {
+	int find;
 	UserPreferences up = new UserPreferences(SearchClassActivity.this);
 	UserDatabaseHandler udb = new UserDatabaseHandler(SearchClassActivity.this);
 	EditText etCourse;
@@ -76,6 +74,11 @@ public class SearchClassActivity extends BaseMenuActivity {
 		myadapter = new SearchClassArrayAdapter(this, courses);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_search_class);
+		
+		Bundle extras = getIntent().getExtras();
+		if (extras != null) {
+			find = extras.getInt("FIND");
+		}
 
 		termsL = up.getTermsL();
 		termsS = up.getTermsS();
@@ -135,7 +138,7 @@ public class SearchClassActivity extends BaseMenuActivity {
 					int position, long id) {
 				
 				selectedClass = classes.get(position);
-				Log.d("PREREQ_CHECKER", selectedClass.getPrereqid().toString());
+				Log.d("PREREQ_CHECKER", selectedClass.getPostreqid().toString());
 				// custom dialog
 				final Dialog dialog = new Dialog(SearchClassActivity.this);
 				dialog.setContentView(R.layout.dialog_class_info);
@@ -171,8 +174,17 @@ public class SearchClassActivity extends BaseMenuActivity {
 					@Override
 					public void onClick(View v) {
 						selectedClass.setTakenIn(up.getTermsS().get(spTakenIn.getSelectedItemPosition()));
-						udb.addClass(selectedClass);
-						dialog.dismiss();
+						if(find==0) {
+							udb.addClass(selectedClass);
+							dialog.dismiss();
+						}
+						if(find==1) {
+							Intent returnIntent = new Intent();
+							returnIntent.putExtra("ID",selectedClass.getID());
+							setResult(RESULT_OK, returnIntent);     
+							dialog.dismiss();
+							finish();
+						}
 					}
 				});
 				Button btCancel = (Button) dialog.findViewById(R.id.btCancel);
