@@ -16,7 +16,7 @@ public class MainActivity extends BaseMenuActivity {
 	ArrayList<String> smList;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		
+
 		DatabaseHandler db = new DatabaseHandler(getApplicationContext());
 		int i;
 		i=db.getCount();
@@ -45,9 +45,9 @@ public class MainActivity extends BaseMenuActivity {
 
 		}
 
-		
+
 		if(up.load()==1) {
-			
+
 			AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
 			builder.setMessage("You haven't set your information yet. Would you like to do that now?")
 			.setTitle("User Preferences Initialization");
@@ -67,9 +67,9 @@ public class MainActivity extends BaseMenuActivity {
 
 			AlertDialog dialog = builder.create();
 			dialog.show();
-			
+
 		}
-		
+
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
@@ -77,13 +77,13 @@ public class MainActivity extends BaseMenuActivity {
 
 	}
 
-	
+
 	public void onClickFetch(View v) {
 		Intent i = new Intent(v.getContext(), FetchClassesActivity.class);
 		startActivity(i);
 	}
 
-	
+
 	public void onClickList(View v) {
 		mSelectedItems = new ArrayList<String>();
 
@@ -138,6 +138,11 @@ public class MainActivity extends BaseMenuActivity {
 	public void onClickEraseUP(View v) {
 		up.eraseAll();
 	}
-	
-	
+	public void onClickExplore(View v) {
+		Intent i = new Intent(v.getContext(), ExploreClassesActivity.class);
+		startActivity(i);
+
+	}
+
+
 }

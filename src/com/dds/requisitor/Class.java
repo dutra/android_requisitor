@@ -66,8 +66,8 @@ public class Class {
 	private ArrayList<Integer> _prereqid;
 	private ArrayList<Integer> _postreqid;
 
-	private ArrayList<Integer> _prereq = new ArrayList<Integer>();
-	private ArrayList<Integer> _cored = new ArrayList<Integer>();
+	private ArrayList<Integer> _prereq;
+	private ArrayList<Integer> _cored;
 
 	public Class(int id, String majorN, String classN, String title,
 			String unitsN, String description, int fall, int spring) {
@@ -237,11 +237,11 @@ public class Class {
 	}
 
 	public void setPrereqid(ArrayList<Integer> prereqid) {
-		_prereqid = prereqid;
+		this._prereqid = new ArrayList<Integer>(prereqid);
 	}
 
 	public void setPostreqid(ArrayList<Integer> postreqid) {
-		_postreqid = postreqid;
+		_postreqid = new ArrayList<Integer>(postreqid);
 	}
 
 }

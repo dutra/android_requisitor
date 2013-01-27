@@ -32,7 +32,7 @@ public class FetchClassesActivity extends Activity {
 		try {
 			url = new URL(s);
 
-			Log.i("System out", "url:" + url);
+			//Log.i("System out", "url:" + url);
 			connection = (HttpURLConnection) url.openConnection();
 			connection.setConnectTimeout(1000 * 1); // Timeout is in seconds
 			InputStreamReader is = new InputStreamReader(connection
@@ -95,7 +95,7 @@ public class FetchClassesActivity extends Activity {
 		 */
 		@Override
 		protected void onPostExecute(Boolean result) {
-			Log.d(LOG_TAG, "Post-Execute: " + result);
+			//Log.d(LOG_TAG, "Post-Execute: " + result);
 			super.onPostExecute(result);
 			try {
 		        pd.dismiss();
@@ -150,9 +150,9 @@ public class FetchClassesActivity extends Activity {
 						return false;
 					}
 					publishProgress(3); //parsing
-					Log.d("CP", "parsingClasses");
+				//	Log.d("CP", "parsingClasses");
 					cp.parseClasses(http);
-					Log.d("CP", "gettingClasses");
+					//Log.d("CP", "gettingClasses");
 					//Thread.sleep(100);
 				}
 				publishProgress(4); //saving to db

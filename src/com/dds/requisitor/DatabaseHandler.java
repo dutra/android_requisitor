@@ -14,8 +14,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	private Context context;
 	private static final int DATABASE_VERSION = 1;
 	private static final String DATABASE_NAME = "classes.db";
-	private static final String TABLE_CLASSES = "classes";
-	private static final String TABLE_PREREQS = "prereqs";
+	private static final String TABLE_CLASSES = "tClasses";
+	private static final String TABLE_PREREQS = "tPrereqs";
 
 	// Classes Table Columns names
 	private static final String KEY_ID = "id";
@@ -44,12 +44,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				+ KEY_CLASSN + " TEXT, " + KEY_TITLE + " TEXT, " + KEY_UNITS
 				+ " INT, " + KEY_DESCRIPTION + " TEXT, " + KEY_FALL + " INT, "
 				+ KEY_SPRING + " INT)";
-		db.execSQL(CREATE_CONTACTS_TABLE);
+		
 
-		String CREATE_PREREQ_TABLE = "CREATE TABLE " + TABLE_PREREQS + " ("
-				+ KEY_POSTREQ + " INTEGER, " + KEY_PREREQ
-				+ " INTEGER)";
+			
+		String CREATE_PREREQ_TABLE = "CREATE TABLE " + TABLE_PREREQS + " (" + KEY_POSTREQ + " INT, " + KEY_PREREQ + " INT)";
+		db.execSQL(CREATE_CONTACTS_TABLE);
 		db.execSQL(CREATE_PREREQ_TABLE);
+		
+		
 	}
 
 	// Upgrading database
@@ -65,6 +67,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	}
 
 	public void addClass(Class c) { // adding a single class
+		Log.d("c.getprereqid",c.getPrereqid().toString());
 		SQLiteDatabase db = this.getWritableDatabase();
 
 		ContentValues values = new ContentValues();
@@ -85,6 +88,19 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		 */
 		// Inserting Row
 		db.insert(TABLE_CLASSES, null, values);
+
+
+		Log.d("add", c.getPrereqid().toString());
+		for(int prereqid : c.getPrereqid()){
+			values = new ContentValues();
+			values.put(KEY_POSTREQ, c.getID());
+			values.put(KEY_PREREQ, prereqid);
+			
+			db.insert(TABLE_PREREQS, null, values);
+		}
+		// Inserting Row
+		
+
 		db.close(); // Closing database connection
 	}
 
@@ -95,18 +111,52 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 	public Class getClass(int id) { // Getting single class by id
 		SQLiteDatabase db = this.getReadableDatabase();
-
+		Log.d("GETID", id+"");
 		Cursor cursor = db.query(TABLE_CLASSES, new String[] { KEY_ID,
 				KEY_MAJORN, KEY_CLASSN, KEY_TITLE, KEY_UNITS, KEY_DESCRIPTION,
 				KEY_FALL, KEY_SPRING }, KEY_ID + "=?",
 				new String[] { String.valueOf(id) }, null, null, null, null);
 		if (cursor.moveToFirst()) {
-
+			
 			Class c = new Class(Integer.parseInt(cursor.getString(0)),
 					cursor.getString(1), cursor.getString(2),
 					cursor.getString(3), Integer.parseInt(cursor.getString(4)),
 					cursor.getString(5), Integer.parseInt(cursor.getString(6)),
 					Integer.parseInt(cursor.getString(7)));
+			
+			
+			//get prereqs
+			Cursor cursorPre = db.query(TABLE_PREREQS, new String[] { KEY_POSTREQ,
+					KEY_PREREQ }, KEY_POSTREQ + "=?",
+					new String[] { String.valueOf(id) }, null, null, null,
+					null);
+			if (cursorPre.moveToFirst() == true) {
+				ArrayList<Integer> i = new ArrayList<Integer>();
+				do {
+					i.add(Integer.parseInt(cursorPre.getString(1)));
+					// Log.d("CC", "ccc"+postProcess(c).size());
+
+				} while (cursorPre.moveToNext() == true);
+				c.setPrereqid(i);
+			} else c.setPrereqid(new ArrayList<Integer>());
+			cursorPre.close();
+			//get postreqs
+			Cursor cursorPost = db.query(TABLE_PREREQS, new String[] { KEY_POSTREQ,
+					KEY_PREREQ }, KEY_PREREQ + "=?",
+					new String[] { String.valueOf(id) }, null, null, null,
+					null);
+			if (cursorPost.moveToFirst() == true) {
+				ArrayList<Integer> i = new ArrayList<Integer>();
+				do {
+					i.add(Integer.parseInt(cursorPost.getString(0)));
+					
+					// Log.d("CC", "ccc"+postProcess(c).size());
+
+				} while (cursorPost.moveToNext() == true);
+				c.setPostreqid(i);
+			} else c.setPostreqid(new ArrayList<Integer>());
+			cursorPost.close();
+			cursor.close();
 			db.close();
 			return c; // return class
 		}
@@ -116,8 +166,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	}
 
 	public ArrayList<Class> getClasses(ArrayList<Integer> ids) { // Getting
-																	// multiple
-																	// classes
+		// multiple
+		// classes
 		ArrayList<Class> classes = new ArrayList<Class>();
 		for (int i : ids) {
 			classes.add(getClass(i));
@@ -148,46 +198,62 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 			cursor = db.query(TABLE_CLASSES, new String[] { KEY_ID, KEY_MAJORN,
 					KEY_CLASSN, KEY_TITLE, KEY_UNITS, KEY_DESCRIPTION,
 					KEY_FALL, KEY_SPRING }, KEY_MAJORN + " =? AND "
-					+ KEY_CLASSN + " LIKE ?",
-					new String[] { majorN, classN.toString() + "%" }, null,
-					null, null, null);
+							+ KEY_CLASSN + " LIKE ?",
+							new String[] { majorN, classN.toString() + "%" }, null,
+							null, null, null);
 		}
 
 		if (cursor.moveToFirst() == true) {
 			do {
+				String id = cursor.getString(0);
 				Class c = new Class(Integer.parseInt(cursor.getString(0)),
 						cursor.getString(1), cursor.getString(2),
 						cursor.getString(3), Integer.parseInt(cursor
 								.getString(4)), cursor.getString(5),
-						Integer.parseInt(cursor.getString(6)),
-						Integer.parseInt(cursor.getString(7)));
+								Integer.parseInt(cursor.getString(6)),
+								Integer.parseInt(cursor.getString(7)));
+				
+				//get prereqs
+				Cursor cursorPre = db.query(TABLE_PREREQS, new String[] { KEY_POSTREQ,
+						KEY_PREREQ }, KEY_POSTREQ + "=?",
+						new String[] { id }, null, null, null,
+						null);
+				if (cursorPre.moveToFirst() == true) {
+					ArrayList<Integer> i = new ArrayList<Integer>();
+					do {
+						i.add(Integer.parseInt(cursorPre.getString(1)));
+						// Log.d("CC", "ccc"+postProcess(c).size());
+
+					} while (cursorPre.moveToNext() == true);
+					c.setPrereqid(i);
+				} else c.setPrereqid(new ArrayList<Integer>());
+				cursorPre.close();
+				//get postreqs
+				Cursor cursorPost = db.query(TABLE_PREREQS, new String[] { KEY_POSTREQ,
+						KEY_PREREQ }, KEY_PREREQ + "=?",
+						new String[] { id }, null, null, null,
+						null);
+				if (cursorPost.moveToFirst() == true) {
+					ArrayList<Integer> i = new ArrayList<Integer>();
+					do {
+						i.add(Integer.parseInt(cursorPost.getString(0)));
+						// Log.d("CC", "ccc"+postProcess(c).size());
+
+					} while (cursorPost.moveToNext() == true);
+					c.setPostreqid(i);
+				} else c.setPostreqid(new ArrayList<Integer>());
+				cursorPost.close();
 				classes.add(c);
 
 			} while (cursor.moveToNext() == true);
+			cursor.close();
 			db.close();
 			return classes;
 
 		}
+		cursor.close();
 		db.close();
 		return classes;
-	}
-
-	public void addPrereq(Class c) { // adding a single class
-		SQLiteDatabase db = this.getWritableDatabase();
-
-		ContentValues values = new ContentValues();
-		for(int prereqid : c.getPrereqid()){
-			values.put(KEY_POSTREQ, c.getID());
-			values.put(KEY_PREREQ, prereqid);
-		}
-		// Inserting Row
-		db.insert(TABLE_PREREQS, null, values);
-		db.close(); // Closing database connection
-	}
-
-	public void addPrereqs(ArrayList<Class> prereqs) {
-		for (Class c : prereqs)
-			addPrereq(c);
 	}
 
 	public ArrayList<Class> getClassesByPostreq(int postreqid) {
@@ -213,8 +279,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	}
 
 	public ArrayList<Class> getClassesByPostreqs(ArrayList<Integer> postreqids) { // Getting
-																					// multiple
-																					// classes
+		// multiple
+		// classes
 		ArrayList<Class> prereqs = new ArrayList<Class>();
 		for (int i : postreqids) {
 			prereqs.addAll(getClassesByPostreq(i));
@@ -310,7 +376,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	public void eraseAll() {
 		SQLiteDatabase db = this.getWritableDatabase();
 		db.delete(TABLE_CLASSES, null, null);
-		// onCreate(db);
+		db.delete(TABLE_PREREQS, null, null);
+		//onCreate(db);
 		db.close();
 	}
 

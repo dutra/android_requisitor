@@ -4,7 +4,9 @@ import java.util.ArrayList;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -112,7 +114,7 @@ public class SearchClassActivity extends BaseMenuActivity {
 			}
 
 		});
-
+		
 		etCourse.addTextChangedListener(new TextWatcher() {
 			public void afterTextChanged(Editable e) {
 				updateList(e.toString());
@@ -207,7 +209,7 @@ public class SearchClassActivity extends BaseMenuActivity {
 			}
 
 			if (e.toString().split("\\.").length == 2) {
-				Log.d("LENGTH", "2");
+			//	Log.d("LENGTH", "2");
 				classN = e.toString().split("\\.")[1];
 			}
 			classes = db.getClassesByInitial(e.toString());
@@ -216,7 +218,7 @@ public class SearchClassActivity extends BaseMenuActivity {
 				strings.add(c.getMajorN() + "." + c.getClassN() + " "
 						+ c.getTitle());
 			}
-			Log.d("STRINGS", strings.toString() + strings.size());
+		//	Log.d("STRINGS", strings.toString() + strings.size());
 			if (strings.size() != 0) {
 				courses.clear();
 				courses.addAll(strings);
@@ -224,5 +226,8 @@ public class SearchClassActivity extends BaseMenuActivity {
 			}
 		}
 	}
+	
+
+	
 
 }

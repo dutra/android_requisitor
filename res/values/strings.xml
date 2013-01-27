@@ -13,5 +13,6 @@
     <string name="title_activity_user_preferences">UserPreferencesActivity</string>
     <string name="title_activity_find_class">FindClassActivity</string>
     <string name="title_activity_search_class">SearchClassActivity</string>
+    <string name="title_activity_explore_classes">ExploreClassesActivity</string>
 
 </resources>

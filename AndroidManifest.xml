@@ -45,6 +45,10 @@
             android:name="com.dds.requisitor.SearchClassActivity"
             android:label="@string/title_activity_search_class" >
         </activity>
+        <activity
+            android:name="com.dds.requisitor.ExploreClassesActivity"
+            android:label="@string/title_activity_explore_classes" >
+        </activity>
     </application>
 
 </manifest>

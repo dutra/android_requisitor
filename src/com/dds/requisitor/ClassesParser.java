@@ -69,6 +69,7 @@ public class ClassesParser {
 				String prereqString = aj.getJSONObject(i).getString("prereqs");
 				Pattern p = Pattern.compile("(\\d{1,2})(\\.)(\\d{2,3})");
 				Matcher m = p.matcher(prereqString);
+				_prereq.clear();
 				while (m.find()) { // Find each match in turn.
 					String match = m.group(); // Access a submatch group.
 					Log.d("PREREQ",match);
@@ -80,9 +81,9 @@ public class ClassesParser {
 				_c.setClass(_id, _majorN, _classN, _title, _units,
 						_description, _fall, _spring);
 				_c.setPrereqid(_prereq);
+				Log.d("SIZE",""+_c.getPrereqid().size());
 				_classes.add(_c);
-				Log.d("PARSER", _title + " ID: " + _id + " " + _fall + _spring
-						+ " Units: " + _units + _prereq);
+				//Log.d("PARSER", _title + " ID: " + _id + " " + _fall + _spring + " Units: " + _units + _prereq);
 
 			}
 		} catch (JSONException e) {
