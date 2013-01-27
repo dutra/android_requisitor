@@ -86,19 +86,11 @@ public class MainActivity extends BaseMenuActivity {
 	
 	public void onClickList(View v) {
 		mSelectedItems = new ArrayList<String>();
-		ArrayList<String> semesterList = new ArrayList<String>();
-		smList = new ArrayList<String>();
-		semesterList.add("Spring 2012");
-		smList.add("2012SP");
-		semesterList.add("Fall 2012");
-		smList.add("2012FA");
-		semesterList.add("Spring 2013");
-		smList.add("2013SP");
 
 		AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
 		builder.setTitle("List Courses");
 
-		builder.setMultiChoiceItems(semesterList.toArray(new String[semesterList.size()]), null,
+		builder.setMultiChoiceItems(up.getTermsL().toArray(new String[up.getTermsL().size()]), null,
 				new DialogInterface.OnMultiChoiceClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which, boolean isChecked) {
@@ -106,10 +98,10 @@ public class MainActivity extends BaseMenuActivity {
 				if (isChecked) {
 					//buffer = semesterList.get(which);
 					// If the user checked the item, add it to the selected items
-					mSelectedItems.add(smList.get(which).toString());
-				} else if (mSelectedItems.contains(smList.get(which).toString())) {
+					mSelectedItems.add(up.getTermsS().get(which).toString());
+				} else if (mSelectedItems.contains(up.getTermsS().get(which).toString())) {
 					// Else, if the item is already in the array, remove it 
-					mSelectedItems.remove(smList.get(which).toString());
+					mSelectedItems.remove(up.getTermsS().get(which).toString());
 				}
 			}
 		});

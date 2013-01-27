@@ -137,7 +137,7 @@ public class SearchClassActivity extends BaseMenuActivity {
 				final Dialog dialog = new Dialog(SearchClassActivity.this);
 				dialog.setContentView(R.layout.dialog_class_info);
 				dialog.setTitle(classes.get(position).getMajorN() + "."
-						+ classes.get(position).getClassN());
+						+ classes.get(position).getClassN()+" "+selectedClass.getTitle());
 
 				TextView tvUnits = (TextView) dialog.findViewById(R.id.tvUnits);
 				tvUnits.setText(classes.get(position).getUnitsString());
@@ -167,6 +167,8 @@ public class SearchClassActivity extends BaseMenuActivity {
 				btAdd.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {
+						selectedClass.setTakenIn(up.getTermsS().get(spTakenIn.getSelectedItemPosition()));
+						udb.addClass(selectedClass);
 						dialog.dismiss();
 					}
 				});
@@ -175,8 +177,7 @@ public class SearchClassActivity extends BaseMenuActivity {
 				btCancel.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {
-						selectedClass.setTakenIn(up.getTermsS().get(spTakenIn.getSelectedItemPosition()));
-						udb.addClass(selectedClass);
+						
 						dialog.dismiss();
 					}
 				});

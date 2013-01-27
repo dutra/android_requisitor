@@ -14,6 +14,7 @@ public class ListClassesActivity extends BaseMenuActivity {
 	DatabaseHandler db = new DatabaseHandler(ListClassesActivity.this);
 	UserDatabaseHandler dbU = new UserDatabaseHandler(ListClassesActivity.this);
 	private ExpandableListView mExpandableList;
+	UserPreferences up = new UserPreferences(ListClassesActivity.this);
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -55,18 +56,15 @@ public class ListClassesActivity extends BaseMenuActivity {
         ArrayList<ListClassesParent> arrayParents = new ArrayList<ListClassesParent>();
         ArrayList<String> arrayChildren;
         for(String t : terms) {
-        	String term = new String();
+        	
         	arrayChildren = new ArrayList<String>();
-        	if(t.equals("2012SP")) {term = "Spring 2012";}
-        	if(t.equals("2012FA")) {term = "Fall 2012";}
-        	if(t.equals("2013SP")) {term = "Spring 2013";}
         	
         	ListClassesParent parent = new ListClassesParent();
-        	parent.setTitle(term);
+        	parent.setTitle(up.getTermsL().get(up.getTermsS().indexOf(t)));
         	for(Class c : classes) {
         		Log.d("c", ""+c.getID());
         		if(c.getTakenIn().equals(t))
-        				arrayChildren.add(c.getTitle());
+        				arrayChildren.add(c.getMajorN()+"."+c.getClassN()+" "+c.getTitle());
         	
         	}
         	parent.setArrayChildren(arrayChildren);
