@@ -135,7 +135,7 @@ public class SearchClassActivity extends BaseMenuActivity {
 					int position, long id) {
 				
 				selectedClass = classes.get(position);
-				Log.d("PREREQ_CHECKER", selectedClass.getPrereqid().toString());
+				Log.d("PREREQ_CHECKER", db.getAllPrereqs(selectedClass.getID()).toString());
 				// custom dialog
 				final Dialog dialog = new Dialog(SearchClassActivity.this);
 				dialog.setContentView(R.layout.dialog_class_info);

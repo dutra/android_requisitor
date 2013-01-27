@@ -72,18 +72,18 @@ public class ClassesParser {
 				_prereq.clear();
 				while (m.find()) { // Find each match in turn.
 					String match = m.group(); // Access a submatch group.
-					Log.d("PREREQ",match);
+//					Log.d("PREREQ",match);
 					_prereq.add(match.hashCode());
 				}
-				Log.d("PREREQ_COUNT",Integer.toString(_prereq.size()));
+//				Log.d("PREREQ_COUNT",Integer.toString(_prereq.size()));
 
 				Class _c = new Class();
 				_c.setClass(_id, _majorN, _classN, _title, _units,
 						_description, _fall, _spring);
 				_c.setPrereqid(_prereq);
-				Log.d("SIZE",""+_c.getPrereqid().size());
+//				Log.d("SIZE",""+_c.getPrereqid().size());
 				_classes.add(_c);
-				//Log.d("PARSER", _title + " ID: " + _id + " " + _fall + _spring + " Units: " + _units + _prereq);
+//				Log.d("PARSER", _title + " ID: " + _id + " " + _fall + _spring + " Units: " + _units + _prereq);
 
 			}
 		} catch (JSONException e) {
