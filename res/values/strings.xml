@@ -3,6 +3,7 @@
 
     <string name="app_name">Requisitor</string>
     <string name="hello_world">Hello world!</string>
+    <string name="menu_main">Main Menu</string>
     <string name="menu_settings">Settings</string>
     <string name="menu_refresh">Refresh Classes</string>
     <string name="menu_search">Search Classes</string>
