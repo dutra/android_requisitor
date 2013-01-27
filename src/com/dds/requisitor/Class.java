@@ -63,8 +63,8 @@ public class Class {
 	private int _spring;
 	private String _takenIn;
 
-	private int _prereqid;
-	private int _postreqid;
+	private ArrayList<Integer> _prereqid;
+	private ArrayList<Integer> _postreqid;
 
 	private ArrayList<Integer> _prereq = new ArrayList<Integer>();
 	private ArrayList<Integer> _cored = new ArrayList<Integer>();
@@ -130,7 +130,12 @@ public class Class {
 
 	}
 
-	public Class(int prereqid, int postreqid) {
+	public Class(int id) {
+		_id = id;
+
+	}
+
+	public Class(ArrayList<Integer> prereqid, ArrayList<Integer> postreqid) {
 		_prereqid = prereqid;
 		_postreqid = postreqid;
 
@@ -222,21 +227,21 @@ public class Class {
 	public void setTakenIn(String takenIn) {
 		this._takenIn = takenIn;
 	}
-	
-	public int getPrereqid() {
+
+	public ArrayList<Integer> getPrereqid() {
 		return _prereqid;
 	}
 
-	public int getPostreqid() {
+	public ArrayList<Integer> getPostreqid() {
 		return _postreqid;
 	}
-	
-	public void setPrereqid(int prereqid) {
-		_prereqid=prereqid;
+
+	public void setPrereqid(ArrayList<Integer> prereqid) {
+		_prereqid = prereqid;
 	}
 
-	public void setPostreqid(int postreqid) {
-		_postreqid=postreqid;
+	public void setPostreqid(ArrayList<Integer> postreqid) {
+		_postreqid = postreqid;
 	}
 
 }

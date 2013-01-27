@@ -47,7 +47,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		db.execSQL(CREATE_CONTACTS_TABLE);
 
 		String CREATE_PREREQ_TABLE = "CREATE TABLE " + TABLE_PREREQS + " ("
-				+ KEY_POSTREQ + " INTEGER PRIMARY KEY, " + KEY_PREREQ
+				+ KEY_POSTREQ + " INTEGER, " + KEY_PREREQ
 				+ " INTEGER)";
 		db.execSQL(CREATE_PREREQ_TABLE);
 	}
@@ -176,9 +176,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		SQLiteDatabase db = this.getWritableDatabase();
 
 		ContentValues values = new ContentValues();
-		values.put(KEY_POSTREQ, c.getPostreqid());
-		values.put(KEY_PREREQ, c.getPrereqid());
-
+		for(int prereqid : c.getPrereqid()){
+			values.put(KEY_POSTREQ, c.getID());
+			values.put(KEY_PREREQ, prereqid);
+		}
 		// Inserting Row
 		db.insert(TABLE_PREREQS, null, values);
 		db.close(); // Closing database connection
@@ -199,8 +200,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				null);
 		if (cursor.moveToFirst() == true) {
 			do {
-				Class c = new Class(Integer.parseInt(cursor.getString(0)),
-						Integer.parseInt(cursor.getString(1)));
+				Class c = new Class(Integer.parseInt(cursor.getString(1)));
 				classes.add(c);
 				// Log.d("CC", "ccc"+postProcess(c).size());
 
@@ -254,8 +254,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				null);
 		if (cursor.moveToFirst() == true) {
 			do {
-				Class c = new Class(Integer.parseInt(cursor.getString(0)),
-						Integer.parseInt(cursor.getString(1)));
+				Class c = new Class(Integer.parseInt(cursor.getString(0)));
 				classes.add(c);
 				// Log.d("CC", "ccc"+postProcess(c).size());
 

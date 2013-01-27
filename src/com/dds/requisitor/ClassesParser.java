@@ -74,13 +74,15 @@ public class ClassesParser {
 					Log.d("PREREQ",match);
 					_prereq.add(match.hashCode());
 				}
+				Log.d("PREREQ_COUNT",Integer.toString(_prereq.size()));
 
 				Class _c = new Class();
 				_c.setClass(_id, _majorN, _classN, _title, _units,
 						_description, _fall, _spring);
+				_c.setPrereqid(_prereq);
 				_classes.add(_c);
 				Log.d("PARSER", _title + " ID: " + _id + " " + _fall + _spring
-						+ " Units: " + _units);
+						+ " Units: " + _units + _prereq);
 
 			}
 		} catch (JSONException e) {
