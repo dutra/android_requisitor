@@ -171,6 +171,10 @@ public class SearchClassActivity extends BaseMenuActivity {
 					spTakenIn.setSelection(up.getTermsS().indexOf(
 							classes.get(position).getTakenIn()));
 				}
+				else{
+					spTakenIn.setSelection(up.getTermsS().indexOf(
+							up.getCurrentTermS()));
+				}
 
 				Button btAdd = (Button) dialog.findViewById(R.id.btAdd);
 				btAdd.setOnClickListener(new OnClickListener() {
