@@ -2,99 +2,102 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_4"
+    android:gravity="center_horizontal"
+    android:background="@drawable/background_grey_grad"
     android:orientation="vertical"
     tools:context=".UserPreferencesActivity" >
-    
 
-    <LinearLayout
+    <TextView
+        style="@style/Header"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:orientation="horizontal" >
+        android:text="Personal information" />
 
-        <TextView
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/secondary_grey_grad"
+        android:gravity="center_horizontal"
+        android:layout_gravity="center_horizontal"
+        android:orientation="vertical"
+        
+        android:padding="10sp" >
+
+        <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="30dp"
             android:gravity="center_horizontal"
-            android:text="Personal information"
-            android:textSize="30sp"
-            android:textStyle="bold|normal" />
-    </LinearLayout>
+            android:orientation="horizontal" >
 
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:orientation="horizontal" >
+            <EditText
+                android:id="@+id/etName"
+                style="@style/EditText"
+                android:layout_margin="5dp"
+                android:layout_width="230dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:hint="Name" />
+        </LinearLayout>
 
-        <EditText
-            android:id="@+id/etName"
-            android:layout_width="285dp"
+        <LinearLayout
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:gravity="left"
-            android:hint="Name" />
-    </LinearLayout>
+            android:gravity="center_horizontal"
+            android:orientation="horizontal" >
 
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:orientation="horizontal" >
+            <Spinner
+                android:id="@+id/spCourse"
+                style="@style/Spinner"
+                android:layout_width="170dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:gravity="center_horizontal" />
+        </LinearLayout>
 
-        <Spinner
-            android:id="@+id/spCourse"
-            android:layout_width="200dp"
+        <LinearLayout
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:gravity="center_horizontal" />
+            android:gravity="center_horizontal"
+            android:orientation="horizontal" >
+
+            <Spinner
+                android:id="@+id/spYear"
+                style="@style/Spinner"
+                android:layout_width="170dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:gravity="center_horizontal" />
+        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
+        
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:orientation="horizontal" >
-
-        <Spinner
-            android:id="@+id/spYear"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:gravity="center_horizontal" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:orientation="horizontal" >
+        android:orientation="horizontal"
+        android:layout_margin="10dp" >
 
         <Button
             android:id="@+id/btSave"
-            android:layout_width="100dp"
+            style="@style/Button"
+            android:layout_width="90dp"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:layout_margin="5dp"
             android:gravity="center_horizontal"
             android:onClick="OnClickSave"
-            android:text="Save" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:orientation="horizontal" >
+            android:text=" Save " />
 
         <Button
             android:id="@+id/erase"
-            android:layout_width="100dp"
+            style="@style/Button"
+            android:layout_width="120dp"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:layout_margin="5dp"
             android:gravity="center_horizontal"
             android:onClick="OnClickErase"
-            android:text="Erase Data" />
+            android:text=" Erase Data " />
     </LinearLayout>
 
 </LinearLayout>

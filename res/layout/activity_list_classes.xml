@@ -4,25 +4,22 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
-    android:background="@drawable/bg_4b" >
+    android:background="@drawable/background_grey_grad" >
     
-        <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
         android:orientation="horizontal" >
 
         <TextView
+            style="@style/Header"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            
             android:gravity="center_horizontal"
             android:text="Chosen Classes"
-            android:textSize="30sp"
-            android:textStyle="bold|normal" />
-    </LinearLayout>
+    
+     />
+    
 
-    <ExpandableListView
+    <ExpandableListView style="@style/List"
         android:id="@+id/expandable_list"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"

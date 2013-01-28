@@ -41,7 +41,9 @@ public class SearchClassActivity extends BaseMenuActivity {
 	DatabaseHandler db = new DatabaseHandler(SearchClassActivity.this);
 	SearchClassArrayAdapter myadapter;
 	Class selectedClass = new Class();
-
+	String requestedSemester;
+	int requested=0;
+	
 	private class SearchClassArrayAdapter extends ArrayAdapter<String> {
 		private final Context context;
 		private final ArrayList<String> values;
@@ -81,6 +83,7 @@ public class SearchClassActivity extends BaseMenuActivity {
 		Bundle extras = getIntent().getExtras();
 		if (extras != null) {
 			find = extras.getInt("FIND");
+			requestedSemester = extras.getString("SEMESTER");
 		}
 
 		termsL = up.getTermsL();
@@ -93,7 +96,9 @@ public class SearchClassActivity extends BaseMenuActivity {
 		etCourse = (EditText) findViewById(R.id.etCourse);
 
 		spCourse = (Spinner) findViewById(R.id.spCourse);
-		spCourse.setFocusable(true);
+		spCourse.setFocusable(true); 
+		spCourse.setFocusableInTouchMode(true);
+		spCourse.requestFocus();
 
 		ArrayAdapter<String> dataAdapterCourse = new ArrayAdapter<String>(this,
 				android.R.layout.simple_spinner_item, up.getcourseNall());
@@ -101,6 +106,7 @@ public class SearchClassActivity extends BaseMenuActivity {
 		.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
 		spCourse.setAdapter(dataAdapterCourse);
+	
 		spCourse.setOnItemSelectedListener(new OnItemSelectedListener() {
 
 			@Override
@@ -141,7 +147,7 @@ public class SearchClassActivity extends BaseMenuActivity {
 					int position, long id) {
 				
 				selectedClass = classes.get(position);
-				Log.d("PREREQ_CHECKER", selectedClass.getPrereqid().toString());
+			//	Log.d("PREREQ_CHECKER", selectedClass.getPrereqid().toString());
 				// custom dialog
 				final Dialog dialog = new Dialog(SearchClassActivity.this);
 				dialog.setContentView(R.layout.dialog_class_info);
@@ -165,8 +171,10 @@ public class SearchClassActivity extends BaseMenuActivity {
 				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
 				spTakenIn.setAdapter(dataAdapterTakenIn);
+				
+				
 
-				Log.d("BUG", termsL.toString());
+				//Log.d("BUG", termsL.toString());
 				if (up.getTermsS().indexOf(classes.get(position).getTakenIn()) > -1) {
 					spTakenIn.setSelection(up.getTermsS().indexOf(
 							classes.get(position).getTakenIn()));
@@ -174,6 +182,10 @@ public class SearchClassActivity extends BaseMenuActivity {
 				else{
 					spTakenIn.setSelection(up.getTermsS().indexOf(
 							up.getCurrentTermS()));
+				}
+				
+				if(find==1&&termsS.indexOf(requestedSemester)!=-1){
+					spTakenIn.setSelection(termsS.indexOf(requestedSemester),true);
 				}
 
 				Button btAdd = (Button) dialog.findViewById(R.id.btAdd);
@@ -188,6 +200,7 @@ public class SearchClassActivity extends BaseMenuActivity {
 						if(find==1) {
 							Intent returnIntent = new Intent();
 							returnIntent.putExtra("ID",selectedClass.getID());
+							returnIntent.putExtra("CHOSENSEMESTER",selectedClass.getTakenIn());
 							setResult(RESULT_OK, returnIntent);     
 							dialog.dismiss();
 							finish();

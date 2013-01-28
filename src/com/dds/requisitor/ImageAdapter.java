@@ -1,7 +1,7 @@
 package com.dds.requisitor;
 
 import android.content.Context;
-import android.content.Intent;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -44,8 +44,11 @@ public class ImageAdapter extends BaseAdapter {
 		if (convertView == null) { // if it's not recycled, initialize some
 									// attributes
 			imageView = new ImageView(mContext);
-			imageView.setLayoutParams(new GridView.LayoutParams(250, 250));
+			int dips = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 130, parent.getResources().getDisplayMetrics());
+			imageView.setLayoutParams(new GridView.LayoutParams(dips, dips));
 			imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+			imageView.setBackgroundResource(R.drawable.secondary_grey_grad);
+
 			imageView.setPadding(8, 16, 8, 2);
 		} else {
 			imageView = (ImageView) convertView;

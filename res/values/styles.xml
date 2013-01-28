@@ -1,6 +1,7 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
+
     <style name="common_header_button">
-        <item name="android:background">@drawable/green_grad</item>
+        <item name="android:background">@drawable/red_grad</item>
         <item name="android:padding">10sp</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:textStyle">bold</item>
@@ -8,19 +9,68 @@
         <item name="android:shadowRadius">1</item>
         <item name="android:shadowDx">-1</item>
         <item name="android:shadowDy">-1</item>
+        
     </style>
-    
+
     <style name="Header" parent="common_header_button">
         <item name="android:layout_marginBottom">20sp</item>
         <item name="android:gravity">center_horizontal|center_vertical</item>
         <item name="android:textSize">20sp</item>
     </style>
+
     <style name="Button" parent="common_header_button">
-        <item name="android:background">@drawable/green_button_states</item>
+        <item name="android:background">@drawable/grey_button_states</item>
         <item name="android:layout_gravity">center_horizontal|center_vertical</item>
         <item name="android:textSize">14sp</item>
-        <item name="android:width">100dp</item>
-        <item name="android:height">70dp</item>
-        
     </style>
+
+    <style name="Spinner" parent="common_header_button">
+        <item name="android:background">@drawable/grey_spinner_states</item>
+        <item name="android:layout_gravity">center_horizontal|center_vertical</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="EditText" parent="common_header_button">
+        <item name="android:background">@drawable/grey_edittext_states</item>
+        <item name="android:layout_gravity">center_horizontal|center_vertical</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="List" parent="common_header_button">
+        <item name="android:background">@drawable/grey_list_states</item>
+        <item name="android:layout_gravity">center_horizontal|center_vertical</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="List_item">
+        <item name="android:textColor">@color/light_grey</item>
+        <item name="android:textStyle">normal</item>
+        <!-- <item name="android:background">@drawable/grey_list_text_states</item> -->
+    </style>
+
+    <style name="List_item_prereq">
+        <item name="android:textColor">@color/dark_green</item>
+        <item name="android:textStyle">normal</item>
+            <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="List_item_prereq_selected">
+        <item name="android:textColor">@color/dark_green</item>
+        <item name="android:textStyle">bold</item>
+            <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="List_title">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="List_item_small">
+        <item name="android:textColor">@color/light_grey</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
 </resources>

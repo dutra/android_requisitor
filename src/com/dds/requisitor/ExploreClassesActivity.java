@@ -312,12 +312,13 @@ public class ExploreClassesActivity extends BaseMenuActivity {
 
 							}
 							else {
-								tvSelected.setBackgroundColor(getResources().getColor(android.R.color.darker_gray));
-								tvSelected.setTextAppearance(getApplicationContext(), R.style.boldText);
-								tvSelected.setTypeface(null,Typeface.BOLD);
+								
+								
+								
 								//tvSelected.setTextAppearance(tvSelected.getContext(), android.R.style.)
 								highlightPreReqsFrom(sClasses.get(semester).get(position));
-								tvSelected.setTypeface(null,Typeface.BOLD);
+								tvSelected.setTextAppearance(context, R.style.List_item_prereq_selected);
+								
 								lastSelectedPos=position;
 								lastSelectedSemester=semester;
 							}
@@ -350,7 +351,7 @@ public class ExploreClassesActivity extends BaseMenuActivity {
 						if(ac.getID()==p.getID()&&ac.getTitle()!=null) {
 							prereqsmissing--;
 							TextView tv = (TextView) lists.get(semester).getChildAt(pos).findViewById(R.id.label);
-							tv.setBackgroundColor(getResources().getColor(android.R.color.darker_gray));
+							tv.setTextAppearance(context, R.style.List_item_prereq);
 						}
 					}
 
@@ -364,10 +365,8 @@ public class ExploreClassesActivity extends BaseMenuActivity {
 			for(int semester=0; semester<sTerms.size(); semester++) {
 				for(int pos=0; pos<sClasses.get(semester).size(); pos++) {
 					TextView tv = (TextView) lists.get(semester).getChildAt(pos).findViewById(R.id.label);
-					tv.setBackgroundColor(getResources().getColor(android.R.color.background_light));
-					if(semester==lastSelectedSemester&&pos==lastSelectedPos) {
-						tv.setTextAppearance(getApplicationContext(), R.style.normalText);
-					}
+					tv.setTextAppearance(context, R.style.List_item);
+					
 				}
 			}
 		}

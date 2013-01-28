@@ -7,11 +7,13 @@
     <TextView
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/label"
-        android:layout_width="100dp"
+        style="@style/List_item_small"
+        android:layout_width="150dp"
+        android:maxLines="2"
         android:layout_height="wrap_content"
         android:layout_marginTop="2.5dp"
         android:layout_marginBottom="2.5dp"
-        android:textSize="15sp" >
+        >
     </TextView>
 
 

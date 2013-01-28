@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background"
+    android:background="@drawable/background_grey_grad"
     android:orientation="vertical"
     tools:context=".MainActivity" >
 
@@ -13,17 +13,16 @@
         android:text="@string/menu_header" />
 
 
-    <GridView
+    <GridView 
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/gridview"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:columnWidth="60dp"
-        android:gravity="center"
+        
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+         android:gravity="center"
         android:horizontalSpacing="10dp"
         android:numColumns="2"
-        android:padding="10dp"
-        android:stretchMode="columnWidth"
+        android:padding="5dp"
         android:verticalSpacing="10dp" />
 
 </LinearLayout>

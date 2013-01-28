@@ -2,27 +2,39 @@ package com.dds.requisitor;
 
 import java.util.ArrayList;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.ExpandableListView;
+import android.widget.ExpandableListView.ExpandableListContextMenuInfo;
 
 public class ListClassesActivity extends BaseMenuActivity {
+	int replaceID=-1;
 	DatabaseHandler db = new DatabaseHandler(ListClassesActivity.this);
 	UserDatabaseHandler dbU = new UserDatabaseHandler(ListClassesActivity.this);
 	private ExpandableListView mExpandableList;
 	UserPreferences up = new UserPreferences(ListClassesActivity.this);
-	
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		ArrayList<String> terms = new ArrayList<String>();
-		ArrayList<Class> classes = new ArrayList<Class>();
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_list_classes);
-
+	ArrayList<String> terms = new ArrayList<String>();
+	ListClassesAdapter adapter;
+	ArrayList<ListClassesParent> arrayParents;
+	ArrayList<String> arrayChildren;
+	ArrayList<Class> classes;
+	public void refresh() {
+		inflate();
+		adapter.notifyDataSetChanged();
+		
+	}
+	public int inflate() {
+		 classes.clear();
+		//arrayChildren.clear();
+		arrayParents.clear();
 		Bundle extras = getIntent().getExtras();
 		if (extras != null) {
 			terms = extras.getStringArrayList("TERMS");
@@ -32,11 +44,11 @@ public class ListClassesActivity extends BaseMenuActivity {
 		}
 		//Toast.makeText(ListClassesActivity.this, terms.toString(), Toast.LENGTH_LONG).show();
 		//Log.d("TERMS", terms.toString()+classes.size());
-		
-		classes = dbU.getClassesBySemesters(terms);
-		
-		if(classes.size()==0) {
 
+		classes = dbU.getClassesBySemesters(terms);
+		Log.d("classes size", classes.size()+"");
+		if(classes.size()==0) {
+			/*Log.d("classes size!!!!", classes.size()+"");
 			AlertDialog.Builder builder = new AlertDialog.Builder(ListClassesActivity.this);
 			builder.setTitle("Error").setMessage("Could not find any classes that matched the selected semesters");
 
@@ -48,49 +60,131 @@ public class ListClassesActivity extends BaseMenuActivity {
 			});
 			AlertDialog dialog = builder.create();
 			dialog.show();
+			return -1;*/
+		
+			for(String t : terms) {
 			
+			arrayChildren = new ArrayList<String>();
+			//arrayChildren.add("aaaaa");
+			ListClassesParent parent = new ListClassesParent();
+			parent.setTitle(up.getTermsL().get(up.getTermsS().indexOf(t)));
+			
+			parent.setArrayChildren(arrayChildren);
+			arrayParents.add(parent);
+			
+			}
+			
+			return 0;
+
 		}
 		
-	    mExpandableList = (ExpandableListView)findViewById(R.id.expandable_list);
-	    
-        ArrayList<ListClassesParent> arrayParents = new ArrayList<ListClassesParent>();
-        ArrayList<String> arrayChildren;
-        for(String t : terms) {
-        	
-        	arrayChildren = new ArrayList<String>();
-        	
-        	ListClassesParent parent = new ListClassesParent();
-        	parent.setTitle(up.getTermsL().get(up.getTermsS().indexOf(t)));
-        	for(Class c : classes) {
-        		Log.d("c", ""+c.getID());
-        		if(c.getTakenIn().equals(t))
-        				arrayChildren.add(c.getMajorN()+"."+c.getClassN()+" "+c.getTitle());
-        	
-        	}
-        	parent.setArrayChildren(arrayChildren);
-        	arrayParents.add(parent);
-        }
-        
-        
-/*        //here we set the parents and the children
-        for (int i = 0; i < 10; i++){
-            //for each "i" create a new Parent object to set the title and the children
-            ListClassesParent parent = new ListClassesParent();
-            parent.setTitle("Parent " + i);
-            arrayChildren.add("Child " + i);
-            parent.setArrayChildren(arrayChildren);
- 
-            //in this array we add the Parent object. We will use the arrayParents at the setAdapter
-            arrayParents.add(parent);
-        }
- */
-        //sets the adapter that provides data to the list.
-       mExpandableList.setAdapter(new ListClassesAdapter(ListClassesActivity.this,arrayParents));
- 
-    }
-	
+		 
 
-/*	@Override
+		for(String t : terms) {
+
+			
+			arrayChildren = new ArrayList<String>();
+			ListClassesParent parent = new ListClassesParent();
+			parent.setTitle(up.getTermsL().get(up.getTermsS().indexOf(t)));
+			for(Class c : classes) {
+				Log.d("c", ""+c.getID());
+				if(c.getTakenIn().equals(t))
+					arrayChildren.add(c.getMajorN()+"."+c.getClassN()+" "+c.getTitle());
+
+			}
+			parent.setArrayChildren(arrayChildren);
+			arrayParents.add(parent);
+			
+		}
+		return 0;
+		
+	}
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);	
+		setContentView(R.layout.activity_list_classes);
+		mExpandableList = (ExpandableListView)findViewById(R.id.expandable_list);
+		arrayParents = new ArrayList<ListClassesParent>();
+		
+		classes = new ArrayList<Class>();
+		if(inflate()==0) {
+			adapter = new ListClassesAdapter(ListClassesActivity.this,arrayParents);
+		mExpandableList.setAdapter(adapter);
+		//Log.d("BUG????", "HERE???");
+		//sets the adapter that provides data to the list.
+		
+		}
+
+	}
+
+	public boolean onContextItemSelected(MenuItem menuItem) {
+		Intent i;
+		ExpandableListContextMenuInfo info =
+				(ExpandableListContextMenuInfo) menuItem.getMenuInfo();
+		int semesterPos = 0, pos = 0;
+		int type = ExpandableListView.getPackedPositionType(info.packedPosition);
+		if(type == ExpandableListView.PACKED_POSITION_TYPE_GROUP) {
+			semesterPos = ExpandableListView.getPackedPositionGroup(info.packedPosition);
+		}
+		if (type == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
+			semesterPos = ExpandableListView.getPackedPositionGroup(info.packedPosition);
+			pos = ExpandableListView.getPackedPositionChild(info.packedPosition);
+		}
+		//Pull values from the array we built when we created the list
+
+		switch (menuItem.getItemId()) {
+		
+		case R.id.add:
+			i = new Intent(ListClassesActivity.this, SearchClassActivity.class);
+			i.putExtra("FIND", 1);
+			i.putExtra("SEMESTER", terms.get(semesterPos));
+			startActivityForResult(i,1);
+			//Log.d("ADD",""+semester+pos);
+			return true;
+		case R.id.replace:
+			return true;
+		case R.id.delete :
+			return true;
+
+		default:
+			return super.onContextItemSelected(menuItem);
+		}
+
+	}
+
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+		if (requestCode == 1) {
+
+			if(resultCode == RESULT_OK){
+
+				int id = data.getIntExtra("ID",0);
+				String chosenSemester = data.getStringExtra("CHOSENSEMESTER");
+				if (replaceID>-1) {
+					dbU.delete(replaceID);
+					replaceID=-1;
+				}
+				
+					Class c = db.getClass(id);
+					c.setTakenIn(chosenSemester);
+					dbU.addClass(db.getClass(id));
+					refresh();
+				
+				
+				Log.d("ID returned", ""+id+chosenSemester);
+
+			}
+		}
+	}
+
+	public void onCreateContextMenu(ContextMenu menu,View v,ContextMenuInfo info)
+	{
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.activity_explore_classes_context_menu, menu);
+	}
+
+	/*	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.activity_list_classes, menu);

@@ -14,10 +14,10 @@ public class UserDatabaseHandler extends SQLiteOpenHelper {
 	private static final int DATABASE_VERSION = 1;
 	private static final String DATABASE_NAME = "userClasses.db";
 	private static final String TABLE_USERCLASSES = "userClasses";
-	
+
 	// Classes Table Columns names
 	private static final String KEY_ID = "id";
-		private static final String KEY_TAKENIN = "takenIn";
+	private static final String KEY_TAKENIN = "takenIn";
 
 	public UserDatabaseHandler(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -80,16 +80,16 @@ public class UserDatabaseHandler extends SQLiteOpenHelper {
 			Class c = new Class(Integer.parseInt(cursor.getString(0)), cursor.getString(1));
 			db.close();
 			return c;
-			
+
 		} // return class
 		db.close();
 		return null;
-		
+
 	}
 
 	public ArrayList<Class> getClasses(ArrayList<Integer> ids) { // Getting
-																	// multiple
-																	// classes
+		// multiple
+		// classes
 		ArrayList<Class> classes = new ArrayList<Class>();
 		for (int i : ids) {
 			classes.add(getClass(i));
@@ -106,14 +106,14 @@ public class UserDatabaseHandler extends SQLiteOpenHelper {
 				new String[] { semester }, null, null, null, null);
 		if(cursor.moveToFirst()==true){
 			do {
-			Class c = new Class(Integer.parseInt(cursor.getString(0)), cursor.getString(1));
-			classes.add(c);
-			//Log.d("CC", "ccc"+postProcess(c).size());
-			
+				Class c = new Class(Integer.parseInt(cursor.getString(0)), cursor.getString(1));
+				classes.add(c);
+				//Log.d("CC", "ccc"+postProcess(c).size());
+
 			} while(cursor.moveToNext() == true); 
-			
+
 			return postProcess(classes);
-			
+
 		}
 		return new ArrayList<Class>();
 	}
@@ -123,12 +123,12 @@ public class UserDatabaseHandler extends SQLiteOpenHelper {
 		// classes
 		ArrayList<Class> classes = new ArrayList<Class>();
 		for (String s : semesters) {
-			
+
 			classes.addAll(getClassesBySemester(s));
-			
+
 		}
-		
-		
+
+
 		return classes;
 	}
 
@@ -148,13 +148,13 @@ public class UserDatabaseHandler extends SQLiteOpenHelper {
 	}
 	public Class postProcess(Class c) {
 		Class f = new Class();
-		
+
 		DatabaseHandler db = new DatabaseHandler(context);
-		
+
 		f = db.getClass(c.getID());
 		//Log.d("POSTPROCESS", "AAAA");
 		f.setTakenIn(c.getTakenIn());
-		
+
 		return f;
 	}
 	public ArrayList<Class> postProcess(ArrayList<Class> classes) {
@@ -165,11 +165,17 @@ public class UserDatabaseHandler extends SQLiteOpenHelper {
 		return f;
 	}
 
+	public void delete(int id) {
+		SQLiteDatabase db = this.getWritableDatabase();
+		db.delete(TABLE_USERCLASSES, KEY_ID + "=?" + id, new String[] {String.valueOf(id)});
+		db.close();
+	}
+
 	public void erase(String semester) {
 		String[] whereArg = new String[] { semester };
 		SQLiteDatabase db = this.getWritableDatabase();
 		db.delete(TABLE_USERCLASSES, "KEY_TAKENIN=?", whereArg);
-		onCreate(db);
+		//onCreate(db);
 		db.close();
 	}
 
