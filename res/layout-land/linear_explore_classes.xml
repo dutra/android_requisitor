@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/llclickable"
+    android:layout_width="100dp"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:longClickable="true"
+    android:padding="5dp" >
+
+    <TextView
+        android:id="@+id/tvTerm"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+	style="@style/List_title" />
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/white" />
+
+    <ListView
+        android:id="@+id/list"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:focusable="true"
+        android:longClickable="true" />
+    
+
+</LinearLayout>

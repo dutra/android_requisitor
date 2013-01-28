@@ -1,0 +1,54 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/hsvMain"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:background="@drawable/background_grey_grad"
+    tools:context=".ExploreClassesActivity" >
+
+    <TextView
+        style="@style/Header"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="Explore Classes" />
+
+    <HorizontalScrollView
+        style="@style/List"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_margin="0dp"
+        android:fillViewport="true"
+        android:paddingBottom="2dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="2dp" 
+        >
+
+        <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/llMain"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            tools:context=".ExploreClassesActivity" >
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <LinearLayout
+        android:layout_margin="3dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+         >
+
+        <TextView
+            style="@style/Button"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Missing Prereqs:" />
+    </LinearLayout>
+
+</LinearLayout>
