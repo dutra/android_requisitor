@@ -9,7 +9,7 @@
     android:padding="5dp" >
 
     <TextView
-        android:id="@+id/tvTerm"
+        android:id="@+id/tvfall"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
 	style="@style/List_title" />
@@ -20,7 +20,25 @@
         android:background="@android:color/white" />
 
     <ListView
-        android:id="@+id/list"
+        android:id="@+id/fall"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:focusable="true"
+        android:longClickable="true" />
+
+        <TextView
+        android:id="@+id/tvspring"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+	style="@style/List_title" />
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/white" />
+    
+        <ListView
+        android:id="@+id/spring"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:focusable="true"

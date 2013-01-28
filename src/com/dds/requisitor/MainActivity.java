@@ -123,59 +123,9 @@ public class MainActivity extends BaseMenuActivity {
 	}
 
 	public void onClickList(View v) {
-		mSelectedItems = new ArrayList<String>();
-
-		AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-		builder.setTitle("List Courses");
-
-		builder.setMultiChoiceItems(
-				up.getTermsL().toArray(new String[up.getTermsL().size()]),
-				null, new DialogInterface.OnMultiChoiceClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which,
-							boolean isChecked) {
-						// String buffer = new String();
-						if (isChecked) {
-							// buffer = semesterList.get(which);
-							// If the user checked the item, add it to the
-							// selected items
-							mSelectedItems.add(up.getTermsS().get(which)
-									.toString());
-						} else if (mSelectedItems.contains(up.getTermsS()
-								.get(which).toString())) {
-							// Else, if the item is already in the array, remove
-							// it
-							mSelectedItems.remove(up.getTermsS().get(which)
-									.toString());
-						}
-					}
-				});
-
-		builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int id) {
-				if (mSelectedItems.size() == 0) {
-					Toast.makeText(MainActivity.this,
-							"You should choose at least one semester",
-							Toast.LENGTH_SHORT).show();
-				} else {
-
-					Intent i = new Intent(MainActivity.this,
-							ListClassesActivity.class);
-					i.putStringArrayListExtra("TERMS", mSelectedItems);
-					startActivity(i);
-				}
-
-			}
-		});
-		builder.setNegativeButton("Cancel",
-				new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int id) {
-						dialog.dismiss();
-					}
-				});
-
-		AlertDialog dialog = builder.create();
-		dialog.show();
+		Intent i = new Intent(MainActivity.this,
+				ListClassesActivity.class);
+		startActivity(i);
 
 	}
 	

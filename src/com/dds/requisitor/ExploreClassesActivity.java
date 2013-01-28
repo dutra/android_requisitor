@@ -2,10 +2,9 @@ package com.dds.requisitor;
 
 import java.util.ArrayList;
 
-import android.R.integer;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Typeface;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -31,16 +30,17 @@ public class ExploreClassesActivity extends BaseMenuActivity {
 	int replacePos = -1;
 	int lastSelectedSemester=-1;
 	int lastSelectedPos=-1;
+	
 	DatabaseHandler db = new DatabaseHandler(ExploreClassesActivity.this);
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-
 		super.onCreate(savedInstanceState);
+		
 		setContentView(R.layout.activity_explore_classes);
 		LinearLayout llMain = (LinearLayout) findViewById(R.id.llMain);
 		llTerms = new LinearLayoutTerms(llMain, this);
-		llTerms.inflate();
+		llTerms.inflate_dbu();
 		/*View llChild1 = LinearLayout.inflate(this, R.layout.linear_explore_classes, null);
 
 		llMain.addView(llChild1);
@@ -48,6 +48,18 @@ public class ExploreClassesActivity extends BaseMenuActivity {
 		tvLinear.setText("bbbbbbbb");*/
 
 	}
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+	    super.onConfigurationChanged(newConfig);
+	    llTerms.save();
+	    llTerms.reset();
+	    
+	}
+	@Override
+	protected void onResume() {
+		super.onResume();
+		
+	};
 	@Override
 	public void onCreateContextMenu(ContextMenu menu,View v,ContextMenuInfo info)
 	{
@@ -179,6 +191,7 @@ public class ExploreClassesActivity extends BaseMenuActivity {
 		private LinearLayout llMain;
 		private Context context;
 		private ArrayList<View> vChilds;
+		ArrayList<ArrayList<Class>> savedClasses = new ArrayList<ArrayList<Class>>();
 		private ArrayList<ExploreClassesArrayAdapter> ecAdapters;
 		private ArrayList<ListView> lists;
 		private ArrayList<TextView> tvTerms;
@@ -205,6 +218,7 @@ public class ExploreClassesActivity extends BaseMenuActivity {
 			this.sClasses = new ArrayList<ArrayList<Class>>();
 		}
 		
+		
 		public void reset() {
 			llMain.removeAllViewsInLayout();
 			clearAll();
@@ -215,6 +229,18 @@ public class ExploreClassesActivity extends BaseMenuActivity {
 			this.sCourses = new ArrayList<ArrayList<String>>();
 			this.sClasses = new ArrayList<ArrayList<Class>>();
 			inflate();
+		}
+		
+		public void reset_dbu() {
+			llMain.removeAllViewsInLayout();
+			clearAll();
+			this.tvTerms = new ArrayList<TextView>();
+			this.lists = new ArrayList<ListView>();
+			this.vChilds = new ArrayList<View>();
+			this.ecAdapters = new ArrayList<ExploreClassesArrayAdapter>();
+			this.sCourses = new ArrayList<ArrayList<String>>();
+			this.sClasses = new ArrayList<ArrayList<Class>>();
+			inflate_dbu();
 		}
 		
 		public void clearAll() {
@@ -248,12 +274,125 @@ public class ExploreClassesActivity extends BaseMenuActivity {
 						
 		}
 
+		public void save() {
+			
+			savedClasses = new ArrayList<ArrayList<Class>>();
+			for(int i=0; i<sClasses.size(); i++) {
+				savedClasses.add(new ArrayList<Class>());
+				for(int j=0; j<sClasses.get(i).size(); j++) {
+					savedClasses.get(i).add(sClasses.get(i).get(j));
+				}
+			}
+					
+			
+		}
+		
 		public void inflate() {
 
 			for(int i = 0; i<up.getTermsS().size(); i++) {
 				String termS = up.getTermsS().get(i);
 				String termL = up.getTermsL().get(i);
+				
+				sCourses.add(new ArrayList<String>());
+				sClasses.add(new ArrayList<Class>());
 
+				
+					for(Class c : savedClasses.get(i)) {
+						if(c.getMajorN()==null) {continue;}
+						sClasses.get(i).add(c);
+						sCourses.get(i).add(c.getMajorN()+"."+c.getClassN()+" "+c.getTitle());
+					}
+				
+					
+				
+				for(int j=0;j<8-sCourses.get(i).size();j++) {
+					sClasses.get(i).add(new Class());
+					sCourses.get(i).add("");
+				}
+
+				sTerms.add(termL);
+
+				vChilds.add(View.inflate(context, R.layout.linear_explore_classes, null));
+				
+				if(getResources().getConfiguration().orientation==getResources().getConfiguration().ORIENTATION_LANDSCAPE) { //if landscape
+				lists.add((ListView)vChilds.get(i).findViewById(R.id.list));
+				tvTerms.add((TextView) vChilds.get(i).findViewById(R.id.tvTerm));
+				}
+				if(getResources().getConfiguration().orientation==getResources().getConfiguration().ORIENTATION_PORTRAIT) { //if portrait
+					lists.add((ListView)vChilds.get(i).findViewById(R.id.fall));
+					tvTerms.add((TextView) vChilds.get(i).findViewById(R.id.tvfall));
+					
+					lists.add((ListView)vChilds.get(i).findViewById(R.id.spring));					
+					tvTerms.add((TextView) vChilds.get(i).findViewById(R.id.tvspring));
+				}
+				
+				lists.get(i).setId(i);
+				
+				tvTerms.get(i).setText(sTerms.get(i));
+			//	Log.d("sTerm",sTerms.get(i));
+				ecAdapters.add(new ExploreClassesArrayAdapter(vChilds.get(i).getContext(), sCourses.get(i)));
+				Log.d("CONTEXT", lists.get(i).toString());
+				lists.get(i).setAdapter(ecAdapters.get(i));
+
+				Log.d("CONTEXT", "HERE?");
+				llMain.addView(vChilds.get(i));
+
+				registerForContextMenu(lists.get(i));
+
+
+				lists.get(i).setOnItemClickListener(new OnItemClickListener() {
+					@Override
+					public void onItemClick(AdapterView<?> parent, View view,
+							int position, long id) {
+						int semester = parent.getId();
+						//int semesterSelectedPos = i;
+						//if(lastSelected!=-1) {
+						//TextView tvLastSelected = (TextView) view.findViewById(R.id.label);
+
+
+
+
+						if(sClasses.get(semester).get(position)!=null) {
+							//tvSelected = (TextView) lists.get(semester).getChildAt(position).findViewById(R.id.label);
+							//tvSelected.setText(""+position+" "+parent.getId());
+							TextView tvSelected = (TextView) view.findViewById(R.id.label);
+
+
+							if(semester==lastSelectedSemester&&position==lastSelectedPos) {
+								//tvSelected.setTextAppearance(getApplicationContext(), R.style.normalText);
+								highlightClearAll();
+								lastSelectedSemester=lastSelectedPos=-1;
+
+							}
+							else {
+								
+								
+								
+								//tvSelected.setTextAppearance(tvSelected.getContext(), android.R.style.)
+								highlightPreReqsFrom(sClasses.get(semester).get(position));
+								tvSelected.setTextAppearance(context, R.style.List_item_prereq_selected);
+								
+								lastSelectedPos=position;
+								lastSelectedSemester=semester;
+							}
+							//Log.d("title:", tvSelected.getText());
+							//	Log.d("child",lists.get(semester).getChildAt(position).findViewById(R.id.label));
+						}
+						//
+						//tvSelected.setBackgroundColor(getResources().getColor(android.R.color.background_light));
+						//}
+						//Log.d("view", view.toString());
+					}
+				});
+			}
+		}
+
+		public void inflate_dbu() {
+
+			for(int i = 0; i<up.getTermsS().size(); i++) {
+				String termS = up.getTermsS().get(i);
+				String termL = up.getTermsL().get(i);
+				
 				sCourses.add(new ArrayList<String>());
 				sClasses.add(new ArrayList<Class>());
 
@@ -262,19 +401,32 @@ public class ExploreClassesActivity extends BaseMenuActivity {
 						sClasses.get(i).add(c);
 						sCourses.get(i).add(c.getMajorN()+"."+c.getClassN()+" "+c.getTitle());
 					}
-					Log.d("HERE?", "BUGBUG");
+					
 				}
-				for(int j=0;j<6-sCourses.get(i).size();j++) {
+				Log.d("HERE?", ""+sCourses.get(i).size());
+				for(int j=0;j<8-sCourses.get(i).size();j++) {
 					sClasses.get(i).add(new Class());
-					sCourses.get(i).add("");
+					sCourses.get(i).add("aaaa");
 				}
 
 				sTerms.add(termL);
 
 				vChilds.add(View.inflate(context, R.layout.linear_explore_classes, null));
+				
+				if(getResources().getConfiguration().orientation==getResources().getConfiguration().ORIENTATION_LANDSCAPE) { //if landscape
 				lists.add((ListView)vChilds.get(i).findViewById(R.id.list));
-				lists.get(i).setId(i);
 				tvTerms.add((TextView) vChilds.get(i).findViewById(R.id.tvTerm));
+				}
+				if(getResources().getConfiguration().orientation==getResources().getConfiguration().ORIENTATION_PORTRAIT) { //if portrait
+					lists.add((ListView)vChilds.get(i).findViewById(R.id.fall));
+					tvTerms.add((TextView) vChilds.get(i).findViewById(R.id.tvfall));
+					
+					lists.add((ListView)vChilds.get(i).findViewById(R.id.spring));					
+					tvTerms.add((TextView) vChilds.get(i).findViewById(R.id.tvspring));
+				}
+				
+				lists.get(i).setId(i);
+				
 				tvTerms.get(i).setText(sTerms.get(i));
 			//	Log.d("sTerm",sTerms.get(i));
 				ecAdapters.add(new ExploreClassesArrayAdapter(vChilds.get(i).getContext(), sCourses.get(i)));

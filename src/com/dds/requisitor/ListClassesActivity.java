@@ -13,6 +13,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListView;
+import android.widget.Toast;
 import android.widget.ExpandableListView.ExpandableListContextMenuInfo;
 
 public class ListClassesActivity extends BaseMenuActivity {
@@ -26,6 +27,7 @@ public class ListClassesActivity extends BaseMenuActivity {
 	ArrayList<ListClassesParent> arrayParents;
 	ArrayList<String> arrayChildren;
 	ArrayList<Class> classes;
+	ArrayList<String> mSelectedItems;
 	public void refresh() {
 		inflate();
 		adapter.notifyDataSetChanged();
@@ -40,7 +42,7 @@ public class ListClassesActivity extends BaseMenuActivity {
 			terms = extras.getStringArrayList("TERMS");
 		}
 		if (terms.isEmpty()) {
-			finish();
+			terms=up.getTermsS();
 		}
 		//Toast.makeText(ListClassesActivity.this, terms.toString(), Toast.LENGTH_LONG).show();
 		//Log.d("TERMS", terms.toString()+classes.size());
@@ -190,5 +192,61 @@ public class ListClassesActivity extends BaseMenuActivity {
 		getMenuInflater().inflate(R.menu.activity_list_classes, menu);
 		return true;
 	}*/
+	public void makeTermDialog() {
+		mSelectedItems = new ArrayList<String>();
 
+		AlertDialog.Builder builder = new AlertDialog.Builder(ListClassesActivity.this);
+		builder.setTitle("List Courses");
+
+		builder.setMultiChoiceItems(
+				up.getTermsL().toArray(new String[up.getTermsL().size()]),
+				null, new DialogInterface.OnMultiChoiceClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which,
+							boolean isChecked) {
+						// String buffer = new String();
+						if (isChecked) {
+							// buffer = semesterList.get(which);
+							// If the user checked the item, add it to the
+							// selected items
+							mSelectedItems.add(up.getTermsS().get(which)
+									.toString());
+						} else if (mSelectedItems.contains(up.getTermsS()
+								.get(which).toString())) {
+							// Else, if the item is already in the array, remove
+							// it
+							mSelectedItems.remove(up.getTermsS().get(which)
+									.toString());
+						}
+					}
+				});
+
+		builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int id) {
+				if (mSelectedItems.size() == 0) {
+					Toast.makeText(ListClassesActivity.this,
+							"You should choose at least one semester",
+							Toast.LENGTH_SHORT).show();
+				} else {
+
+				/*	Intent i = new Intent(MainActivity.this,
+							ListClassesActivity.class);
+					i.putStringArrayListExtra("TERMS", mSelectedItems);
+					startActivity(i);*/
+				}
+
+			}
+		});
+		builder.setNegativeButton("Cancel",
+				new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int id) {
+						dialog.dismiss();
+					}
+				});
+
+		AlertDialog dialog = builder.create();
+		dialog.show();
+
+	}
 }
+
