@@ -249,7 +249,7 @@ public class ExploreClassesActivity extends BaseMenuActivity {
 		}
 
 		public void inflate() {
-			
+
 			for(int i = 0; i<up.getTermsS().size(); i++) {
 				String termS = up.getTermsS().get(i);
 				String termL = up.getTermsL().get(i);
@@ -268,9 +268,9 @@ public class ExploreClassesActivity extends BaseMenuActivity {
 					sClasses.get(i).add(new Class());
 					sCourses.get(i).add("");
 				}
-				
+
 				sTerms.add(termL);
-				
+
 				vChilds.add(View.inflate(context, R.layout.linear_explore_classes, null));
 				lists.add((ListView)vChilds.get(i).findViewById(R.id.list));
 				lists.get(i).setId(i);

@@ -6,6 +6,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 public class BaseMenuActivity extends Activity {
+	UserPreferences up = new UserPreferences(this);
+
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -19,11 +21,18 @@ public class BaseMenuActivity extends Activity {
 		case R.id.menu_main:
 			startActivity(new Intent(this, MainActivity.class));
 			return true;
+		case R.id.menu_explore:
+			startActivity(new Intent(this, ExploreClassesActivity.class));
+			return true;
 		case R.id.menu_search:
 			startActivity(new Intent(this, SearchClassActivity.class));
 			return true;
 		case R.id.menu_list:
-			startActivity(new Intent(this, ListClassesActivity.class));
+			// startActivity(new Intent(this, ListClassesActivity.class));
+			Intent i = new Intent(this,ListClassesActivity.class);
+			i.putStringArrayListExtra("TERMS", up.getTermsS());
+			startActivity(i);
+			return true;
 		case R.id.menu_settings:
 			startActivity(new Intent(this, UserPreferencesActivity.class));
 			return true;
