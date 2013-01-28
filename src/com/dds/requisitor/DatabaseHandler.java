@@ -66,7 +66,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	}
 
 	public void addClass(Class c) { // adding a single class
-		Log.d("c.getprereqid", c.getPrereqid().toString());
+		//Log.d("c.getprereqid", c.getPrereqid().toString());
 		SQLiteDatabase db = this.getWritableDatabase();
 
 		ContentValues values = new ContentValues();
@@ -88,7 +88,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		// Inserting Row
 		db.insert(TABLE_CLASSES, null, values);
 
-		Log.d("add", c.getPrereqid().toString());
+		//Log.d("add", c.getPrereqid().toString());
 		for (int prereqid : c.getPrereqid()) {
 			values = new ContentValues();
 			values.put(KEY_POSTREQ, c.getID());
@@ -108,7 +108,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 	public Class getClass(int id) { // Getting single class by id
 		SQLiteDatabase db = this.getReadableDatabase();
-		Log.d("GETID", id + "");
+	//	Log.d("GETID", id + "");
 		Cursor cursor = db.query(TABLE_CLASSES, new String[] { KEY_ID,
 				KEY_MAJORN, KEY_CLASSN, KEY_TITLE, KEY_UNITS, KEY_DESCRIPTION,
 				KEY_FALL, KEY_SPRING }, KEY_ID + "=?",
@@ -194,7 +194,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		if (splitSearch.length == 2) {
 			majorN = splitSearch[0];
 			classN = splitSearch[1];
-			Log.d("LIKE", majorN + " " + classN);
+		//	Log.d("LIKE", majorN + " " + classN);
 			cursor = db.query(TABLE_CLASSES, new String[] { KEY_ID, KEY_MAJORN,
 					KEY_CLASSN, KEY_TITLE, KEY_UNITS, KEY_DESCRIPTION,
 					KEY_FALL, KEY_SPRING }, KEY_MAJORN + " =? AND "
