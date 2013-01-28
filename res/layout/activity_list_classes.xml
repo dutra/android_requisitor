@@ -19,7 +19,10 @@
      />
     
 
-    <ExpandableListView style="@style/List"
+    <ExpandableListView 
+        android:layout_margin="7sp"
+        android:paddingLeft="10sp"
+        style="@style/List"
         android:id="@+id/expandable_list"
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"

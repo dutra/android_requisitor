@@ -123,8 +123,7 @@ public class MainActivity extends BaseMenuActivity {
 	}
 
 	public void onClickList(View v) {
-		Intent i = new Intent(MainActivity.this,
-				ListClassesActivity.class);
+		Intent i = new Intent(MainActivity.this, ListClassesActivity.class);
 		startActivity(i);
 
 	}

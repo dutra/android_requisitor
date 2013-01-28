@@ -27,64 +27,50 @@ public class ListClassesActivity extends BaseMenuActivity {
 	ArrayList<ListClassesParent> arrayParents;
 	ArrayList<String> arrayChildren;
 	ArrayList<Class> classes;
+	ArrayList<ArrayList<Class>> sClasses;
 	ArrayList<String> mSelectedItems;
 	public void refresh() {
 		inflate();
 		adapter.notifyDataSetChanged();
-		
+
 	}
 	public int inflate() {
-		 classes.clear();
+		sClasses = new ArrayList<ArrayList<Class>>();
+		classes.clear();
 		//arrayChildren.clear();
 		arrayParents.clear();
 		Bundle extras = getIntent().getExtras();
 		if (extras != null) {
-			terms = extras.getStringArrayList("TERMS");
+			if(terms.size()==0) {terms = extras.getStringArrayList("TERMS"); }
 		}
 		if (terms.isEmpty()) {
 			terms=up.getTermsS();
 		}
 		//Toast.makeText(ListClassesActivity.this, terms.toString(), Toast.LENGTH_LONG).show();
-		//Log.d("TERMS", terms.toString()+classes.size());
+		
 
 		classes = dbU.getClassesBySemesters(terms);
-		Log.d("classes size", classes.size()+"");
+		Log.d("TERMS", terms.toString()+classes.size());
+		//Log.d("classes size", classes.size()+"");
 		if(classes.size()==0) {
-			/*Log.d("classes size!!!!", classes.size()+"");
-			AlertDialog.Builder builder = new AlertDialog.Builder(ListClassesActivity.this);
-			builder.setTitle("Error").setMessage("Could not find any classes that matched the selected semesters");
 
-			builder.setNeutralButton("Ok", new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog, int id) {
-					finish();
-					//
-				}
-			});
-			AlertDialog dialog = builder.create();
-			dialog.show();
-			return -1;*/
-		
 			for(String t : terms) {
-			
-			arrayChildren = new ArrayList<String>();
-			//arrayChildren.add("aaaaa");
-			ListClassesParent parent = new ListClassesParent();
-			parent.setTitle(up.getTermsL().get(up.getTermsS().indexOf(t)));
-			
-			parent.setArrayChildren(arrayChildren);
-			arrayParents.add(parent);
-			
+
+				arrayChildren = new ArrayList<String>();
+				//arrayChildren.add("aaaaa");
+				ListClassesParent parent = new ListClassesParent();
+				parent.setTitle(up.getTermsL().get(up.getTermsS().indexOf(t)));
+
+				parent.setArrayChildren(arrayChildren);
+				arrayParents.add(parent);
 			}
-			
 			return 0;
-
 		}
-		
-		 
 
-		for(String t : terms) {
+		for(int k=0; k<terms.size(); k++) {
+			String t = terms.get(k);
+			sClasses.add(new ArrayList<Class>());
 
-			
 			arrayChildren = new ArrayList<String>();
 			ListClassesParent parent = new ListClassesParent();
 			parent.setTitle(up.getTermsL().get(up.getTermsS().indexOf(t)));
@@ -92,30 +78,31 @@ public class ListClassesActivity extends BaseMenuActivity {
 				Log.d("c", ""+c.getID());
 				if(c.getTakenIn().equals(t))
 					arrayChildren.add(c.getMajorN()+"."+c.getClassN()+" "+c.getTitle());
-
+				sClasses.get(k).add(c);
 			}
 			parent.setArrayChildren(arrayChildren);
 			arrayParents.add(parent);
 			
 		}
 		return 0;
-		
+
 	}
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);	
 		setContentView(R.layout.activity_list_classes);
 		mExpandableList = (ExpandableListView)findViewById(R.id.expandable_list);
 		arrayParents = new ArrayList<ListClassesParent>();
-		
+
 		classes = new ArrayList<Class>();
 		if(inflate()==0) {
 			adapter = new ListClassesAdapter(ListClassesActivity.this,arrayParents);
-		mExpandableList.setAdapter(adapter);
-		//Log.d("BUG????", "HERE???");
-		//sets the adapter that provides data to the list.
-		
+			mExpandableList.setAdapter(adapter);
+			Log.d("BUG????", "HERE???");
+			//sets the adapter that provides data to the list.
+			registerForContextMenu(mExpandableList);
+
 		}
 
 	}
@@ -136,7 +123,7 @@ public class ListClassesActivity extends BaseMenuActivity {
 		//Pull values from the array we built when we created the list
 
 		switch (menuItem.getItemId()) {
-		
+
 		case R.id.add:
 			i = new Intent(ListClassesActivity.this, SearchClassActivity.class);
 			i.putExtra("FIND", 1);
@@ -145,10 +132,17 @@ public class ListClassesActivity extends BaseMenuActivity {
 			//Log.d("ADD",""+semester+pos);
 			return true;
 		case R.id.replace:
+			replaceID = sClasses.get(semesterPos).get(pos).getID();
+			i = new Intent(ListClassesActivity.this, SearchClassActivity.class);
+			i.putExtra("FIND", 1);
+			i.putExtra("SEMESTER", terms.get(semesterPos));
+			startActivityForResult(i,1);
 			return true;
 		case R.id.delete :
+			Toast.makeText(getApplicationContext(), "Successfully removed "+sClasses.get(semesterPos).get(pos).getTitle(), Toast.LENGTH_SHORT).show();
+			dbU.delete(sClasses.get(semesterPos).get(pos).getID());
+			refresh();
 			return true;
-
 		default:
 			return super.onContextItemSelected(menuItem);
 		}
@@ -168,12 +162,13 @@ public class ListClassesActivity extends BaseMenuActivity {
 					replaceID=-1;
 				}
 				
-					Class c = db.getClass(id);
-					c.setTakenIn(chosenSemester);
-					dbU.addClass(db.getClass(id));
-					refresh();
-				
-				
+				Class c = db.getClass(id);
+				c.setTakenIn(chosenSemester);
+				dbU.addClass(c);
+				Log.d("GETCLASS",db.getClass(id).getTitle()+" "+chosenSemester);
+				refresh();
+
+
 				Log.d("ID returned", ""+id+chosenSemester);
 
 			}
@@ -229,7 +224,7 @@ public class ListClassesActivity extends BaseMenuActivity {
 							Toast.LENGTH_SHORT).show();
 				} else {
 
-				/*	Intent i = new Intent(MainActivity.this,
+					/*	Intent i = new Intent(MainActivity.this,
 							ListClassesActivity.class);
 					i.putStringArrayListExtra("TERMS", mSelectedItems);
 					startActivity(i);*/
@@ -239,10 +234,10 @@ public class ListClassesActivity extends BaseMenuActivity {
 		});
 		builder.setNegativeButton("Cancel",
 				new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int id) {
-						dialog.dismiss();
-					}
-				});
+			public void onClick(DialogInterface dialog, int id) {
+				dialog.dismiss();
+			}
+		});
 
 		AlertDialog dialog = builder.create();
 		dialog.show();

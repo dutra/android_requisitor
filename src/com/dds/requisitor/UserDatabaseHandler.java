@@ -167,14 +167,14 @@ public class UserDatabaseHandler extends SQLiteOpenHelper {
 
 	public void delete(int id) {
 		SQLiteDatabase db = this.getWritableDatabase();
-		db.delete(TABLE_USERCLASSES, KEY_ID + "=?" + id, new String[] {String.valueOf(id)});
+		db.delete(TABLE_USERCLASSES, KEY_ID + "=?", new String[] {String.valueOf(id)});
 		db.close();
 	}
 
 	public void erase(String semester) {
 		String[] whereArg = new String[] { semester };
 		SQLiteDatabase db = this.getWritableDatabase();
-		db.delete(TABLE_USERCLASSES, "KEY_TAKENIN=?", whereArg);
+		db.delete(TABLE_USERCLASSES, KEY_TAKENIN+ " =?", whereArg);
 		//onCreate(db);
 		db.close();
 	}
