@@ -2,6 +2,7 @@ package com.dds.requisitor;
 
 import java.util.ArrayList;
 
+import android.R.integer;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -110,6 +111,19 @@ public class ExploreClassesActivity extends BaseMenuActivity {
 		getMenuInflater().inflate(R.menu.activity_explore_classes, menu);
 		return true;
 	}
+	
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.reset:
+			llTerms.reset();
+			return true;
+		case R.id.clear:
+			llTerms.clearAll();
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
+	}
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
 		if (requestCode == 1) {
@@ -185,10 +199,57 @@ public class ExploreClassesActivity extends BaseMenuActivity {
 			this.sTerms = new ArrayList<String>(); 
 			this.takenClasses = new ArrayList<Class>();
 			takenClasses.addAll(dbU.getClassesBySemesters(up.getTermsS()));
+			sCourses.add(new ArrayList<String>());
+			sClasses.add(new ArrayList<Class>());
+			this.sCourses = new ArrayList<ArrayList<String>>();
+			this.sClasses = new ArrayList<ArrayList<Class>>();
+		}
+		
+		public void reset() {
+			llMain.removeAllViewsInLayout();
+			clearAll();
+			this.tvTerms = new ArrayList<TextView>();
+			this.lists = new ArrayList<ListView>();
+			this.vChilds = new ArrayList<View>();
+			this.ecAdapters = new ArrayList<ExploreClassesArrayAdapter>();
+			this.sCourses = new ArrayList<ArrayList<String>>();
+			this.sClasses = new ArrayList<ArrayList<Class>>();
+			inflate();
+		}
+		
+		public void clearAll() {
+			
+			
+			
+			this.sTerms = new ArrayList<String>(); 
+			this.takenClasses = new ArrayList<Class>();
+			
+			
+			takenClasses.clear();
+			
+			
+			takenClasses.addAll(dbU.getClassesBySemesters(up.getTermsS()));
+			
+			Log.d("adaptorsize",ecAdapters.size()+"");			
+			for(int i=0; i<ecAdapters.size(); i++){
+				sCourses.get(i).clear();
+				sClasses.get(i).clear();
+				
+				for(int j=0;j<6;j++) {
+					sClasses.get(i).add(new Class());
+					sCourses.get(i).add("");
+				}
+				
+				ecAdapters.get(i).notifyDataSetChanged();
+				
+				
+			}
+			
+						
 		}
 
 		public void inflate() {
-
+			
 			for(int i = 0; i<up.getTermsS().size(); i++) {
 				String termS = up.getTermsS().get(i);
 				String termL = up.getTermsL().get(i);
@@ -201,19 +262,21 @@ public class ExploreClassesActivity extends BaseMenuActivity {
 						sClasses.get(i).add(c);
 						sCourses.get(i).add(c.getMajorN()+"."+c.getClassN()+" "+c.getTitle());
 					}
+					Log.d("HERE?", "BUGBUG");
 				}
 				for(int j=0;j<6-sCourses.get(i).size();j++) {
 					sClasses.get(i).add(new Class());
 					sCourses.get(i).add("");
 				}
-
+				
 				sTerms.add(termL);
-
+				
 				vChilds.add(View.inflate(context, R.layout.linear_explore_classes, null));
 				lists.add((ListView)vChilds.get(i).findViewById(R.id.list));
 				lists.get(i).setId(i);
 				tvTerms.add((TextView) vChilds.get(i).findViewById(R.id.tvTerm));
 				tvTerms.get(i).setText(sTerms.get(i));
+			//	Log.d("sTerm",sTerms.get(i));
 				ecAdapters.add(new ExploreClassesArrayAdapter(vChilds.get(i).getContext(), sCourses.get(i)));
 				Log.d("CONTEXT", lists.get(i).toString());
 				lists.get(i).setAdapter(ecAdapters.get(i));

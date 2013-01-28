@@ -1,21 +1,35 @@
-<HorizontalScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/hsvMain"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:layout_margin="0dp"
-    android:fillViewport="true"
-    android:padding="7dp"
+    android:orientation="vertical"
     tools:context=".ExploreClassesActivity" >
 
-    <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/llMain"
+    <TextView
+        android:textSize="30sp"
+        android:textStyle="bold|normal"
         android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
-        android:orientation="horizontal"
-        tools:context=".ExploreClassesActivity" >
-    </LinearLayout>
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:text="Explore Classes" />
 
-</HorizontalScrollView>
+    <HorizontalScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_margin="0dp"
+        android:fillViewport="true"
+        android:padding="7dp" >
+
+        <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/llMain"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:orientation="horizontal"
+            tools:context=".ExploreClassesActivity" >
+        </LinearLayout>
+    </HorizontalScrollView>
+
+</LinearLayout>

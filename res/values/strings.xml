@@ -8,11 +8,15 @@
     <string name="menu_refresh">Refresh Classes</string>
     <string name="menu_search">Search Classes</string>
     <string name="menu_list">List Classes</string>
+    
     <string name="title_activity_fetch_classes">FetchClassesActivity</string>
     <string name="title_activity_list_classes">ListClassesActivity</string>
     <string name="title_activity_user_preferences">UserPreferencesActivity</string>
     <string name="title_activity_find_class">FindClassActivity</string>
     <string name="title_activity_search_class">SearchClassActivity</string>
     <string name="title_activity_explore_classes">ExploreClassesActivity</string>
+    
+    
+    <string name="menu_header">Requisitor</string>
 
 </resources>

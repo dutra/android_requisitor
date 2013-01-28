@@ -2,39 +2,63 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
-    android:background="@drawable/bg_4" >
+    android:background="@drawable/background"
+    android:orientation="vertical"
+    tools:context=".MainActivity" >
 
-    <Button
-        android:id="@+id/btListClasses"
-        android:layout_width="wrap_content"
+    <TextView
+        style="@style/Header"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:onClick="onClickList"
-        android:text="List Classes" />
+        android:text="@string/menu_header" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="30dp"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/btListClasses"
+            style="@style/Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="10dp"
+            android:onClick="onClickList"
+            android:text="List Classes" />
+
+        <Button
+            style="@style/Button"
+            
+            android:drawablePadding="10sp"
+            android:id="@+id/btSearch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:onClick="onClickSearch"
+            android:text="Search" />
+    </LinearLayout>
 
     <Button
         android:id="@+id/btFetch"
+        style="@style/Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:layout_margin="10dp"
         android:onClick="onClickFetch"
         android:text="Fetch" />
-        <Button
-        android:id="@+id/btSearch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:onClick="onClickSearch"
-        android:text="Search" />
-        <Button
+
+    <Button
         android:id="@+id/btSearch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:onClick="onClickExplore"
         android:text="Explore" />
-        <Button
+
+    <Button
         android:id="@+id/btSearch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
