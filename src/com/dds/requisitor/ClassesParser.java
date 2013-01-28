@@ -28,6 +28,8 @@ public class ClassesParser {
 	private int _spring = 0;
 	private ArrayList<Integer> _prereq = new ArrayList<Integer>();
 	private ArrayList<Integer> _coreq = new ArrayList<Integer>();
+	
+	private ArrayList<Integer> allids = new ArrayList<Integer>();
 
 	public void parseClasses(String d) {
 
@@ -41,6 +43,8 @@ public class ClassesParser {
 					continue;
 
 				_id = aj.getJSONObject(i).getString("id").hashCode();
+				if(allids.contains(_id)) { continue; }
+				allids.add(_id);
 				_majorN = aj.getJSONObject(i).getString("id").split("\\.", 2)[0];
 				_classN = aj.getJSONObject(i).getString("id").split("\\.", 2)[1];
 				_title = aj.getJSONObject(i).getString("shortLabel");

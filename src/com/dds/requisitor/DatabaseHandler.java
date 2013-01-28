@@ -314,7 +314,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	public ArrayList<Class> getAllPrereqs(int postreqid) {
 		HashSet<Integer> originId = new HashSet<Integer>();
 				originId.add(postreqid);
-		HashSet<Integer> prereqs = getAllPrereqsHelper(originId, new HashSet<Integer>());
+		HashSet<Integer> prereqs = new HashSet<Integer>();
+		prereqs.addAll(getAllPrereqsHelper(originId, new HashSet<Integer>()));
+		
+		while(prereqs.remove(null)); //get rid of null values
 		
 		return getClasses(new ArrayList<Integer>(prereqs));
 	}

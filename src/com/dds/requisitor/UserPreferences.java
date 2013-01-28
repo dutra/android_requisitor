@@ -38,6 +38,8 @@ public class UserPreferences {
 		courseNall = new ArrayList<String>();
 		courseSall = new ArrayList<String>();
 		courseURLall = new ArrayList<String>();
+		courseNall.add("5");
+		courseSall.add("Chemistry");
 		courseNall.add("6");
 		courseSall.add("Electrical Engineering and Computer Science");
 		courseNall.add("8");

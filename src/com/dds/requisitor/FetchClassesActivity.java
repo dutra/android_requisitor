@@ -34,7 +34,7 @@ public class FetchClassesActivity extends Activity {
 
 			//Log.i("System out", "url:" + url);
 			connection = (HttpURLConnection) url.openConnection();
-			connection.setConnectTimeout(1000 * 1); // Timeout is in seconds
+			connection.setConnectTimeout(1000 * 3); // Timeout is in seconds
 			InputStreamReader is = new InputStreamReader(connection
 					.getInputStream());
 			BufferedReader buff = new BufferedReader(is);
@@ -57,12 +57,12 @@ public class FetchClassesActivity extends Activity {
 		return jsonstring.toString().trim();
 	}
 
-	private final class ProgressBarAsyncTask extends AsyncTask<Void, Integer, Boolean> { //<Params, Progress, Result>
+	private final class ProgressBarAsyncTask extends AsyncTask<Void, String, Boolean> { //<Params, Progress, Result>
 		private ProgressDialog pd;
 		private ArrayList<String> MESSAGES = new ArrayList<String>(); 
 
 
-		private String http;
+		
 
 		/**
 		 * This method will be called before the execution of the task. Here we 
@@ -98,13 +98,13 @@ public class FetchClassesActivity extends Activity {
 			//Log.d(LOG_TAG, "Post-Execute: " + result);
 			super.onPostExecute(result);
 			try {
-		        pd.dismiss();
-		        pd = null;
-		        finish();
-		    } catch (Exception e) {
-		        // nothing
-		    }
-			
+				pd.dismiss();
+				pd = null;
+				finish();
+			} catch (Exception e) {
+				// nothing
+			}
+
 		}				
 
 		/**
@@ -116,16 +116,25 @@ public class FetchClassesActivity extends Activity {
 		 */
 
 		@Override
+		/*
 		protected void onProgressUpdate(Integer... progress) {
 			Log.d(LOG_TAG, "Progress Update: " + progress[0].toString());
-			super.onProgressUpdate(progress[0]);
+			super.onProgressUpdate(progress);
 			if(progress.length>1) {
+				if(progress[2]==0) {
 				pd.setMessage(MESSAGES.get(progress[0])+up.getcourseNall().get(progress[1])+"...");
+				}
+				if(progress[2]==1) {
+					pd.setMessage(MESSAGES.get(progress[0])+up.getcourseNall().get(progress[1])+"...");
+					}
 			}
 			else {
 				pd.setMessage(MESSAGES.get(progress[0]));
 			}
 
+		}*/
+		protected void onProgressUpdate(String... message) {
+			pd.setMessage(message[0]);
 		}
 
 		/**
@@ -137,30 +146,50 @@ public class FetchClassesActivity extends Activity {
 		 */
 		@Override
 		protected Boolean doInBackground(Void... params) {
-			try {
-				db.eraseAll();
-				
+			
+			try {				
 
-				for(int i=0; i<up.getcourseNall().size(); i++) {
-					publishProgress(2,i);
-					//Thread.sleep(100);
-					if((http = downloadJSON("http://coursews.mit.edu/coursews/?term=2013SP&courses="+up.getcourseNall().get(i)))== null) {
-						publishProgress(5);
-						Thread.sleep(3000);
-						return false;
+				for(int term=0; term<2; term++) {
+					String http = new String();
+					if(term==0) {
+						for(int i=0; i<up.getcourseNall().size(); i++) {
+							publishProgress("Downloading classes for course "+up.getcourseNall().get(i)+" from previous semester...");
+							//Thread.sleep(100);
+							if((http = downloadJSON("http://coursews.mit.edu/coursews/?term=2012FA&courses="+up.getcourseNall().get(i)))== null) {
+								publishProgress("Something went wrong. Are you connected to the internet?");
+								Thread.sleep(3000);
+								return false;
+							}
+							//publishProgress("Parsing..."); //parsing
+							cp.parseClasses(http);
+						}
 					}
-					publishProgress(3); //parsing
-				//	Log.d("CP", "parsingClasses");
-					cp.parseClasses(http);
+					if(term==1) {
+						for(int i=0; i<up.getcourseNall().size(); i++) {
+							publishProgress("Downloading classes for course "+up.getcourseNall().get(i)+" from current semester...");
+							//Thread.sleep(100);
+							if((http = downloadJSON("http://coursews.mit.edu/coursews/?term=2013SP&courses="+up.getcourseNall().get(i)))== null) {
+								publishProgress("Something went wrong. Are you connected to the internet?");
+								Thread.sleep(3000);
+								return false;
+							}
+							cp.parseClasses(http);
+						}
+					}
+
+
+					
 					//Log.d("CP", "gettingClasses");
 					//Thread.sleep(100);
 				}
-				publishProgress(4); //saving to db
+
+				publishProgress("Updating database... This may take a couple of minutes."); //saving to db
 				Log.d("DB", "Saving to db");
+				db.eraseAll();
 				db.addClasses(cp.getClasses());
 				//Thread.sleep(200);
 
-				publishProgress(6);
+				publishProgress("And we're all done!");
 				Thread.sleep(300);
 
 

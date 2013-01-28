@@ -2,10 +2,9 @@ package com.dds.requisitor;
 
 import java.util.ArrayList;
 
-import com.dds.requisitor.R.id;
-
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -17,12 +16,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
 
 public class ExploreClassesActivity extends BaseMenuActivity {
 	LinearLayoutTerms llTerms;
@@ -74,7 +72,7 @@ public class ExploreClassesActivity extends BaseMenuActivity {
 			l = (ListView) info.targetView.getParent();
 
 		} catch (ClassCastException e) {
-			Log.e("", "bad menuInfo", e);
+			//Log.e("", "bad menuInfo", e);
 			return false;
 		}
 		switch (item.getItemId()) {
@@ -230,21 +228,87 @@ public class ExploreClassesActivity extends BaseMenuActivity {
 					@Override
 					public void onItemClick(AdapterView<?> parent, View view,
 							int position, long id) {
+						int semester = parent.getId();
 						//int semesterSelectedPos = i;
 						//if(lastSelected!=-1) {
 						//TextView tvLastSelected = (TextView) view.findViewById(R.id.label);
-						TextView tvSelected = (TextView) view.findViewById(R.id.label);
-						tvSelected.setText(""+position+" "+id);
+
+
+
+
+						if(sClasses.get(semester).get(position)!=null) {
+							//tvSelected = (TextView) lists.get(semester).getChildAt(position).findViewById(R.id.label);
+							//tvSelected.setText(""+position+" "+parent.getId());
+							TextView tvSelected = (TextView) view.findViewById(R.id.label);
+
+
+							if(semester==lastSelectedSemester&&position==lastSelectedPos) {
+								//tvSelected.setTextAppearance(getApplicationContext(), R.style.normalText);
+								highlightClearAll();
+								lastSelectedSemester=lastSelectedPos=-1;
+
+							}
+							else {
+								tvSelected.setBackgroundColor(getResources().getColor(android.R.color.darker_gray));
+								tvSelected.setTextAppearance(getApplicationContext(), R.style.boldText);
+								tvSelected.setTypeface(null,Typeface.BOLD);
+								//tvSelected.setTextAppearance(tvSelected.getContext(), android.R.style.)
+								highlightPreReqsFrom(sClasses.get(semester).get(position));
+								tvSelected.setTypeface(null,Typeface.BOLD);
+								lastSelectedPos=position;
+								lastSelectedSemester=semester;
+							}
+							//Log.d("title:", tvSelected.getText());
+							//	Log.d("child",lists.get(semester).getChildAt(position).findViewById(R.id.label));
+						}
+						//
 						//tvSelected.setBackgroundColor(getResources().getColor(android.R.color.background_light));
 						//}
-						Log.d("view", view.toString());
+						//Log.d("view", view.toString());
 					}
 				});
 			}
 		}
-		public void highlightAll(ArrayList<Class> cc) {
+		public void highlightPreReqsFrom(Class c) {
+
+			ArrayList<Class> prereqs = new ArrayList<Class>();
+			prereqs.addAll(db.getAllPrereqs(c.getID()));
+			highlightClearAll();
+
+			int prereqsmissing = prereqs.size();
+
+			for(Class p : prereqs) {
+				if(p.getTitle()==null) { prereqsmissing--; continue; }
+				Log.d("P",p.getMajorN()+"."+p.getClassN()+" "+p.getTitle());
+				for(int semester=0; semester<sTerms.size(); semester++) {
+
+					for(int pos=0; pos<sClasses.get(semester).size(); pos++) {
+						Class ac = sClasses.get(semester).get(pos);
+						if(ac.getID()==p.getID()&&ac.getTitle()!=null) {
+							prereqsmissing--;
+							TextView tv = (TextView) lists.get(semester).getChildAt(pos).findViewById(R.id.label);
+							tv.setBackgroundColor(getResources().getColor(android.R.color.darker_gray));
+						}
+					}
+
+
+				}
+			}
+			Log.d("prereqsmissing",""+prereqsmissing);
 
 		}
+		public void highlightClearAll() {
+			for(int semester=0; semester<sTerms.size(); semester++) {
+				for(int pos=0; pos<sClasses.get(semester).size(); pos++) {
+					TextView tv = (TextView) lists.get(semester).getChildAt(pos).findViewById(R.id.label);
+					tv.setBackgroundColor(getResources().getColor(android.R.color.background_light));
+					if(semester==lastSelectedSemester&&pos==lastSelectedPos) {
+						tv.setTextAppearance(getApplicationContext(), R.style.normalText);
+					}
+				}
+			}
+		}
+
 		public void setTermTitle(int i, String s) {
 			try {
 				sTerms.set(i, s);
