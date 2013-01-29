@@ -268,8 +268,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 //			majorN = splitSearch[0];
 			cursor = db.query(TABLE_CLASSES, new String[] { KEY_ID, KEY_MAJORN,
 					KEY_CLASSN, KEY_TITLE, KEY_UNITS, KEY_DESCRIPTION,
-					KEY_FALL, KEY_SPRING }, KEY_TITLE + " LIKE ?",
-					new String[] { search + "%" }, null, null, null, null);
+					KEY_FALL, KEY_SPRING }, KEY_DESCRIPTION + " LIKE ?" + " OR " + KEY_TITLE + " LIKE ?",
+					new String[] { "%"+search + "%", "%"+search + "%" }, null, null, null, null);
 
 //		}
 //		if (splitSearch.length == 2) {
