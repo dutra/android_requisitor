@@ -33,18 +33,19 @@ public class BaseMenuActivity extends Activity {
 			i.putStringArrayListExtra("TERMS", up.getTermsS());
 			startActivity(i);
 			return true;
-		case R.id.menu_settings:
-			startActivity(new Intent(this, UserPreferencesActivity.class));
+//		case R.id.menu_settings:
+//			startActivity(new Intent(this, UserPreferencesActivity.class));
+//			return true;
+		case R.id.menu_help:
+			startActivity(new Intent(this, HelpActivity.class));
 			return true;
 		case R.id.menu_refresh:
 			startActivity(new Intent(this, FetchClassesActivity.class));
 			return true;
-		case R.id.menu_about:
-			startActivity(new Intent(this, AboutUsActivity.class));
-			return true;
-		case R.id.menu_help:
-			startActivity(new Intent(this, HelpActivity.class));
-			return true;
+//		case R.id.menu_about:
+//			startActivity(new Intent(this, AboutUsActivity.class));
+//			return true;
+
 
 		default:
 			return super.onOptionsItemSelected(item);

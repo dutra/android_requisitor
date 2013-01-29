@@ -26,7 +26,9 @@
     <string name="about_desc">We are MIT students participating in the IAP 2013 6.570 Android programming competition.</string>
    
     
-    <string name="help_1">What is Requisitor? \n Requisitor is an app designed to help MIT students plan out and maintain their class schedules quickly and painlessly. </string>
+    <string name="help_1"><h2>What is Requisitor? Title</h2><br></br><p>Requisitor is an app designed to help MIT students plan out and maintain their class schedules quickly and painlessly.</p> </string>
+<!--     <string name="help_1">&gt;&lt;h2&gt;What is Requisitor? Title&lt;/h2&gt;&lt;br&gt;&lt;/br&gt;&lt;p&gt;Requisitor is an app designed to help MIT students plan out and maintain their class schedules quickly and painlessly.&lt;/p&gt;</string> -->
+    
     <string name="help_2">What can I do on Requisitor? \n You can use Requisitor to explore classes available across departments, check pre-reqs, plan class trajectories throughout your MIT career, taking into account pre-reqs and offering availability. </string>
     <string name="help_3">How do I use “Search Classes”? \n To find a class, limit your search by course, (partial) class number or keyword and scroll to browse. To input a class number or keyword to search, click on the button with a course number followed by a period (in position 1). A keyboard opens and the list updates with every input. To browse by course number or reset the list, click the button with just a course number (in position 2) and select a course from the drop down list. To see a class description, click on the class (as in position 3). To add a class, click on the class, select the term to add to from the drop down menu, and hit “Add Class”.</string>
     <string name="help_4">All chosen classes can be seen by semester in either the “List Classes” or the “Explore Classes” View.</string>
