@@ -6,7 +6,6 @@
     android:layout_height="fill_parent"
     android:background="@drawable/background_grey_grad"
     android:orientation="vertical"
-    
     tools:context=".HelpActivity" >
 
     <TextView
@@ -53,12 +52,12 @@
                         <TextView
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
-                            android:text="@string/help_1"
-                             />
+                            android:text="@string/help_1" />
                     </LinearLayout>
 
-                    <Button style="@style/Button"
+                    <Button
                         android:id="@+id/expand1"
+                        style="@style/Button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="More" />
@@ -89,13 +88,12 @@
                         <TextView
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
-                            android:text="help_2"
-                             />
+                            android:text="@string/help_2" />
                     </LinearLayout>
 
-                    <Button style="@style/Button"
-                        
+                    <Button
                         android:id="@+id/expand2"
+                        style="@style/Button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="More" />
@@ -126,9 +124,15 @@
                         <TextView
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
-                            android:text="help_3"
-                             />
+                            android:text="@string/help_3" />
                     </LinearLayout>
+
+                    <Button
+                        android:id="@+id/expand3"
+                        style="@style/Button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="More" />
 
                     <ImageView
                         android:id="@+id/help_3_pic"
@@ -137,12 +141,6 @@
                         android:layout_margin="10dp"
                         android:gravity="fill"
                         android:src="@drawable/help_3" />
-
-                    <Button style="@style/Button" 
-                        android:id="@+id/expand3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="More" />
                 </com.dds.requisitor.ExpandablePanel>
             </LinearLayout>
 
@@ -170,12 +168,12 @@
                         <TextView
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
-                            android:text="help_4"
-                             />
+                            android:text="@string/help_4" />
                     </LinearLayout>
 
-                    <Button style="@style/Button"
+                    <Button
                         android:id="@+id/expand4"
+                        style="@style/Button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="More" />
@@ -206,12 +204,12 @@
                         <TextView
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
-                            android:text="help_5"
-                             />
+                            android:text="@string/help_5" />
                     </LinearLayout>
 
-                    <Button style="@style/Button"
+                    <Button
                         android:id="@+id/expand5"
+                        style="@style/Button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="More" />
@@ -242,8 +240,7 @@
                         <TextView
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
-                            android:text="help_6"
-                             />
+                            android:text="@string/help_6" />
                     </LinearLayout>
 
                     <ImageView
@@ -254,8 +251,9 @@
                         android:gravity="fill"
                         android:src="@drawable/help_6" />
 
-                    <Button style="@style/Button"
+                    <Button
                         android:id="@+id/expand6"
+                        style="@style/Button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="More" />
@@ -286,12 +284,12 @@
                         <TextView
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
-                            android:text="help_7"
-                             />
+                            android:text="@string/help_7" />
                     </LinearLayout>
 
-                    <Button style="@style/Button"
+                    <Button
                         android:id="@+id/expand7"
+                        style="@style/Button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="More" />
@@ -322,12 +320,12 @@
                         <TextView
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
-                            android:text="help_8"
-                             />
+                            android:text="@string/help_8" />
                     </LinearLayout>
 
-                    <Button style="@style/Button"
+                    <Button
                         android:id="@+id/expand8"
+                        style="@style/Button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="More" />
@@ -358,8 +356,7 @@
                         <TextView
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
-                            android:text="help_9"
-                             />
+                            android:text="@string/help_9" />
                     </LinearLayout>
 
                     <ImageView
@@ -370,8 +367,9 @@
                         android:gravity="fill"
                         android:src="@drawable/help_9" />
 
-                    <Button style="@style/Button"
+                    <Button
                         android:id="@+id/expand9"
+                        style="@style/Button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="More" />

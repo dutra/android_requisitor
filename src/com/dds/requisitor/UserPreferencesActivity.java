@@ -46,7 +46,6 @@ public class UserPreferencesActivity extends BaseMenuActivity {
 		if (load == 0) {
 			etName.setText(up.getName());
 			spCourse.setSelection(up.getcourseNall().indexOf(up.getCourseN()));
-			spCourse.setSelection(years.indexOf(up.getGrade()));
 			spYear.setSelection(years.indexOf(up.getGrade()));
 		}
 
