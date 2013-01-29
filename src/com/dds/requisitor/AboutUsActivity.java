@@ -1,7 +1,9 @@
 package com.dds.requisitor;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.DialogInterface.OnCancelListener;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -22,6 +24,18 @@ public class AboutUsActivity extends BaseMenuActivity {
 		
 		pd = new Dialog(this, android.R.style.Theme_Translucent_NoTitleBar);
 		pd.setContentView(R.layout.dialog_class_about_us);	
+		
+		pd.setCancelable(true);
+		pd.setOnCancelListener(new OnCancelListener() {
+			
+			@Override
+			public void onCancel(DialogInterface dialog) {
+				pd.dismiss();
+				
+				finish();
+				
+			}
+		});
 		
 		//pd.setTitle("About Us");
 		
