@@ -66,6 +66,9 @@ public class UserPreferencesActivity extends BaseMenuActivity {
 		etName.setText("");
 		spCourse.setSelection(0);
 		spYear.setSelection(0);
+		
+		up.save();
+		finish();
 
 	}
 

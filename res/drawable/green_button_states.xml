@@ -25,13 +25,12 @@
     <item><shape>
             <gradient android:angle="270" android:endColor="@color/bright_green" android:startColor="@color/light_green" />
 
-            <stroke android:width="3sp" android:color="@color/bright_green" />
+            <stroke android:width="1sp" android:color="@color/bright_green" />
 
-            <corners android:bottomRightRadius="12dp" android:bottomLeftRadius="12dp" 
-     android:topLeftRadius="12dp" android:topRightRadius="12dp"/> 
+            <corners android:bottomRightRadius="7dp" android:bottomLeftRadius="7dp" 
+     android:topLeftRadius="7dp" android:topRightRadius="7dp"/> 
 
             <padding android:bottom="10sp" android:left="20sp" android:right="20sp" android:top="10sp" />
-            
         </shape></item>
 
 </selector>
