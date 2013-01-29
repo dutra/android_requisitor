@@ -5,18 +5,17 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnCancelListener;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
-import android.widget.Toast;
 
 public class FetchClassesActivity extends Activity {
 	UserPreferences up = new UserPreferences(FetchClassesActivity.this);
@@ -24,7 +23,7 @@ public class FetchClassesActivity extends Activity {
 	DatabaseHandler db = new DatabaseHandler(FetchClassesActivity.this);
 	String LOG_TAG = "FetchClassesActivity";
 	//ArrayList<Class> _classes = new ArrayList<Class>();
-
+	ProgressBarAsyncTask pbTask;
 	private String downloadJSON(String s){
 		URL url;
 		StringBuffer jsonstring = null;
@@ -83,6 +82,16 @@ public class FetchClassesActivity extends Activity {
 
 			pd = ProgressDialog.show(FetchClassesActivity.this, "Please wait", MESSAGES.get(0), true);
 			pd.setCancelable(true);
+			pd.setOnCancelListener(new OnCancelListener() {
+				
+				@Override
+				public void onCancel(DialogInterface dialog) {
+					pd.dismiss();
+					db.eraseAll();
+					finish();
+					
+				}
+			});
 
 		}
 
@@ -97,6 +106,10 @@ public class FetchClassesActivity extends Activity {
 		protected void onPostExecute(Boolean result) {
 			//Log.d(LOG_TAG, "Post-Execute: " + result);
 			super.onPostExecute(result);
+			if(this.isCancelled()) {
+				db.eraseAll();
+				pd.dismiss();
+				finish();
 			try {
 				pd.dismiss();
 				pd = null;
@@ -104,6 +117,8 @@ public class FetchClassesActivity extends Activity {
 			} catch (Exception e) {
 				// nothing
 			}
+			    //pass data to receiver
+		    }
 
 		}				
 
@@ -150,6 +165,11 @@ public class FetchClassesActivity extends Activity {
 			try {				
 
 				for(int term=0; term<2; term++) {
+					
+					if (this.isCancelled()) {
+				        return null;
+				    }
+					
 					String http = new String();
 					if(term==0) {
 						for(int i=0; i<up.getcourseNall().size(); i++) {
@@ -205,14 +225,26 @@ public class FetchClassesActivity extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		ProgressBarAsyncTask pbTask = new ProgressBarAsyncTask();
+		pbTask = new ProgressBarAsyncTask();
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_fetch_classes);
 		pbTask.execute();
 
 	}
 
+	protected void onStop() {
+	    super.onStop();
 
+	    /*
+	    * The device may have been rotated and the activity is going to be destroyed
+	    * you always should be prepared to cancel your AsnycTasks before the Activity
+	    * which created them is going to be destroyed.
+	    * And dont rely on mayInteruptIfRunning
+	    */
+	    if (this.pbTask != null) {
+	        this.pbTask.cancel(false);
+	    }
+	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
