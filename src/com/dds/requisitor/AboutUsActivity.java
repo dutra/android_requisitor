@@ -1,25 +1,16 @@
 package com.dds.requisitor;
 
-import java.util.ArrayList;
-
-import android.app.AlertDialog;
-import android.content.DialogInterface;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.ContextMenu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.ContextMenu.ContextMenuInfo;
-import android.widget.AdapterView;
-import android.widget.ExpandableListView;
-import android.widget.GridView;
-import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ExpandableListView.ExpandableListContextMenuInfo;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 
 public class AboutUsActivity extends BaseMenuActivity {
+	Dialog pd;
+	
+	
 //	UserPreferences up = new UserPreferences(AboutUsActivity.this);
 //	ArrayList<String> mSelectedItems;
 //	ArrayList<String> smList;
@@ -27,7 +18,23 @@ public class AboutUsActivity extends BaseMenuActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_about);
+		//setContentView(R.layout.dialog_class_about_us);
+		
+		pd = new Dialog(this, android.R.style.Theme_Translucent_NoTitleBar);
+		pd.setContentView(R.layout.dialog_class_about_us);	
+		
+		//pd.setTitle("About Us");
+		
+		Button btClose = (Button) pd.findViewById(R.id.btClose);
+		// if button is clicked, close the custom dialog
+		btClose.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				pd.dismiss();
+			}
+		});
+
+		pd.show();
 
 	}
 	

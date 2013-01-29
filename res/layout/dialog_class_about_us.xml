@@ -1,24 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/background_grey_grad"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp"
     android:orientation="vertical"
-    tools:context=".UserPreferencesActivity" >
-<!-- 
-    <TextView
-        style="@style/Header"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:text="About Us" />
+    android:layout_gravity="center">
 
     <LinearLayout
+        android:id="@+id/dialog_about_ll"
+        android:background="@drawable/background_dialog_dark"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:background="@drawable/secondary_grey_grad"
+        
         android:gravity="center_horizontal"
         android:orientation="vertical"
         android:padding="10sp" >
@@ -56,25 +50,19 @@
                 android:text="@string/about_desc" />
         </LinearLayout>
 
-        <ImageView
-        android:id="@+id/about_req_pic"
-        android:layout_width="230dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:gravity="fill"
-        android:src:="@drawable/req_pic"
-        />
-
-        <Button
-            android:id="@+id/about_contact"
-            style="@style/Button"
-            android:layout_width="230dp"
+        <LinearLayout
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:gravity="fill"
-            android:onClick="OnClickContactUs"
-            android:text="Contact Us" />
+            android:gravity="right"
+            android:orientation="horizontal" >
 
+            <Button
+                android:id="@+id/btClose"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text=" Close " />
+        </LinearLayout>
     </LinearLayout>
- -->
+
 </LinearLayout>

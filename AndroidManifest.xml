@@ -64,7 +64,7 @@
             android:name="com.dds.requisitor.AboutUsActivity"
             android:configChanges="orientation"
             android:label="@string/title_activity_about_us"
-            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
         </activity>
         <activity
             android:name="com.dds.requisitor.HelpActivity"
