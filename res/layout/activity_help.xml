@@ -184,6 +184,14 @@
                         android:id="@+id/tv5"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content" />
+
+                    <ImageView
+                        android:id="@+id/help_5_pic"
+                        android:layout_width="230dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:gravity="fill"
+                        android:src="@drawable/help_5" />
                 </LinearLayout>
 
                 <Button
@@ -286,6 +294,14 @@
                         android:id="@+id/tv8"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content" />
+
+                    <ImageView
+                        android:id="@+id/help_8_pic"
+                        android:layout_width="230dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:gravity="fill"
+                        android:src="@drawable/help_8" />
                 </LinearLayout>
 
                 <Button
@@ -318,14 +334,6 @@
                         android:id="@+id/tv9"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content" />
-
-                    <ImageView
-                        android:id="@+id/help_9_pic"
-                        android:layout_width="230dp"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        android:gravity="fill"
-                        android:src="@drawable/help_9" />
                 </LinearLayout>
 
                 <Button
@@ -335,9 +343,8 @@
                     android:layout_height="wrap_content"
                     android:text="More" />
             </com.dds.requisitor.ExpandablePanel>
-            
-            
-                        <com.dds.requisitor.ExpandablePanel
+
+            <com.dds.requisitor.ExpandablePanel
                 xmlns:expandablepanel="http://schemas.android.com/apk/res/com.dds.requisitor"
                 xmlns:android="http://schemas.android.com/apk/res/android"
                 android:id="@+id/ep10"
@@ -359,8 +366,6 @@
                         android:id="@+id/tv10"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content" />
-
-
                 </LinearLayout>
 
                 <Button
