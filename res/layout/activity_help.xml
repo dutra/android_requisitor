@@ -1,4 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
+<com.dds.requisitor.ExpandablePanel 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    example:collapsedHeight="50dip"
+    example:content="@+id/value"
+    example:handle="@+id/expand" >
+
+    <TextView
+        android:id="@id/value"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:maxHeight="50dip" />
+
+    <Button
+        android:id="@id/expand"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="More" />
+
+</com.dds.requisitor.ExpandablePanel>
+
+<!--
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -187,3 +211,4 @@
     </LinearLayout>
 
 </LinearLayout>
+-->
