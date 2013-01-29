@@ -64,20 +64,20 @@ public class UserPreferences {
 		Calendar calendar = Calendar.getInstance();
 		int year = calendar.get(Calendar.YEAR);
 		if(grade.equals("Freshman")) {
-			termsS = initializeTermsS(year);
-			termsL = initializeTermsL(year);
-		}
-		if(grade.equals("Sophomore")) {
 			termsS = initializeTermsS(year-1);
 			termsL = initializeTermsL(year-1);
 		}
-		if(grade.equals("Junior")) {
+		if(grade.equals("Sophomore")) {
 			termsS = initializeTermsS(year-2);
 			termsL = initializeTermsL(year-2);
 		}
-		if(grade.equals("Senior")) {
+		if(grade.equals("Junior")) {
 			termsS = initializeTermsS(year-3);
 			termsL = initializeTermsL(year-3);
+		}
+		if(grade.equals("Senior")) {
+			termsS = initializeTermsS(year-4);
+			termsL = initializeTermsL(year-4);
 		}
 	}
 	private ArrayList<String> initializeTermsS(int initialyear) {
