@@ -29,6 +29,10 @@ public class ImageAdapter extends BaseAdapter {
 			return "list";
 		case 3:
 			return "up";
+		case 4:
+			return "help";
+		case 5:
+			return "about";
 		}
 		return null;
 	}
@@ -60,7 +64,7 @@ public class ImageAdapter extends BaseAdapter {
 
 	// references to our images
 	private Integer[] mThumbIds = { R.drawable.explore_tr, R.drawable.search_tr,
-			R.drawable.list_tr, R.drawable.settings_tr,
+			R.drawable.list_tr, R.drawable.settings_tr, R.drawable.help_tr,R.drawable.about_tr
 
 	};
 

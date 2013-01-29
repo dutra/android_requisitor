@@ -39,6 +39,12 @@ public class BaseMenuActivity extends Activity {
 		case R.id.menu_refresh:
 			startActivity(new Intent(this, FetchClassesActivity.class));
 			return true;
+		case R.id.menu_about:
+			startActivity(new Intent(this, AboutUsActivity.class));
+			return true;
+		case R.id.menu_help:
+			startActivity(new Intent(this, HelpActivity.class));
+			return true;
 
 		default:
 			return super.onOptionsItemSelected(item);

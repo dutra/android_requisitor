@@ -8,6 +8,8 @@
     <string name="menu_explore">Explore Classes</string>
     <string name="menu_erase_up">Erase User Prefs</string>
     <string name="menu_refresh">Refresh Classes</string>
+    <string name="menu_about">About Us</string>
+    <string name="menu_help">Help</string>
     <string name="menu_search">Search Classes</string>
     <string name="menu_list">List Classes</string>
     
@@ -17,8 +19,16 @@
     <string name="title_activity_find_class">FindClassActivity</string>
     <string name="title_activity_search_class">SearchClassActivity</string>
     <string name="title_activity_explore_classes">ExploreClassesActivity</string>
-    
-    
+    <string name="title_activity_about_us">AboutUsActivity</string>
+    <string name="title_activity_help">HelpActivity</string>
     <string name="menu_header">Requisitor</string>
-
+    <!-- <string name="about_desc">We are a group of two participating in MIT\'s 6.570 Android programming competition in IAP 2013. We have created Requisitor in hopes of helping MIT students plan out and maintain their class schedules quickly and painlessly. We hope that are enjoying it!</string> -->
+    
+    <string name="about_desc">We are MIT students participating in the IAP 2013 6.570 Android programming competition.</string>
+    
+    <string name="help_search">Search Help: </string>
+    <string name="help_list">List Help:</string>
+    <string name="help_explore">Explore Help:</string>
+    <string name="help_settings">Settings Help:</string>
+    
 </resources>

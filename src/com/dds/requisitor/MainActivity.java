@@ -111,6 +111,12 @@ public class MainActivity extends BaseMenuActivity {
 				case 3:
 					onClickUP(v);
 					break;
+				case 4:
+					onClickHelp(v);
+					break;
+				case 5:
+					onClickAbout(v);
+					break;
 				}
 			}
 		});
@@ -144,6 +150,16 @@ public class MainActivity extends BaseMenuActivity {
 
 	public void onClickExplore(View v) {
 		Intent i = new Intent(v.getContext(), ExploreClassesActivity.class);
+		startActivity(i);
+
+	}
+	public void onClickHelp(View v) {
+		Intent i = new Intent(v.getContext(), HelpActivity.class);
+		startActivity(i);
+
+	}
+	public void onClickAbout(View v) {
+		Intent i = new Intent(v.getContext(), AboutUsActivity.class);
 		startActivity(i);
 
 	}
