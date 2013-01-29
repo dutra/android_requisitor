@@ -161,7 +161,7 @@ public class HelpActivity extends BaseMenuActivity{
 		    }
 		});
 		
-	/*	ExpandablePanel panel7 = (ExpandablePanel) findViewById(R.id.ep7);
+		ExpandablePanel panel7 = (ExpandablePanel) findViewById(R.id.ep7);
 		panel2.setOnExpandListener(new ExpandablePanel.OnExpandListener() {
 		    public void onCollapse(View handle, View content) {
 		        Button btn = (Button)handle;
@@ -171,7 +171,7 @@ public class HelpActivity extends BaseMenuActivity{
 		        Button btn = (Button)handle;
 		        btn.setText("Less");
 		    }
-		});*/
+		});
 		
 		ExpandablePanel panel8 = (ExpandablePanel) findViewById(R.id.ep8);
 		panel2.setOnExpandListener(new ExpandablePanel.OnExpandListener() {
