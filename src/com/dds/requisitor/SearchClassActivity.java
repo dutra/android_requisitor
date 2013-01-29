@@ -43,7 +43,7 @@ public class SearchClassActivity extends BaseMenuActivity {
 	Class selectedClass = new Class();
 	String requestedSemester;
 	int requested=0;
-	
+
 	private class SearchClassArrayAdapter extends ArrayAdapter<String> {
 		private final Context context;
 		private final ArrayList<String> values;
@@ -73,13 +73,14 @@ public class SearchClassActivity extends BaseMenuActivity {
 		}
 	}
 
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 
 		myadapter = new SearchClassArrayAdapter(this, courses);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_search_class);
-		
+
 		Bundle extras = getIntent().getExtras();
 		if (extras != null) {
 			find = extras.getInt("FIND");
@@ -92,13 +93,13 @@ public class SearchClassActivity extends BaseMenuActivity {
 		list = (ListView) findViewById(R.id.list);
 
 		list.setAdapter(myadapter);
-
+		
 		etCourse = (EditText) findViewById(R.id.etCourse);
 
 		spCourse = (Spinner) findViewById(R.id.spCourse);
 		spCourse.setFocusable(true); 
 		spCourse.setFocusableInTouchMode(true);
-		spCourse.requestFocus();
+		list.requestFocus();
 
 		ArrayAdapter<String> dataAdapterCourse = new ArrayAdapter<String>(this,
 				android.R.layout.simple_spinner_item, up.getcourseNall());
@@ -106,7 +107,7 @@ public class SearchClassActivity extends BaseMenuActivity {
 		.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
 		spCourse.setAdapter(dataAdapterCourse);
-	
+
 		spCourse.setOnItemSelectedListener(new OnItemSelectedListener() {
 
 			@Override
@@ -126,7 +127,7 @@ public class SearchClassActivity extends BaseMenuActivity {
 			}
 
 		});
-		
+
 		etCourse.addTextChangedListener(new TextWatcher() {
 			public void afterTextChanged(Editable e) {
 				updateList(e.toString());
@@ -140,15 +141,15 @@ public class SearchClassActivity extends BaseMenuActivity {
 					int count) {
 			}
 		});
-		
+
 
 		list.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				
+
 				selectedClass = classes.get(position);
-			//	Log.d("PREREQ_CHECKER", selectedClass.getPrereqid().toString());
+				//	Log.d("PREREQ_CHECKER", selectedClass.getPrereqid().toString());
 				// custom dialog
 				final Dialog dialog = new Dialog(SearchClassActivity.this);
 				dialog.setContentView(R.layout.dialog_class_info);
@@ -172,8 +173,8 @@ public class SearchClassActivity extends BaseMenuActivity {
 				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
 				spTakenIn.setAdapter(dataAdapterTakenIn);
-				
-				
+
+
 
 				//Log.d("BUG", termsL.toString());
 				if (up.getTermsS().indexOf(classes.get(position).getTakenIn()) > -1) {
@@ -184,7 +185,7 @@ public class SearchClassActivity extends BaseMenuActivity {
 					spTakenIn.setSelection(up.getTermsS().indexOf(
 							up.getCurrentTermS()));
 				}
-				
+
 				if(find==1&&termsS.indexOf(requestedSemester)!=-1){
 					spTakenIn.setSelection(termsS.indexOf(requestedSemester),true);
 				}
@@ -213,7 +214,7 @@ public class SearchClassActivity extends BaseMenuActivity {
 				btCancel.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {
-						
+
 						dialog.dismiss();
 					}
 				});
@@ -222,6 +223,9 @@ public class SearchClassActivity extends BaseMenuActivity {
 			}
 		});
 		//spCourse.requestFocus();
+		
+		//etCourse.requestFocus();
+		
 	}
 
 	/*
@@ -242,7 +246,7 @@ public class SearchClassActivity extends BaseMenuActivity {
 			}
 
 			if (e.toString().split("\\.").length == 2) {
-			//	Log.d("LENGTH", "2");
+				//	Log.d("LENGTH", "2");
 				classN = e.toString().split("\\.")[1];
 			}
 			classes = db.getClassesByInitial(e.toString());
@@ -251,16 +255,42 @@ public class SearchClassActivity extends BaseMenuActivity {
 				strings.add(c.getMajorN() + "." + c.getClassN() + " "
 						+ c.getTitle());
 			}
-		//	Log.d("STRINGS", strings.toString() + strings.size());
+			//	Log.d("STRINGS", strings.toString() + strings.size());
 			if (strings.size() != 0) {
 				courses.clear();
 				courses.addAll(strings);
 				myadapter.notifyDataSetChanged();
+				return;
 			}
 		}
+		try {
+			ArrayList<Class> classestmp = db.getClassesByKeyword(e.toString());
+			Log.d("keyword size", ""+classestmp.size());
+			if(classestmp.size()>0) {
+				for (Class c : classestmp) {
+					strings.add(c.getMajorN() + "." + c.getClassN() + " "
+							+ c.getTitle());
+				}
+				//	Log.d("STRINGS", strings.toString() + strings.size());
+				if (strings.size() != 0) {
+					classes = classestmp;
+					courses.clear();
+					courses.addAll(strings);
+					myadapter.notifyDataSetChanged();
+				}
+				
+			}
+			else {
+				classes.clear();
+				courses.clear();
+				
+				myadapter.notifyDataSetChanged();
+			}
+		}
+		catch (Exception e2) {
+			// TODO: handle exception
+		}
+	
 	}
-	
-
-	
 
 }
