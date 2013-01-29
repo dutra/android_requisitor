@@ -73,6 +73,7 @@ public class SearchClassActivity extends BaseMenuActivity {
 		}
 	}
 
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 
