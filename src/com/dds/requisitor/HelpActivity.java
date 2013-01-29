@@ -80,7 +80,7 @@ public class HelpActivity extends BaseMenuActivity{
 		tv.setText(styledText);
 		
 		tv = (TextView) findViewById(R.id.tv9);
-		text = String.format("<h2>How can I move between views? </h2><br></br><p> rom any view, open a menu with navigation options by clicking the on the three dots on the bottom right of your screen (shown below).</p>");
+		text = String.format("<h2>How can I move between views? </h2><br></br><p> From any view, open a menu with navigation options by clicking the on the three dots on the bottom right of your screen (shown below).</p>");
 		styledText = Html.fromHtml(text);
 		tv.setText(styledText);
 		
