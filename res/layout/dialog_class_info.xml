@@ -8,52 +8,78 @@
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:gravity="left"
         android:orientation="horizontal"
         android:paddingLeft="7dp" >
 
-        <TextView
-            style="@style/List_title"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:text="Units: " />
-    <TextView
-            android:id="@+id/tvUnits"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical" />
-        
-        <TextView style="@style/List_title" 
-            android:id="@+id/titleof"
-            android:layout_marginLeft="5dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Offered: "
-             />
-		<TextView android:layout_width="wrap_content"
-		    
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:id="@+id/termof" android:layout_marginLeft="5dp"/>
-        
-    </LinearLayout>
+            android:orientation="vertical"
+             >
 
-    <LinearLayout android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content" >
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
 
-        <TextView
-            style="@style/List_title"
+                <TextView
+                    style="@style/List_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:text="Units: " />
+
+                <TextView
+                    android:id="@+id/tvUnits"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:id="@+id/titleof"
+                    style="@style/List_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Offered: " />
+
+                <TextView
+                    android:id="@+id/termof"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:gravity="center_vertical" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:paddingLeft="5dp"
-            android:text="Term to add: " />
+            android:gravity="right"
+            android:orientation="vertical"
+            android:paddingLeft="7dp" >
 
-        <Spinner
-            android:id="@+id/sp_TakenIn"
-            style="@style/Spinner"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center" />
+            <TextView
+                style="@style/List_title"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingLeft="5dp"
+                android:text="Term to add: " />
+
+            <Spinner
+                android:id="@+id/sp_TakenIn"
+                style="@style/Spinner"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center" />
+        </LinearLayout>
     </LinearLayout>
 
     <ScrollView
