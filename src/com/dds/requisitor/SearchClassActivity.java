@@ -73,7 +73,7 @@ public class SearchClassActivity extends BaseMenuActivity {
 		}
 	}
 
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 
@@ -93,7 +93,7 @@ public class SearchClassActivity extends BaseMenuActivity {
 		list = (ListView) findViewById(R.id.list);
 
 		list.setAdapter(myadapter);
-		
+
 		etCourse = (EditText) findViewById(R.id.etCourse);
 
 		spCourse = (Spinner) findViewById(R.id.spCourse);
@@ -162,6 +162,32 @@ public class SearchClassActivity extends BaseMenuActivity {
 						.findViewById(R.id.tvDescription);
 				tvDescription.setText(classes.get(position).getDescription());
 
+				String tmp = new String("");
+				TextView tvtermof = (TextView) dialog
+						.findViewById(R.id.termof);
+				Log.d("fall", selectedClass.getFall()+"");
+				
+				
+					if(selectedClass.getFall()==1) {
+						tmp = "fall";
+					}
+					if(selectedClass.getSpring()==1) {
+						tmp = "spring";
+					}
+					
+					if(selectedClass.getFall()==1&&selectedClass.getSpring()==1)
+					{	tmp  = "fall and spring"; }
+				
+				tvtermof.setText(tmp);
+
+				if(selectedClass.getFall()==0&&selectedClass.getSpring()==0) {
+					TextView tvtitleof = (TextView) dialog
+							.findViewById(R.id.titleof);
+					tvtitleof.setText("");
+
+				}
+
+
 				spTakenIn = (Spinner) dialog
 						.findViewById(R.id.sp_TakenIn);
 
@@ -223,9 +249,9 @@ public class SearchClassActivity extends BaseMenuActivity {
 			}
 		});
 		//spCourse.requestFocus();
-		
+
 		//etCourse.requestFocus();
-		
+
 	}
 
 	/*
@@ -278,19 +304,19 @@ public class SearchClassActivity extends BaseMenuActivity {
 					courses.addAll(strings);
 					myadapter.notifyDataSetChanged();
 				}
-				
+
 			}
 			else {
 				classes.clear();
 				courses.clear();
-				
+
 				myadapter.notifyDataSetChanged();
 			}
 		}
 		catch (Exception e2) {
 			// TODO: handle exception
 		}
-	
+
 	}
 
 }

@@ -121,6 +121,33 @@
                         android:layout_margin="10dp"
                         android:gravity="fill"
                         android:src="@drawable/help_3" />
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/expand3"
+                    style="@style/Button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="More" />
+            </com.dds.requisitor.ExpandablePanel>
+
+            <com.dds.requisitor.ExpandablePanel
+                xmlns:expandablepanel="http://schemas.android.com/apk/res/com.dds.requisitor"
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/ep4"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:orientation="vertical"
+                expandablepanel:collapsedHeight="25sp"
+                expandablepanel:content="@+id/value4"
+                expandablepanel:handle="@+id/expand4" >
+
+                <LinearLayout
+                    android:id="@+id/value4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" >
 
                     <TextView
                         android:id="@+id/tv4"
@@ -129,7 +156,7 @@
                 </LinearLayout>
 
                 <Button
-                    android:id="@+id/expand3"
+                    android:id="@+id/expand4"
                     style="@style/Button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -197,17 +224,17 @@
                         android:layout_margin="10dp"
                         android:gravity="fill"
                         android:src="@drawable/help_6" />
-                    
-                    </LinearLayout>
-                                    <Button
+                </LinearLayout>
+
+                <Button
                     android:id="@+id/expand6"
                     style="@style/Button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="More" />
             </com.dds.requisitor.ExpandablePanel>
-            
- <com.dds.requisitor.ExpandablePanel
+
+            <com.dds.requisitor.ExpandablePanel
                 xmlns:expandablepanel="http://schemas.android.com/apk/res/com.dds.requisitor"
                 xmlns:android="http://schemas.android.com/apk/res/android"
                 android:id="@+id/ep7"
@@ -223,7 +250,7 @@
                     android:id="@+id/value7"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" >
-                    
+
                     <TextView
                         android:id="@+id/tv7"
                         android:layout_width="fill_parent"
@@ -303,6 +330,41 @@
 
                 <Button
                     android:id="@+id/expand9"
+                    style="@style/Button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="More" />
+            </com.dds.requisitor.ExpandablePanel>
+            
+            
+                        <com.dds.requisitor.ExpandablePanel
+                xmlns:expandablepanel="http://schemas.android.com/apk/res/com.dds.requisitor"
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/ep10"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:orientation="vertical"
+                expandablepanel:collapsedHeight="25sp"
+                expandablepanel:content="@+id/value10"
+                expandablepanel:handle="@+id/expand10" >
+
+                <LinearLayout
+                    android:id="@+id/value10"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:id="@+id/tv10"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content" />
+
+
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/expand10"
                     style="@style/Button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
