@@ -19,6 +19,8 @@ public class UserPreferences {
 	private static ArrayList<String> courseNall;
 	private static ArrayList<String> courseSall;
 	private static ArrayList<String> courseURLall;
+	private static ArrayList<String> exploresavedClassesids;
+	private static ArrayList<String> exploresavedClassessemesters;
 	private static String currentTermS;
 	private static String currentTermL;
 	private static Context context;
@@ -38,6 +40,10 @@ public class UserPreferences {
 		courseNall = new ArrayList<String>();
 		courseSall = new ArrayList<String>();
 		courseURLall = new ArrayList<String>();
+		
+		exploresavedClassesids = new ArrayList<String>();
+		exploresavedClassessemesters = new ArrayList<String>();
+		
 		courseNall.add("5");
 		courseSall.add("Chemistry");
 		courseNall.add("6");
@@ -118,7 +124,16 @@ public class UserPreferences {
 	public ArrayList<String> getcourseURLall() {
 		return courseURLall;
 	}
-
+	public ArrayList<String> getExploreSavedClassesIDs() {
+		return exploresavedClassesids;
+	}
+	public ArrayList<String> getExploreSavedClassesSemesters() {
+		return exploresavedClassessemesters;
+	}
+	public void setExploreSavedClasses(ArrayList<String> ids, ArrayList<String> semesters) {
+		exploresavedClassesids = ids;
+		exploresavedClassessemesters = semesters;
+	}
 	public String getName() {
 		return name;
 	}
@@ -139,6 +154,8 @@ public class UserPreferences {
 		edit.putString("COURSESALL", SerializeArray(courseSall));
 		edit.putString("TERMSS", SerializeArray(termsS));
 		edit.putString("TERMSL", SerializeArray(termsL));
+		edit.putString("EXPLORESAVEDCLASSESIDS", SerializeArray(exploresavedClassesids));
+		edit.putString("EXPLORESAVEDCLASSESSEMESTERS", SerializeArray(exploresavedClassessemesters));
 
 		initializeTerms();
 		edit.commit();
@@ -158,6 +175,8 @@ public class UserPreferences {
 
 		termsS = ParseArray(userDetails.getString("TERMSS", null));
 		termsL = ParseArray(userDetails.getString("TERMSL", null));
+		exploresavedClassesids = ParseArray(userDetails.getString("EXPLORESAVEDCLASSESIDS", new String("")));
+		exploresavedClassessemesters = ParseArray(userDetails.getString("EXPLORESAVEDCLASSESSEMESTERS", new String("")));
 
 		return 0;	
 	}

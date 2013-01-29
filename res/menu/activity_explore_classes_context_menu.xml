@@ -5,5 +5,7 @@
     android:title="Remove" />
     <item android:id="@+id/add"
     android:title="Add Another Class" />
+    <item android:id="@+id/clearall"
+    android:title="Clear all" />
     
 </menu>

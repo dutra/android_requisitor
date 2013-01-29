@@ -111,10 +111,11 @@ public class UserDatabaseHandler extends SQLiteOpenHelper {
 				//Log.d("CC", "ccc"+postProcess(c).size());
 
 			} while(cursor.moveToNext() == true); 
-
+			db.close();
 			return postProcess(classes);
 
 		}
+		db.close();
 		return new ArrayList<Class>();
 	}
 

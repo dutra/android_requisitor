@@ -21,6 +21,7 @@ import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class ExploreClassesActivity extends BaseMenuActivity {
 	LinearLayoutTerms llTerms;
@@ -30,17 +31,25 @@ public class ExploreClassesActivity extends BaseMenuActivity {
 	int replacePos = -1;
 	int lastSelectedSemester=-1;
 	int lastSelectedPos=-1;
-	
+
 	DatabaseHandler db = new DatabaseHandler(ExploreClassesActivity.this);
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 		setContentView(R.layout.activity_explore_classes);
 		LinearLayout llMain = (LinearLayout) findViewById(R.id.llMain);
 		llTerms = new LinearLayoutTerms(llMain, this);
-		llTerms.inflate_dbu();
+		if(llTerms.load()==-1) {
+			Log.d("LOAD", "-1");
+			llTerms.inflate_dbu();
+		}
+		else {
+			llTerms.inflate();
+			Log.d("LOAD", "0");
+		}
+			
 		/*View llChild1 = LinearLayout.inflate(this, R.layout.linear_explore_classes, null);
 
 		llMain.addView(llChild1);
@@ -50,15 +59,21 @@ public class ExploreClassesActivity extends BaseMenuActivity {
 	}
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
-	    super.onConfigurationChanged(newConfig);
-	    llTerms.save();
-	    llTerms.reset();
-	    
+		super.onConfigurationChanged(newConfig);
+		llTerms.save();
+		llTerms.reset();
+
 	}
 	@Override
 	protected void onResume() {
 		super.onResume();
-		
+
+	};
+	@Override
+	protected void onPause() {
+		super.onPause();
+		llTerms.save();
+
 	};
 	@Override
 	public void onCreateContextMenu(ContextMenu menu,View v,ContextMenuInfo info)
@@ -92,8 +107,11 @@ public class ExploreClassesActivity extends BaseMenuActivity {
 
 		case R.id.add : 
 			semesterPos = l.getId();
+			if(llTerms.isEmpty(semesterPos, (int) info.position))
+				replacePos = (int) info.position;
 			i = new Intent(ExploreClassesActivity.this, SearchClassActivity.class);
 			i.putExtra("FIND", 1);
+			i.putExtra("SEMESTER", up.getTermsS().get(semesterPos));
 			startActivityForResult(i,1);
 			return true;
 
@@ -102,6 +120,7 @@ public class ExploreClassesActivity extends BaseMenuActivity {
 			replacePos = (int) info.position;
 			i = new Intent(ExploreClassesActivity.this, SearchClassActivity.class);
 			i.putExtra("FIND", 1);
+			i.putExtra("SEMESTER", up.getTermsS().get(semesterPos));
 			startActivityForResult(i,1);
 			return true;
 
@@ -123,11 +142,24 @@ public class ExploreClassesActivity extends BaseMenuActivity {
 		getMenuInflater().inflate(R.menu.activity_explore_classes, menu);
 		return true;
 	}
-	
+
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
+		case R.id.save:
+			llTerms.save();
+			Toast.makeText(getApplicationContext(), "Your explore classes were saved with success!", Toast.LENGTH_SHORT).show();
+			return true;
+		case R.id.restore:
+			if(llTerms.load()==-1) {
+				Toast.makeText(getApplicationContext(), "Your explore classes were never saved! Showing your taken classes.", Toast.LENGTH_SHORT).show();
+				llTerms.reset_dbu();
+			}
+			else {
+				llTerms.reset_dbu();
+			}
+			return true;
 		case R.id.reset:
-			llTerms.reset();
+			llTerms.reset_dbu();
 			return true;
 		case R.id.clear:
 			llTerms.clearAll();
@@ -143,6 +175,7 @@ public class ExploreClassesActivity extends BaseMenuActivity {
 			if(resultCode == RESULT_OK){
 
 				int id = data.getIntExtra("ID",0);
+				semesterPos = up.getTermsS().indexOf(data.getStringExtra("CHOSENSEMESTER"));
 				if (replacePos>-1) {
 					llTerms.setClass(db.getClass(id), semesterPos, replacePos);
 					replacePos=-1;
@@ -217,8 +250,10 @@ public class ExploreClassesActivity extends BaseMenuActivity {
 			this.sCourses = new ArrayList<ArrayList<String>>();
 			this.sClasses = new ArrayList<ArrayList<Class>>();
 		}
-		
-		
+
+		public boolean isEmpty(int semesterPos, int Pos) {
+			return sCourses.get(semesterPos).get(Pos).isEmpty();
+		}
 		public void reset() {
 			llMain.removeAllViewsInLayout();
 			clearAll();
@@ -230,7 +265,7 @@ public class ExploreClassesActivity extends BaseMenuActivity {
 			this.sClasses = new ArrayList<ArrayList<Class>>();
 			inflate();
 		}
-		
+
 		public void reset_dbu() {
 			llMain.removeAllViewsInLayout();
 			clearAll();
@@ -242,69 +277,104 @@ public class ExploreClassesActivity extends BaseMenuActivity {
 			this.sClasses = new ArrayList<ArrayList<Class>>();
 			inflate_dbu();
 		}
-		
+
 		public void clearAll() {
-			
-			
-			
+
+
+
 			this.sTerms = new ArrayList<String>(); 
 			this.takenClasses = new ArrayList<Class>();
-			
-			
+
+
 			takenClasses.clear();
-			
-			
+
+
 			takenClasses.addAll(dbU.getClassesBySemesters(up.getTermsS()));
-			
+
 			Log.d("adaptorsize",ecAdapters.size()+"");			
 			for(int i=0; i<ecAdapters.size(); i++){
 				sCourses.get(i).clear();
 				sClasses.get(i).clear();
-				
-				for(int j=0;j<6;j++) {
+
+				for(int j=0;j<4;j++) {
 					sClasses.get(i).add(new Class());
 					sCourses.get(i).add("");
 				}
-				
+
 				ecAdapters.get(i).notifyDataSetChanged();
-				
-				
+
+
 			}
-			
-						
+
+
 		}
 
 		public void save() {
-			
+			ArrayList<String> ids = new ArrayList<String>();
+			ArrayList<String> semesters = new ArrayList<String>();
+			ArrayList<String> tmpids = new ArrayList<String>();
 			savedClasses = new ArrayList<ArrayList<Class>>();
+
+
 			for(int i=0; i<sClasses.size(); i++) {
+				tmpids.clear();
+				semesters.add(String.valueOf(i));
+
 				savedClasses.add(new ArrayList<Class>());
 				for(int j=0; j<sClasses.get(i).size(); j++) {
 					savedClasses.get(i).add(sClasses.get(i).get(j));
+					tmpids.add(String.valueOf(sClasses.get(i).get(j).getID()));
 				}
+				ids.add(SerializeArray(tmpids));
 			}
-					
-			
+			up.setExploreSavedClasses(ids, semesters);
+			Log.d("IDS", ids.toString());
+			up.save();
+
 		}
-		
+		public int load() {
+			up.load();
+			ArrayList<String> ids = new ArrayList<String>();
+			ArrayList<String> semesters = new ArrayList<String>();
+			ArrayList<String> tmpids = new ArrayList<String>();
+			savedClasses = new ArrayList<ArrayList<Class>>();
+
+			semesters.addAll(up.getExploreSavedClassesSemesters());
+			if(semesters.size()==0) {return -1;}
+
+			tmpids.addAll(up.getExploreSavedClassesIDs());
+
+			for(int i = 0; i<semesters.size(); i++) {
+				ids.clear();
+				ids = ParseArray(tmpids.get(i));
+				savedClasses.add(new ArrayList<Class>());
+				for(int j=0; j<ids.size();j++) {
+					savedClasses.get(i).add(db.getClass(Integer.parseInt(ids.get(j))));
+				}
+
+			}
+			return 0;
+
+		}
+
 		public void inflate() {
 
 			for(int i = 0; i<up.getTermsS().size(); i++) {
 				String termS = up.getTermsS().get(i);
 				String termL = up.getTermsL().get(i);
-				
+
 				sCourses.add(new ArrayList<String>());
 				sClasses.add(new ArrayList<Class>());
 
-				
-					for(Class c : savedClasses.get(i)) {
-						if(c.getMajorN()==null) {continue;}
-						sClasses.get(i).add(c);
-						sCourses.get(i).add(c.getMajorN()+"."+c.getClassN()+" "+c.getTitle());
-					}
-				
-					
-				
+
+				for(Class c : savedClasses.get(i)) {
+					if(c.getMajorN()==null) {continue;}
+					sClasses.get(i).add(c);
+					sCourses.get(i).add(c.getMajorN()+"."+c.getClassN()+" "+c.getTitle());
+				}
+
+
+
 				for(int j=0;j<8-sCourses.get(i).size();j++) {
 					sClasses.get(i).add(new Class());
 					sCourses.get(i).add("");
@@ -313,23 +383,23 @@ public class ExploreClassesActivity extends BaseMenuActivity {
 				sTerms.add(termL);
 
 				vChilds.add(View.inflate(context, R.layout.linear_explore_classes, null));
-				
+
 				if(getResources().getConfiguration().orientation==getResources().getConfiguration().ORIENTATION_LANDSCAPE) { //if landscape
-				lists.add((ListView)vChilds.get(i).findViewById(R.id.list));
-				tvTerms.add((TextView) vChilds.get(i).findViewById(R.id.tvTerm));
+					lists.add((ListView)vChilds.get(i).findViewById(R.id.list));
+					tvTerms.add((TextView) vChilds.get(i).findViewById(R.id.tvTerm));
 				}
 				if(getResources().getConfiguration().orientation==getResources().getConfiguration().ORIENTATION_PORTRAIT) { //if portrait
 					lists.add((ListView)vChilds.get(i).findViewById(R.id.fall));
 					tvTerms.add((TextView) vChilds.get(i).findViewById(R.id.tvfall));
-					
+
 					lists.add((ListView)vChilds.get(i).findViewById(R.id.spring));					
 					tvTerms.add((TextView) vChilds.get(i).findViewById(R.id.tvspring));
 				}
-				
+
 				lists.get(i).setId(i);
-				
+
 				tvTerms.get(i).setText(sTerms.get(i));
-			//	Log.d("sTerm",sTerms.get(i));
+				//	Log.d("sTerm",sTerms.get(i));
 				ecAdapters.add(new ExploreClassesArrayAdapter(vChilds.get(i).getContext(), sCourses.get(i)));
 				Log.d("CONTEXT", lists.get(i).toString());
 				lists.get(i).setAdapter(ecAdapters.get(i));
@@ -345,43 +415,26 @@ public class ExploreClassesActivity extends BaseMenuActivity {
 					public void onItemClick(AdapterView<?> parent, View view,
 							int position, long id) {
 						int semester = parent.getId();
-						//int semesterSelectedPos = i;
-						//if(lastSelected!=-1) {
-						//TextView tvLastSelected = (TextView) view.findViewById(R.id.label);
-
-
-
-
 						if(sClasses.get(semester).get(position)!=null) {
-							//tvSelected = (TextView) lists.get(semester).getChildAt(position).findViewById(R.id.label);
-							//tvSelected.setText(""+position+" "+parent.getId());
 							TextView tvSelected = (TextView) view.findViewById(R.id.label);
-
-
 							if(semester==lastSelectedSemester&&position==lastSelectedPos) {
-								//tvSelected.setTextAppearance(getApplicationContext(), R.style.normalText);
 								highlightClearAll();
 								lastSelectedSemester=lastSelectedPos=-1;
 
 							}
 							else {
-								
-								
-								
-								//tvSelected.setTextAppearance(tvSelected.getContext(), android.R.style.)
+
+
+
 								highlightPreReqsFrom(sClasses.get(semester).get(position));
 								tvSelected.setTextAppearance(context, R.style.List_item_prereq_selected);
-								
+
 								lastSelectedPos=position;
 								lastSelectedSemester=semester;
 							}
-							//Log.d("title:", tvSelected.getText());
-							//	Log.d("child",lists.get(semester).getChildAt(position).findViewById(R.id.label));
+
 						}
-						//
-						//tvSelected.setBackgroundColor(getResources().getColor(android.R.color.background_light));
-						//}
-						//Log.d("view", view.toString());
+
 					}
 				});
 			}
@@ -392,7 +445,7 @@ public class ExploreClassesActivity extends BaseMenuActivity {
 			for(int i = 0; i<up.getTermsS().size(); i++) {
 				String termS = up.getTermsS().get(i);
 				String termL = up.getTermsL().get(i);
-				
+
 				sCourses.add(new ArrayList<String>());
 				sClasses.add(new ArrayList<Class>());
 
@@ -401,34 +454,34 @@ public class ExploreClassesActivity extends BaseMenuActivity {
 						sClasses.get(i).add(c);
 						sCourses.get(i).add(c.getMajorN()+"."+c.getClassN()+" "+c.getTitle());
 					}
-					
+
 				}
 				Log.d("HERE?", ""+sCourses.get(i).size());
 				for(int j=0;j<8-sCourses.get(i).size();j++) {
 					sClasses.get(i).add(new Class());
-					sCourses.get(i).add("aaaa");
+					sCourses.get(i).add("");
 				}
 
 				sTerms.add(termL);
 
 				vChilds.add(View.inflate(context, R.layout.linear_explore_classes, null));
-				
+
 				if(getResources().getConfiguration().orientation==getResources().getConfiguration().ORIENTATION_LANDSCAPE) { //if landscape
-				lists.add((ListView)vChilds.get(i).findViewById(R.id.list));
-				tvTerms.add((TextView) vChilds.get(i).findViewById(R.id.tvTerm));
+					lists.add((ListView)vChilds.get(i).findViewById(R.id.list));
+					tvTerms.add((TextView) vChilds.get(i).findViewById(R.id.tvTerm));
 				}
 				if(getResources().getConfiguration().orientation==getResources().getConfiguration().ORIENTATION_PORTRAIT) { //if portrait
 					lists.add((ListView)vChilds.get(i).findViewById(R.id.fall));
 					tvTerms.add((TextView) vChilds.get(i).findViewById(R.id.tvfall));
-					
+
 					lists.add((ListView)vChilds.get(i).findViewById(R.id.spring));					
 					tvTerms.add((TextView) vChilds.get(i).findViewById(R.id.tvspring));
 				}
-				
+
 				lists.get(i).setId(i);
-				
+
 				tvTerms.get(i).setText(sTerms.get(i));
-			//	Log.d("sTerm",sTerms.get(i));
+				//	Log.d("sTerm",sTerms.get(i));
 				ecAdapters.add(new ExploreClassesArrayAdapter(vChilds.get(i).getContext(), sCourses.get(i)));
 				Log.d("CONTEXT", lists.get(i).toString());
 				lists.get(i).setAdapter(ecAdapters.get(i));
@@ -464,13 +517,13 @@ public class ExploreClassesActivity extends BaseMenuActivity {
 
 							}
 							else {
-								
-								
-								
+
+
+
 								//tvSelected.setTextAppearance(tvSelected.getContext(), android.R.style.)
 								highlightPreReqsFrom(sClasses.get(semester).get(position));
 								tvSelected.setTextAppearance(context, R.style.List_item_prereq_selected);
-								
+
 								lastSelectedPos=position;
 								lastSelectedSemester=semester;
 							}
@@ -518,7 +571,7 @@ public class ExploreClassesActivity extends BaseMenuActivity {
 				for(int pos=0; pos<sClasses.get(semester).size(); pos++) {
 					TextView tv = (TextView) lists.get(semester).getChildAt(pos).findViewById(R.id.label);
 					tv.setTextAppearance(context, R.style.List_item);
-					
+
 				}
 			}
 		}
@@ -564,6 +617,26 @@ public class ExploreClassesActivity extends BaseMenuActivity {
 		public ArrayList<String> getTermsTitle() {
 			return sTerms;
 		}
+
+	}
+
+	public static String SerializeArray(ArrayList<String> array) {
+		String strArr = "";
+		for (int i=0; i<array.size(); i++) {
+			strArr += array.get(i) + "~";
+		}
+		strArr = strArr.substring(0, strArr.length() -1); // get rid of last comma
+		return strArr;
+	}
+
+	public static ArrayList<String> ParseArray(String str) {
+
+		String[] strArr = str.split("~");
+		ArrayList<String> array = new ArrayList<String>();
+		for (int i=0; i<strArr.length; i++) {
+			array.add(strArr[i]);
+		}
+		return array; 
 	}
 
 }
