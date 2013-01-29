@@ -1,10 +1,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res/com.dds.requisitor"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/hsvMain"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical"
     android:background="@drawable/background_grey_grad"
+    android:orientation="vertical"
     tools:context=".ExploreClassesActivity" >
 
     <TextView
@@ -18,14 +19,13 @@
         style="@style/List"
         android:layout_width="fill_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
         android:layout_margin="0dp"
+        android:layout_weight="1"
         android:fillViewport="true"
         android:paddingBottom="2dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        android:paddingTop="2dp" 
-        >
+        android:paddingTop="2dp" >
 
         <LinearLayout
             xmlns:android="http://schemas.android.com/apk/res/android"
@@ -39,16 +39,33 @@
     </HorizontalScrollView>
 
     <LinearLayout
-        android:layout_margin="3dp"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-         >
+        android:layout_margin="3dp"
+        android:orientation="vertical" >
 
         <TextView
-            style="@style/Button"
-            android:layout_width="fill_parent"
+            style="@style/List_title"
+            android:layout_gravity="left"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Missing Prereqs:" />
+
+        <ScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <com.dds.requisitor.FlowLayout
+                xmlns:f="http://schemas.android.com/apk/res/com.dds.requisitor"
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/llmissingprereqs"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                
+                f:horizontalSpacing="3sp"
+                f:verticalSpacing="3sp" >
+            </com.dds.requisitor.FlowLayout>
+        </ScrollView>
     </LinearLayout>
 
 </LinearLayout>

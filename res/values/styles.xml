@@ -9,7 +9,6 @@
         <item name="android:shadowRadius">1</item>
         <item name="android:shadowDx">-1</item>
         <item name="android:shadowDy">-1</item>
-        
     </style>
 
     <style name="Header" parent="common_header_button">
@@ -50,16 +49,28 @@
         <!-- <item name="android:background">@drawable/grey_list_text_states</item> -->
     </style>
 
-    <style name="List_item_prereq">
-        <item name="android:textColor">@color/dark_green</item>
+    <style name="List_item_prereq_missing">
+        <item name="android:textColor">@color/red</item>
         <item name="android:textStyle">normal</item>
-            <item name="android:textSize">12sp</item>
+        <item name="android:textSize">12sp</item>
     </style>
 
-    <style name="List_item_prereq_selected">
-        <item name="android:textColor">@color/dark_green</item>
+    <style name="List_item_prereq_missing_selected">
+        <item name="android:textColor">@color/red</item>
         <item name="android:textStyle">bold</item>
-            <item name="android:textSize">12sp</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="List_item_prereq_nonmissing">
+        <item name="android:textColor">@color/green</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="List_item_prereq_nonmissing_selected">
+        <item name="android:textColor">@color/green</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">12sp</item>
     </style>
 
     <style name="List_title">
@@ -71,6 +82,12 @@
         <item name="android:textColor">@color/light_grey</item>
         <item name="android:textStyle">normal</item>
         <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="Text_missingprereqs">
+        <item name="android:background">@drawable/grey_text_missingprereqs_states</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
 </resources>

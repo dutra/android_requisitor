@@ -52,13 +52,13 @@
         <activity
             android:name="com.dds.requisitor.SearchClassActivity"
             android:label="@string/title_activity_search_class"
-            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
+            android:theme="@android:style/Theme.Black.NoTitleBar" >
         </activity>
         <activity
             android:name="com.dds.requisitor.ExploreClassesActivity"
             android:configChanges="orientation"
             android:label="@string/title_activity_explore_classes"
-            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
+            android:theme="@android:style/Theme.Black.NoTitleBar" >
         </activity>
         <activity
             android:name="com.dds.requisitor.AboutUsActivity"
@@ -70,7 +70,7 @@
             android:name="com.dds.requisitor.HelpActivity"
             android:configChanges="orientation"
             android:label="@string/title_activity_help"
-            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
+            android:theme="@android:style/Theme.Black.NoTitleBar" >
         </activity>
     </application>
 

@@ -31,14 +31,14 @@ public class ExploreClassesActivity extends BaseMenuActivity {
 	int replacePos = -1;
 	int lastSelectedSemester=-1;
 	int lastSelectedPos=-1;
-
+	FlowLayout llmissingprereqs;
 	DatabaseHandler db = new DatabaseHandler(ExploreClassesActivity.this);
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
 		setContentView(R.layout.activity_explore_classes);
+		llmissingprereqs = (FlowLayout) findViewById(R.id.llmissingprereqs);
 		LinearLayout llMain = (LinearLayout) findViewById(R.id.llMain);
 		llTerms = new LinearLayoutTerms(llMain, this);
 		if(llTerms.load()==-1) {
@@ -49,7 +49,7 @@ public class ExploreClassesActivity extends BaseMenuActivity {
 			llTerms.inflate();
 			Log.d("LOAD", "0");
 		}
-			
+
 		/*View llChild1 = LinearLayout.inflate(this, R.layout.linear_explore_classes, null);
 
 		llMain.addView(llChild1);
@@ -221,6 +221,7 @@ public class ExploreClassesActivity extends BaseMenuActivity {
 	}
 
 	private class LinearLayoutTerms {
+		boolean missing;
 		private LinearLayout llMain;
 		private Context context;
 		private ArrayList<View> vChilds;
@@ -232,6 +233,7 @@ public class ExploreClassesActivity extends BaseMenuActivity {
 		private ArrayList<ArrayList<Class>> sClasses;
 		private ArrayList<String> sTerms;
 		private ArrayList<Class> takenClasses;
+		ArrayList<Class> missingprereqs;
 
 		public LinearLayoutTerms(LinearLayout llMain, Context context) {
 			this.llMain = llMain;
@@ -249,6 +251,8 @@ public class ExploreClassesActivity extends BaseMenuActivity {
 			sClasses.add(new ArrayList<Class>());
 			this.sCourses = new ArrayList<ArrayList<String>>();
 			this.sClasses = new ArrayList<ArrayList<Class>>();
+			missingprereqs = new ArrayList<Class>();
+			
 		}
 
 		public boolean isEmpty(int semesterPos, int Pos) {
@@ -328,7 +332,7 @@ public class ExploreClassesActivity extends BaseMenuActivity {
 			up.save();
 
 		}
-		
+
 		public int load() {
 			up.load();
 			Log.d("explore crashing", "maybe here?");
@@ -415,6 +419,11 @@ public class ExploreClassesActivity extends BaseMenuActivity {
 							int position, long id) {
 						int semester = parent.getId();
 						if(sClasses.get(semester).get(position)!=null) {
+							
+							missingprereqs.clear();
+							
+							llmissingprereqs.removeAllViews();
+							
 							TextView tvSelected = (TextView) view.findViewById(R.id.label);
 							if(semester==lastSelectedSemester&&position==lastSelectedPos) {
 								highlightClearAll();
@@ -426,8 +435,12 @@ public class ExploreClassesActivity extends BaseMenuActivity {
 
 
 								highlightPreReqsFrom(sClasses.get(semester).get(position));
-								tvSelected.setTextAppearance(context, R.style.List_item_prereq_selected);
-
+								if(missing==false) {
+								tvSelected.setTextAppearance(context, R.style.List_item_prereq_nonmissing_selected);
+								}
+								if(missing==true) {
+									tvSelected.setTextAppearance(context, R.style.List_item_prereq_missing_selected);
+								}
 								lastSelectedPos=position;
 								lastSelectedSemester=semester;
 							}
@@ -499,8 +512,9 @@ public class ExploreClassesActivity extends BaseMenuActivity {
 						//int semesterSelectedPos = i;
 						//if(lastSelected!=-1) {
 						//TextView tvLastSelected = (TextView) view.findViewById(R.id.label);
-
-
+						Log.d("removeallviews","here1");
+						missingprereqs.clear();
+						llmissingprereqs.removeAllViews();
 
 
 						if(sClasses.get(semester).get(position)!=null) {
@@ -521,8 +535,13 @@ public class ExploreClassesActivity extends BaseMenuActivity {
 
 								//tvSelected.setTextAppearance(tvSelected.getContext(), android.R.style.)
 								highlightPreReqsFrom(sClasses.get(semester).get(position));
-								tvSelected.setTextAppearance(context, R.style.List_item_prereq_selected);
-
+								if(missing==false) {
+									tvSelected.setTextAppearance(context, R.style.List_item_prereq_nonmissing_selected);
+									}
+									if(missing==true) {
+										tvSelected.setTextAppearance(context, R.style.List_item_prereq_missing_selected);
+									}
+								
 								lastSelectedPos=position;
 								lastSelectedSemester=semester;
 							}
@@ -538,34 +557,75 @@ public class ExploreClassesActivity extends BaseMenuActivity {
 			}
 		}
 		public void highlightPreReqsFrom(Class c) {
-
+			missingprereqs = new ArrayList<Class>();
 			ArrayList<Class> prereqs = new ArrayList<Class>();
 			prereqs.addAll(db.getAllPrereqs(c.getID()));
 			highlightClearAll();
 
-			int prereqsmissing = prereqs.size();
+			ArrayList<Class> missingprereqstmp = new ArrayList<Class>();
+			
+			missingprereqstmp.addAll(prereqs);
+
+			int prereqsmissingN = prereqs.size();
 
 			for(Class p : prereqs) {
-				if(p.getTitle()==null) { prereqsmissing--; continue; }
+				//if(p.getTitle()==null) { prereqsmissingN--; continue; }
+				//Log.d("P",p.getMajorN()+"."+p.getClassN()+" "+p.getTitle());
+				for(int semester=0; semester<sTerms.size(); semester++) {
+
+					for(int pos=0; pos<sClasses.get(semester).size(); pos++) {
+						Class ac = sClasses.get(semester).get(pos);
+						if(ac.getID()==p.getID()&&ac.getTitle()!=null) {
+							missingprereqstmp.remove(p);
+						}
+					}
+				}
+			}
+			for(Class ct : missingprereqstmp) {
+				if(ct.getMajorN()!=null) { missingprereqs.add(ct); }
+			}
+			if(missingprereqs.size()>0) {
+				missing=true;
+			} else {
+				missing=false;
+			}
+			
+			for(Class p : prereqs) {
+				if(p.getTitle()==null) { prereqsmissingN--; continue; }
 				Log.d("P",p.getMajorN()+"."+p.getClassN()+" "+p.getTitle());
 				for(int semester=0; semester<sTerms.size(); semester++) {
 
 					for(int pos=0; pos<sClasses.get(semester).size(); pos++) {
 						Class ac = sClasses.get(semester).get(pos);
 						if(ac.getID()==p.getID()&&ac.getTitle()!=null) {
-							prereqsmissing--;
+							prereqsmissingN--;
 							TextView tv = (TextView) lists.get(semester).getChildAt(pos).findViewById(R.id.label);
-							tv.setTextAppearance(context, R.style.List_item_prereq);
+							if(missing==false) {
+								tv.setTextAppearance(context, R.style.List_item_prereq_nonmissing);
+								}
+								if(missing==true) {
+									tv.setTextAppearance(context, R.style.List_item_prereq_missing);
+								}
 						}
+
 					}
-
-
 				}
+
 			}
-			Log.d("prereqsmissing",""+prereqsmissing);
+			
+			//Log.d("prereqsmissing",""missingprereqs.);
+			
+			
+			for(int i=0; i<missingprereqs.size();i++) {
+				LinearLayout llMissing = (LinearLayout) getLayoutInflater().inflate(R.layout.list_explore_missingprereqs, null);
+				TextView tvmissing = (TextView) llMissing.findViewById(R.id.tvMissingprereqs);
+				tvmissing.setText(missingprereqs.get(i).getMajorN()+"."+missingprereqs.get(i).getClassN());
+				llmissingprereqs.addView(llMissing);//,new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT));
+			}
 
 		}
 		public void highlightClearAll() {
+			missingprereqs.clear();
 			for(int semester=0; semester<sTerms.size(); semester++) {
 				for(int pos=0; pos<sClasses.get(semester).size(); pos++) {
 					TextView tv = (TextView) lists.get(semester).getChildAt(pos).findViewById(R.id.label);
