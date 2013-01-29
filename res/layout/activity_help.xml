@@ -1,34 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:custom="http://schemas.android.com/apk/res/com.dds.requisitor" 
+<LinearLayout xmlns:custom="http://schemas.android.com/apk/res/com.dds.requisitor"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:background="@drawable/background_grey_grad"
     tools:context=".HelpActivity" 
-     >
-     <com.dds.requisitor.ExpandablePanel
-         xmlns:expandablepanel="http://schemas.android.com/apk/res/com.dds.requisitor"
-         xmlns:android="http://schemas.android.com/apk/res/android"
-         android:layout_width="fill_parent"
-         android:layout_height="fill_parent"
-        android:orientation="vertical"
-        
-        expandablepanel:collapsedHeight="50dip"
-        expandablepanel:content="@+id/value"
-        expandablepanel:handle="@+id/expand" 
-         >
+    android:orientation="vertical">
+    <TextView
+        style="@style/Header"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="Help" />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" 
+        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/value"
+        <com.dds.requisitor.ExpandablePanel
+            android:layout_gravity="center_horizontal"
+            xmlns:expandablepanel="http://schemas.android.com/apk/res/com.dds.requisitor"
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/ep1"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:maxHeight="50dip" />
+            android:orientation="vertical"
+            expandablepanel:collapsedHeight="50dip"
+            expandablepanel:content="@+id/value1"
+            expandablepanel:handle="@+id/expand1" >
 
-        <Button
-            android:id="@+id/expand"
-            android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/value1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="aaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                    android:textSize="50dp" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/expand1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="More" />
+        </com.dds.requisitor.ExpandablePanel>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <com.dds.requisitor.ExpandablePanel
+            xmlns:expandablepanel="http://schemas.android.com/apk/res/com.dds.requisitor"
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/ep2"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="More" />
-         
-     </com.dds.requisitor.ExpandablePanel>
- </LinearLayout>
+            android:orientation="vertical"
+            expandablepanel:collapsedHeight="50dip"
+            expandablepanel:content="@+id/value2"
+            expandablepanel:handle="@+id/expand2" >
+
+            <LinearLayout
+                android:id="@+id/value2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="bbbbbbbbbbbbbbbbbb"
+                    android:textSize="50dp" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/expand2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="More" />
+        </com.dds.requisitor.ExpandablePanel>
+    </LinearLayout>
+
+</LinearLayout>
