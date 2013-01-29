@@ -221,7 +221,7 @@ public class ExploreClassesActivity extends BaseMenuActivity {
 	}
 
 	private class LinearLayoutTerms {
-		
+		boolean missing;
 		private LinearLayout llMain;
 		private Context context;
 		private ArrayList<View> vChilds;
@@ -435,8 +435,12 @@ public class ExploreClassesActivity extends BaseMenuActivity {
 
 
 								highlightPreReqsFrom(sClasses.get(semester).get(position));
-								tvSelected.setTextAppearance(context, R.style.List_item_prereq_selected);
-
+								if(missing==false) {
+								tvSelected.setTextAppearance(context, R.style.List_item_prereq_nonmissing_selected);
+								}
+								if(missing==true) {
+									tvSelected.setTextAppearance(context, R.style.List_item_prereq_missing_selected);
+								}
 								lastSelectedPos=position;
 								lastSelectedSemester=semester;
 							}
@@ -531,7 +535,12 @@ public class ExploreClassesActivity extends BaseMenuActivity {
 
 								//tvSelected.setTextAppearance(tvSelected.getContext(), android.R.style.)
 								highlightPreReqsFrom(sClasses.get(semester).get(position));
-								tvSelected.setTextAppearance(context, R.style.List_item_prereq_selected);
+								if(missing==false) {
+									tvSelected.setTextAppearance(context, R.style.List_item_prereq_nonmissing_selected);
+									}
+									if(missing==true) {
+										tvSelected.setTextAppearance(context, R.style.List_item_prereq_missing_selected);
+									}
 								
 								lastSelectedPos=position;
 								lastSelectedSemester=semester;
@@ -560,6 +569,28 @@ public class ExploreClassesActivity extends BaseMenuActivity {
 			int prereqsmissingN = prereqs.size();
 
 			for(Class p : prereqs) {
+				//if(p.getTitle()==null) { prereqsmissingN--; continue; }
+				//Log.d("P",p.getMajorN()+"."+p.getClassN()+" "+p.getTitle());
+				for(int semester=0; semester<sTerms.size(); semester++) {
+
+					for(int pos=0; pos<sClasses.get(semester).size(); pos++) {
+						Class ac = sClasses.get(semester).get(pos);
+						if(ac.getID()==p.getID()&&ac.getTitle()!=null) {
+							missingprereqstmp.remove(p);
+						}
+					}
+				}
+			}
+			for(Class ct : missingprereqstmp) {
+				if(ct.getMajorN()!=null) { missingprereqs.add(ct); }
+			}
+			if(missingprereqs.size()>0) {
+				missing=true;
+			} else {
+				missing=false;
+			}
+			
+			for(Class p : prereqs) {
 				if(p.getTitle()==null) { prereqsmissingN--; continue; }
 				Log.d("P",p.getMajorN()+"."+p.getClassN()+" "+p.getTitle());
 				for(int semester=0; semester<sTerms.size(); semester++) {
@@ -569,18 +600,19 @@ public class ExploreClassesActivity extends BaseMenuActivity {
 						if(ac.getID()==p.getID()&&ac.getTitle()!=null) {
 							prereqsmissingN--;
 							TextView tv = (TextView) lists.get(semester).getChildAt(pos).findViewById(R.id.label);
-							tv.setTextAppearance(context, R.style.List_item_prereq);
-							missingprereqstmp.remove(p);
-
+							if(missing==false) {
+								tv.setTextAppearance(context, R.style.List_item_prereq_nonmissing);
+								}
+								if(missing==true) {
+									tv.setTextAppearance(context, R.style.List_item_prereq_missing);
+								}
 						}
 
 					}
 				}
 
 			}
-			for(Class ct : missingprereqstmp) {
-				if(ct.getMajorN()!=null) { missingprereqs.add(ct); }
-			}
+			
 			//Log.d("prereqsmissing",""missingprereqs.);
 			
 			

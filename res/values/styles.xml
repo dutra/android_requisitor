@@ -50,25 +50,25 @@
     </style>
 
     <style name="List_item_prereq_missing">
-        <item name="android:textColor">@color/dark_green</item>
+        <item name="android:textColor">@color/red</item>
         <item name="android:textStyle">normal</item>
         <item name="android:textSize">12sp</item>
     </style>
 
     <style name="List_item_prereq_missing_selected">
-        <item name="android:textColor">@color/dark_green</item>
+        <item name="android:textColor">@color/red</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">12sp</item>
     </style>
 
     <style name="List_item_prereq_nonmissing">
-        <item name="android:textColor">@color/dark_green</item>
+        <item name="android:textColor">@color/green</item>
         <item name="android:textStyle">normal</item>
         <item name="android:textSize">12sp</item>
     </style>
 
     <style name="List_item_prereq_nonmissing_selected">
-        <item name="android:textColor">@color/dark_green</item>
+        <item name="android:textColor">@color/green</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">12sp</item>
     </style>
