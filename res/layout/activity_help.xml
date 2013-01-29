@@ -187,10 +187,10 @@
 
                     <ImageView
                         android:id="@+id/help_5_pic"
-                        android:layout_width="230dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
-                        android:gravity="fill"
+                        
                         android:src="@drawable/help_5" />
                 </LinearLayout>
 
@@ -297,10 +297,10 @@
 
                     <ImageView
                         android:id="@+id/help_8_pic"
-                        android:layout_width="230dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
-                        android:gravity="fill"
+                        
                         android:src="@drawable/help_8" />
                 </LinearLayout>
 

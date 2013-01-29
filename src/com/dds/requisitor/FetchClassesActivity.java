@@ -211,7 +211,8 @@ public class FetchClassesActivity extends Activity {
 
 				publishProgress("And we're all done!");
 				Thread.sleep(300);
-
+				pd.dismiss();
+				finish();
 
 
 			} catch (InterruptedException e) {
