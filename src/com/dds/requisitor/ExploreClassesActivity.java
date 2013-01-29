@@ -302,11 +302,7 @@ public class ExploreClassesActivity extends BaseMenuActivity {
 				}
 
 				ecAdapters.get(i).notifyDataSetChanged();
-
-
 			}
-
-
 		}
 
 		public void save() {
@@ -332,15 +328,18 @@ public class ExploreClassesActivity extends BaseMenuActivity {
 			up.save();
 
 		}
+		
 		public int load() {
 			up.load();
+			Log.d("explore crashing", "maybe here?");
 			ArrayList<String> ids = new ArrayList<String>();
 			ArrayList<String> semesters = new ArrayList<String>();
 			ArrayList<String> tmpids = new ArrayList<String>();
 			savedClasses = new ArrayList<ArrayList<Class>>();
 
 			semesters.addAll(up.getExploreSavedClassesSemesters());
-			if(semesters.size()==0) {return -1;}
+			if(semesters.size()==0) { return -1;}
+			Log.d("explore crashing", "or here?"+semesters.size());
 
 			tmpids.addAll(up.getExploreSavedClassesIDs());
 

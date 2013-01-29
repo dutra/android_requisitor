@@ -177,8 +177,8 @@ public class UserPreferences {
 
 		termsS = ParseArray(userDetails.getString("TERMSS", null));
 		termsL = ParseArray(userDetails.getString("TERMSL", null));
-		exploresavedClassesids = ParseArray(userDetails.getString("EXPLORESAVEDCLASSESIDS", new String("")));
-		exploresavedClassessemesters = ParseArray(userDetails.getString("EXPLORESAVEDCLASSESSEMESTERS", new String("")));
+		exploresavedClassesids = ParseArray(userDetails.getString("EXPLORESAVEDCLASSESIDS", null));
+		exploresavedClassessemesters = ParseArray(userDetails.getString("EXPLORESAVEDCLASSESSEMESTERS", null));
 
 		return 0;	
 	}
@@ -193,9 +193,10 @@ public class UserPreferences {
 	}
 
 	public static ArrayList<String> ParseArray(String str) {
-
-		String[] strArr = str.split(",");
 		ArrayList<String> array = new ArrayList<String>();
+		if(str==null) return array;
+		String[] strArr = str.split(",");
+		
 		for (int i=0; i<strArr.length; i++) {
 			array.add(strArr[i]);
 		}
