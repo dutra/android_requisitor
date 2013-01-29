@@ -255,6 +255,90 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		db.close();
 		return classes;
 	}
+	
+	public ArrayList<Class> getClassesByKeyword(String search) {
+		String[] splitSearch = search.split("\\.");
+		SQLiteDatabase db = this.getReadableDatabase();
+		ArrayList<Class> classes = new ArrayList<Class>();
+		Cursor cursor = null;
+//		String majorN = new String();
+//		String classN = new String();
+
+//		if (splitSearch.length == 1) {
+//			majorN = splitSearch[0];
+			cursor = db.query(TABLE_CLASSES, new String[] { KEY_ID, KEY_MAJORN,
+					KEY_CLASSN, KEY_TITLE, KEY_UNITS, KEY_DESCRIPTION,
+					KEY_FALL, KEY_SPRING }, KEY_TITLE + " LIKE ?",
+					new String[] { search + "%" }, null, null, null, null);
+
+//		}
+//		if (splitSearch.length == 2) {
+//			majorN = splitSearch[0];
+//			classN = splitSearch[1];
+//		//	Log.d("LIKE", majorN + " " + classN);
+//			cursor = db.query(TABLE_CLASSES, new String[] { KEY_ID, KEY_MAJORN,
+//					KEY_CLASSN, KEY_TITLE, KEY_UNITS, KEY_DESCRIPTION,
+//					KEY_FALL, KEY_SPRING }, KEY_MAJORN + " =? AND "
+//					+ KEY_CLASSN + " LIKE ?",
+//					new String[] { majorN, classN.toString() + "%" }, null,
+//					null, null, null);
+//		}
+		if(cursor.getCount()>30){
+			return new ArrayList<Class>();
+		}
+		if (cursor.moveToFirst() == true) {
+			do {
+				String id = cursor.getString(0);
+				Class c = new Class(Integer.parseInt(cursor.getString(0)),
+						cursor.getString(1), cursor.getString(2),
+						cursor.getString(3), Integer.parseInt(cursor
+								.getString(4)), cursor.getString(5),
+						Integer.parseInt(cursor.getString(6)),
+						Integer.parseInt(cursor.getString(7)));
+
+				// get prereqs
+				Cursor cursorPre = db.query(TABLE_PREREQS, new String[] {
+						KEY_POSTREQ, KEY_PREREQ }, KEY_POSTREQ + "=?",
+						new String[] { id }, null, null, null, null);
+				if (cursorPre.moveToFirst() == true) {
+					ArrayList<Integer> i = new ArrayList<Integer>();
+					do {
+						i.add(Integer.parseInt(cursorPre.getString(1)));
+						// Log.d("CC", "ccc"+postProcess(c).size());
+
+					} while (cursorPre.moveToNext() == true);
+					c.setPrereqid(i);
+				} else
+					c.setPrereqid(new ArrayList<Integer>());
+				cursorPre.close();
+				// get postreqs
+				Cursor cursorPost = db.query(TABLE_PREREQS, new String[] {
+						KEY_POSTREQ, KEY_PREREQ }, KEY_PREREQ + "=?",
+						new String[] { id }, null, null, null, null);
+				if (cursorPost.moveToFirst() == true) {
+					ArrayList<Integer> i = new ArrayList<Integer>();
+					do {
+						i.add(Integer.parseInt(cursorPost.getString(0)));
+						// Log.d("CC", "ccc"+postProcess(c).size());
+
+					} while (cursorPost.moveToNext() == true);
+					c.setPostreqid(i);
+				} else
+					c.setPostreqid(new ArrayList<Integer>());
+				cursorPost.close();
+				classes.add(c);
+
+			} while (cursor.moveToNext() == true);
+			cursor.close();
+			db.close();
+			return classes;
+
+		}
+		cursor.close();
+		db.close();
+		return classes;
+	}
+
 
 	public ArrayList<Integer> getClassIdsByPostreq(int postreqid) {
 		SQLiteDatabase db = this.getReadableDatabase();
