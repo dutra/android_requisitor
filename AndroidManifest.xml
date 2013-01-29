@@ -68,7 +68,6 @@
         </activity>
         <activity
             android:name="com.dds.requisitor.HelpActivity"
-            android:configChanges="orientation"
             android:label="@string/title_activity_help"
             android:theme="@android:style/Theme.Black.NoTitleBar" >
         </activity>
