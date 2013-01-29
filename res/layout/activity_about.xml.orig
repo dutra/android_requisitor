@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".UserPreferencesActivity" >
+<!-- 
+    <TextView
+        style="@style/Header"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:text="About Us" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/secondary_grey_grad"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:padding="10sp" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/about_title"
+                style="@style/EditText"
+                android:layout_width="230dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="5dp"
+                android:gravity="center_horizontal"
+                android:text="Who Are We?" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/about_desc"
+                style="@style/EditText"
+                android:layout_width="230dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:gravity="center_horizontal"
+                android:text="@string/about_desc" />
+        </LinearLayout>
+
+        <ImageView
+<<<<<<< HEAD
+            android:id="@+id/about_req_pic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:src="@drawable/req_icon_large" />
+=======
+        android:id="@+id/about_req_pic"
+        android:layout_width="230dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:gravity="fill"
+        android:src:="@drawable/req_pic"
+        />
+>>>>>>> dutra
+
+        <Button
+            android:id="@+id/about_contact"
+            style="@style/Button"
+            android:layout_width="230dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:gravity="fill"
+            android:onClick="OnClickContactUs"
+            android:text="Contact Us" />
+    </LinearLayout>
+ -->
+</LinearLayout>
