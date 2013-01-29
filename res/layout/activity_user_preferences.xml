@@ -2,8 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center_horizontal"
     android:background="@drawable/background_grey_grad"
+    android:gravity="center_horizontal"
     android:orientation="vertical"
     tools:context=".UserPreferencesActivity" >
 
@@ -17,11 +17,10 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
         android:background="@drawable/secondary_grey_grad"
         android:gravity="center_horizontal"
-        android:layout_gravity="center_horizontal"
         android:orientation="vertical"
-        
         android:padding="10sp" >
 
         <LinearLayout
@@ -31,15 +30,14 @@
             android:orientation="horizontal" >
 
             <EditText
-                android:inputType="text"
                 android:id="@+id/etName"
                 style="@style/EditText"
-                android:layout_margin="5dp"
                 android:layout_width="230dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:hint="Name" 
-                />
+                android:layout_margin="5dp"
+                android:hint="Name"
+                android:inputType="text" />
         </LinearLayout>
 
         <LinearLayout
@@ -49,12 +47,12 @@
             android:orientation="horizontal" >
 
             <Spinner
-                android:focusable="true"
                 android:id="@+id/spCourse"
                 style="@style/Spinner"
                 android:layout_width="170dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
+                android:focusable="true"
                 android:gravity="center_horizontal" />
         </LinearLayout>
 
@@ -65,23 +63,22 @@
             android:orientation="horizontal" >
 
             <Spinner
-                android:focusable="true"
                 android:id="@+id/spYear"
                 style="@style/Spinner"
                 android:layout_width="170dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
+                android:focusable="true"
                 android:gravity="center_horizontal" />
         </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
-        
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="10dp"
         android:gravity="center_horizontal"
-        android:orientation="horizontal"
-        android:layout_margin="10dp" >
+        android:orientation="horizontal" >
 
         <Button
             android:id="@+id/btSave"
@@ -102,6 +99,22 @@
             android:gravity="center_horizontal"
             android:onClick="OnClickErase"
             android:text=" Erase Data " />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal" >
+
+        <ImageView
+            android:id="@+id/up_req_pic"
+            android:layout_width="230dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:gravity="center"
+            android:src="@drawable/req_icon_large" />
     </LinearLayout>
 
 </LinearLayout>
