@@ -140,6 +140,7 @@ public class SearchClassActivity extends BaseMenuActivity {
 					int count) {
 			}
 		});
+		
 
 		list.setOnItemClickListener(new OnItemClickListener() {
 			@Override

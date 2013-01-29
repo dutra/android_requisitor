@@ -34,6 +34,14 @@ public class AboutUsActivity extends BaseMenuActivity {
 				finish();
 			}
 		});
+		
+		Button btContact = (Button) pd.findViewById(R.id.about_contact);
+		btContact.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				OnClickContactUs(v);
+			}
+		});
 
 		pd.show();
 
