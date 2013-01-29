@@ -25,6 +25,8 @@
     <!-- <string name="about_desc">We are a group of two participating in MIT\'s 6.570 Android programming competition in IAP 2013. We have created Requisitor in hopes of helping MIT students plan out and maintain their class schedules quickly and painlessly. We hope that are enjoying it!</string> -->
     
     <string name="about_desc">We are MIT students participating in the IAP 2013 6.570 Android programming competition.</string>
+        <string name="help_3">To find a class, limit your search by course or (partial) class number and scroll to browse. To input a class number, click on the button with a course number followed by a period (in position 1). A number keyboard opens and the list updates with every input. To browse by course number or reset the list, click the button with just a course number (in position 2) and select a course from the drop down list. To see a class description, click on the class (as in position 3). To add a class, click on the class, select the term to add to from the drop down menu, and hit “Add Class”.</string>
+      <string name="help_4">All chosen classes can be seen by semester in either the “List Classes” or the “Explore Classes” View.</string>
     
     <string name="help_search">Search Help: </string>
     <string name="help_list">List Help:</string>

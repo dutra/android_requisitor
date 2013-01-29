@@ -2,17 +2,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:layout_gravity="center"
     android:layout_margin="5dp"
-    android:orientation="vertical"
-    android:layout_gravity="center">
+    android:orientation="vertical" >
 
     <LinearLayout
         android:id="@+id/dialog_about_ll"
-        android:background="@drawable/background_dialog_dark"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        
+        android:background="@drawable/background_dialog_dark"
         android:gravity="center_horizontal"
         android:orientation="vertical"
         android:padding="10sp" >
@@ -54,12 +53,22 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:gravity="right"
-            android:orientation="horizontal" >
+            android:orientation="vertical" >
 
             <Button
+                android:id="@+id/about_contact"
                 style="@style/Button"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:gravity="center_horizontal"
+                android:onClick="OnClickContactUs"
+                android:text="Contact Us" />
+
+            <Button
                 android:id="@+id/btClose"
-                android:layout_width="wrap_content"
+                style="@style/Button"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
                 android:text=" Close " />
