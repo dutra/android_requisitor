@@ -12,7 +12,6 @@
     <string name="menu_help">Help</string>
     <string name="menu_search">Search Classes</string>
     <string name="menu_list">List Classes</string>
-    
     <string name="title_activity_fetch_classes">FetchClassesActivity</string>
     <string name="title_activity_list_classes">ListClassesActivity</string>
     <string name="title_activity_user_preferences">UserPreferencesActivity</string>
@@ -23,14 +22,24 @@
     <string name="title_activity_help">HelpActivity</string>
     <string name="menu_header">Requisitor</string>
     <!-- <string name="about_desc">We are a group of two participating in MIT\'s 6.570 Android programming competition in IAP 2013. We have created Requisitor in hopes of helping MIT students plan out and maintain their class schedules quickly and painlessly. We hope that are enjoying it!</string> -->
-    
+
     <string name="about_desc">We are MIT students participating in the IAP 2013 6.570 Android programming competition.</string>
-        <string name="help_3">To find a class, limit your search by course or (partial) class number and scroll to browse. To input a class number, click on the button with a course number followed by a period (in position 1). A number keyboard opens and the list updates with every input. To browse by course number or reset the list, click the button with just a course number (in position 2) and select a course from the drop down list. To see a class description, click on the class (as in position 3). To add a class, click on the class, select the term to add to from the drop down menu, and hit “Add Class”.</string>
-      <string name="help_4">All chosen classes can be seen by semester in either the “List Classes” or the “Explore Classes” View.</string>
+   
+    
+    <string name="help_1"># What is Requisitor? \n Requisitor is an app designed to help MIT students plan out and maintain their class schedules quickly and painlessly. </string>
+    <string name="help_2">What can I do on Requisitor? \n You can use Requisitor to explore classes available across departments, check pre-reqs, plan class trajectories throughout your MIT career, taking into account pre-reqs and offering availability. </string>
+    <string name="help_3">How do I use “Search Classes”? \n To find a class, limit your search by course or (partial) class number and scroll to browse. To input a class number, click on the button with a course number followed by a period (in position 1). A number keyboard opens and the list updates with every input. To browse by course number or reset the list, click the button with just a course number (in position 2) and select a course from the drop down list. To see a class description, click on the class (as in position 3). To add a class, click on the class, select the term to add to from the drop down menu, and hit “Add Class”.</string>
+    <string name="help_4">All chosen classes can be seen by semester in either the “List Classes” or the “Explore Classes” View.</string>
+    <string name="help_5">How can I see which classes I have added? \n All chosen classes can be seen by semester in either the “List Classes” or the “Explore Classes” View. </string>
+    <string name="help_6">How do I add classes that I have taken to the app? \n You can do this in three ways: \n Search: From the Search view, follow the directions above to add a class to any semester. \n List: From the List view, press on the semester you want to add to and hold for a second or two. A context menu as shown below opens. From there, press “Add Another Class” and follow the Search directions. \n Explore: As in the List view, find the semester you want to add to in Explore view and click and hold to open an identical context menu. </string>
+    <string name="help_7">How do I remove classes that I have chosen? \n From either List or Explore view, click and hold the class you want to remove. From the context menu that opens, select “Remove” or “Replace”. </string>
+    <string name="help_8">How can I see if I have the pre-reqs for a class I am trying to add? \n Enter the class into the semester you are considering it for in Explore view. If you are missing pre-reqs, the class will turn red upon selection and the missing pre-reqs will appear at the bottom of the screen. </string>
+    <string name="help_9">How can I move between views? \n From any view, open a menu with navigation options by clicking the on the three dots on the bottom right of your screen (shown below). </string>
+
     
     <string name="help_search">Search Help: </string>
     <string name="help_list">List Help:</string>
     <string name="help_explore">Explore Help:</string>
     <string name="help_settings">Settings Help:</string>
-    
+
 </resources>
