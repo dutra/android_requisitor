@@ -154,9 +154,11 @@ public class UserPreferences {
 		edit.putString("COURSESALL", SerializeArray(courseSall));
 		edit.putString("TERMSS", SerializeArray(termsS));
 		edit.putString("TERMSL", SerializeArray(termsL));
+		
+		if(exploresavedClassesids.size()!=0) {
 		edit.putString("EXPLORESAVEDCLASSESIDS", SerializeArray(exploresavedClassesids));
 		edit.putString("EXPLORESAVEDCLASSESSEMESTERS", SerializeArray(exploresavedClassessemesters));
-
+		}
 		initializeTerms();
 		edit.commit();
 	}

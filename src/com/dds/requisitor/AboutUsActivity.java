@@ -31,6 +31,7 @@ public class AboutUsActivity extends BaseMenuActivity {
 			@Override
 			public void onClick(View v) {
 				pd.dismiss();
+				finish();
 			}
 		});
 
