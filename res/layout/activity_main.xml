@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background_grey_grad"
+    android:background="@drawable/rbg1"
     android:orientation="vertical"
     tools:context=".MainActivity" >
 
@@ -26,3 +26,5 @@
         android:verticalSpacing="10dp" />
 
 </LinearLayout>
+
+<!--     android:background="@drawable/background_grey_grad" -->
